@@ -1,0 +1,215 @@
+.home-about .home-about-list, .home-about .home-about.grid{
+	grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+		}
+
+/* Variation form checkbox color */
+.variations_form .variations .thwvsf_fields .thwvsf-rad-li .th-label-radio input:checked ~ .checkmark {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255, 203, 5);
+}
+
+/* Font faces */
+@font-face {
+    font-family: 'MainFont';
+    src: url('/wp-content/themes/yourtheme/fonts/main-font.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HeadingFont';
+    src: url('/wp-content/themes/yourtheme/fonts/heading-font.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Footer */
+.footer {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ddd; 
+}
+
+/* Newsletter form */
+.form-newsletter {
+    display: flex;
+    justify-content: center;   
+    align-items: center;
+    gap: 10px;                 
+    margin: 0 auto;
+    
+}
+ 
+.form-newsletter p {
+    margin: 0 auto;
+    font-size: 16px;
+}
+
+.form-newsletter input[type="email"] {
+    flex: 1;
+    min-width: 200px; /* ← THÊM min-width */
+    padding: 10px; 
+    font-size: 0.95rem !important;
+    outline: none;
+}
+
+.form-newsletter .btn-newsletter {
+    background: #2ecc71;
+    color: #fff;
+    width: 140px;
+    padding: 10px; /* ← THÊM padding */
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: none; /* ← THÊM */
+}
+
+.form-newsletter .btn-newsletter:hover {
+    background: #27ae60;
+}
+
+/* Hide spinner */
+.wpcf7-spinner {
+    display: none !important;
+}
+
+/* Turnstile */
+.form-turnstile {
+    margin-top: 10px;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Desktop large (>1200px) */
+@media (min-width: 1200px) {
+    .home-brands .brands-list,
+    .home-brands .brands-list.grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+   
+    .product-section .product-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* ← THÊM !important */
+    }
+  
+    .delicious-recipe-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* ← THÊM !important */
+    }
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+    .home-brands .brands-list,
+    .home-brands .brands-list.grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+    
+    .home-brands-item {
+        padding: 2rem 1rem !important;
+    }
+    
+    .home-brands-item .logo {
+        width: 100px !important;
+        height: 100px !important;
+    }
+}
+
+/* Factory section - Desktop */
+@media (min-width: 1024px) {
+    .home-brands .brands-list, .home-brands .brands-list.grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  
+  
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}  
+
+/* Nút liên hệ Messenger khi sản phẩm không có giá */
+.product-no-price-contact {
+    margin: 1.5rem 0;
+}
+
+.btn-messenger-contact {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #007b62 0%, #009973 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 98, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-messenger-contact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 98, 0.4);
+    background: linear-gradient(135deg, #006952 0%, #007b62 100%);
+}
+
+.btn-messenger-contact:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0, 123, 98, 0.3);
+}
+
+.btn-messenger-contact span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-messenger-contact:before {
+    content: "\f39f"; /* Facebook Messenger icon */
+    font-family: "Font Awesome 6 Brands";
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.wcosm_soldout {
+	display: none !important;
+}
+@media (max-width: 768px) {
+    .btn-messenger-contact {
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100%;
+        display: block;
+    }
+}
+
+@media (max-width: 1024px) {
+    .home-brands .brands-list, .home-brands .brands-list.grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+}
+
+.home-about .home-about-list, 
+.home-about .home-about.grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .home-about .home-about-list, 
+    .home-about .home-about.grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .home-about .home-about-list, 
+    .home-about .home-about.grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+}

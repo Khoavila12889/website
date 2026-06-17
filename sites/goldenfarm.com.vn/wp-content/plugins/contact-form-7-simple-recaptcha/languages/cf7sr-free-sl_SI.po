@@ -1,0 +1,119 @@
+msgid "Settings"
+msgstr "Nastavitve"
+
+msgid "Invalid captcha error message"
+msgstr "Napačno sporočilo CAPTCHA"
+
+msgid "Save Settings"
+msgstr "Shrani nastavitve"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Zaupa mu več kot 100.000 podjetij po vsem svetu. PRO verzija je še boljša!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Preusmeri uporabnike na katerikoli URL po uspešno poslanem e-poštnem sporočilu."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "V svoje obrazce integrirajte dodatno zaščito Honeypot za večjo varnost."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Določite seznam prepovedanih besed. Sporočila, ki vsebujejo prepovedane besede, ne bodo poslana."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Pridobite dostop do IP Blockerja, da blokirate sporočila zlonamernih IP naslovov."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Uporabite omejevanje pogostosti, da upravljate, kako pogosto je mogoče pošiljati obrazce, in preprečite zlorabe."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Omogočite samodejno shranjevanje sporočil obrazca Contact Form 7 v vašo zbirko podatkov."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Uporabite Twilio SMS, da prejemate obvestila o novih pošiljanjih obrazcev neposredno na vaš telefon."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Prenesite podatke iz pošiljk kontaktnih obrazcev neposredno na vaš seznam Mailchimp."
+
+msgid "Use this link to generate"
+msgstr "Uporabite to povezavo za ustvarjanje"
+
+msgid "Choose"
+msgstr "Izberite"
+
+msgid "Updated successfully!"
+msgstr "Uspešno posodobljeno!"
+
+msgid "PRO features:"
+msgstr "PRO funkcije:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Kombinirate lahko več atributov, primer kratke kode:"
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "reCaptcha ne bo deloval, dokler ne nastavite spodnje konfiguracije"
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Če želite v obrazec Contact Form 7 dodati reCaptcha, v svoj obrazec dodajte <strong>[cf7sr-recaptcha]</strong> (najbolje nad gumbom za pošiljanje)"
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "Prisili reCaptcha, da se upodobi v določenem jeziku. Če ni določeno, Google samodejno zazna jezik."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "Privzeta velikost reCaptcha je običajna, za kompaktno velikost uporabite kratko kodo:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "Privzeta barvna tema reCaptcha je svetla, za temno temo uporabite kratko kodo:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "Privzeti tip reCaptcha je slika, za zvočni tip uporabite kratko kodo:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "hCaptcha ne bo deloval, dokler ne nastavite spodnje konfiguracije"
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Če želite v obrazec Contact Form 7 dodati hCaptcha, v svoj obrazec dodajte <strong>[cf7sr-hcaptcha]</strong> (najbolje nad gumbom za pošiljanje)"
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "Privzeta velikost hCaptcha je običajna, za kompaktno velikost uporabite kratko kodo:"
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:"
+msgstr "Privzeta barvna tema hCaptcha je svetla, za temno temo uporabite kratko kodo:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Prisili hCaptcha, da se prikaže v določenem jeziku."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "CAPTCHA Cloudflare Turnstile ne bo delovala, razen če ne nastavite spodnje konfiguracije"
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Prisili CAPTCHA, da se prikaže v določenem jeziku"
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "Da dodate CAPTCHA Cloudflare Turnstile obrazec za stik 7, dodajte <strong>[cf7sr-turnstile]</strong> v svoj obrazec (po možnosti nad gumbom za oddajo)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "Privzeta velikost CAPTCHA je običajna, za kompaktno velikost uporabite bližnjico:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "Privzeta barvna tema CAPTCHA je samodejna, za temno ali svetlo temo uporabite bližnjico:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "Vstavek Captcha za obrazec za stik 7 je bil posodobljen za podporo Google CAPTCHA V2, hCAPTCHA in CAPTCHA Cloudflare Turnstile"
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Pridobite Captcha Pro, ki se začne pri $0.83 na mesec:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Pridobite Captcha Pro in odklenite vse močne funkcije"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "Vtičnik Captcha za obrazec Contact Form 7 je bil posodobljen: zdaj podpira Cloudflare Turnstile CAPTCHA!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "Predstavitev PRO funkcije: Odzivni Captcha."
+
+msgid "View all PRO features."
+msgstr "Ogled vseh PRO funkcij."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Odzivni Captcha - prilagodi se manjšim zaslonom z preklopom v kompaktno velikost, ko je določena prednastavljena širina."

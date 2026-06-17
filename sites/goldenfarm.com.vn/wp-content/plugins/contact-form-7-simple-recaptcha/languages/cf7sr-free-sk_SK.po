@@ -1,0 +1,119 @@
+msgid "Settings"
+msgstr "Nastavenia"
+
+msgid "Invalid captcha error message"
+msgstr "Neplatná chybová správa CAPTCHA"
+
+msgid "Save Settings"
+msgstr "Uložiť nastavenia"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Dôveruje mu viac ako 100 000 firiem po celom svete. PRO verzia je ešte lepšia!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Presmerovať používateľov na ľubovoľnú URL adresu po úspešnom odoslaní e-mailu."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "Integrujte do svojich formulárov dodatočnú ochranu Honeypot pre väčšiu bezpečnosť."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Definujte zoznam zakázaných slov. Správy obsahujúce zakázané slová nebudú odoslané."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Získajte prístup k IP Blocker na blokovanie správ zo škodlivých IP adries."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Použite obmedzenie frekvencie, aby ste mohli spravovať ako často je možné odosielať formuláre a zabránili ste zneužitiu."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Povoliť automatické ukladanie správ Contact Form 7 do vašej databázy."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Pomocou Twilio SMS prijímajte oznámenia o nových odoslaniach formulárov priamo do telefónu."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Preneste dáta z odoslaných kontaktných formulárov priamo do vášho zoznamu Mailchimp."
+
+msgid "Use this link to generate"
+msgstr "Pomocou tohto odkazu vygenerujte"
+
+msgid "Choose"
+msgstr "Vyberte"
+
+msgid "Updated successfully!"
+msgstr "Úspešne aktualizované!"
+
+msgid "PRO features:"
+msgstr "PRO funkcie:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Môžete kombinovať viacero atribútov, príklad shortcodu:"
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "reCaptcha nebude fungovať, pokiaľ nenastavíte konfiguráciu uvedenú nižšie"
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Ak chcete pridať reCaptcha do formulára Contact Form 7, pridajte do svojho formulára <strong>[cf7sr-recaptcha]</strong> (najlepšie nad tlačidlo odoslania)"
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "Vynútiť vykreslenie reCaptcha v konkrétnom jazyku. Google automaticky zistí jazyk, pokiaľ nie je zadaný."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "Predvolená veľkosť reCaptcha je normálna, pre kompaktnú veľkosť použite shortcode:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "Predvolená farebná téma reCaptcha je svetlá, pre tmavú tému použite shortcode:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "Predvolený typ reCaptcha je obrázok, pre zvukový typ použite shortcode:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "hCaptcha nebude fungovať, pokiaľ nenastavíte konfiguráciu uvedenú nižšie"
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Ak chcete pridať hCaptcha do formulára Contact Form 7, pridajte do svojho formulára <strong>[cf7sr-hcaptcha]</strong> (najlepšie nad tlačidlo odoslania)"
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "Predvolená veľkosť hCaptcha je normálna, pre kompaktnú veľkosť použite shortcode:"
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:"
+msgstr "Predvolená farebná téma hCaptcha je svetlá, pre tmavú tému použite shortcode:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Vynútiť vykresľovanie hCaptcha v konkrétnom jazyku."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "CAPTCHA Cloudflare Turnstile nebude fungovať, pokiaľ nezadáte nižšie uvedenú konfiguráciu."
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Vynútiť vykreslenie CAPTCHA v konkrétnom jazyku"
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "Ak chcete pridať CAPTCHA Cloudflare Turnstile do formulára Kontaktujte formulár 7, pridajte <strong>[cf7sr-turnstile]</strong> do svojho formulára (najlepšie nad tlačidlom odoslať)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "Predvolená veľkosť CAPTCHA je normálna, pre kompaktnú veľkosť použite skrátený kód:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "Predvolená farebná téma CAPTCHA je automatická, pre tmavú alebo svetlú tému použite skrátený kód:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "Plugin Captcha Contact Form 7 bol aktualizovaný na podporu Google CAPTCHA V2, hCAPTCHA a CAPTCHA Cloudflare Turnstile"
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Získajte Captcha Pro začínajúc od $0.83 mesačne:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Získajte Captcha Pro a odomknite všetky výkonné funkcie"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "Plugin Captcha pre Contact Form 7 aktualizovaný: teraz podporuje Cloudflare Turnstile CAPTCHA!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "Predstavenie funkcie PRO: Responsive Captcha."
+
+msgid "View all PRO features."
+msgstr "Zobraziť všetky funkcie PRO."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Responsive Captcha - prispôsobuje sa menším obrazovkám prepínaním do kompaktného režimu pri nastavení preddefinovanej šírky."

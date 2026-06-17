@@ -1,0 +1,114 @@
+version: "3.9"
+services:
+  mysql2:
+    image: mariadb:11.4
+    container_name: mysql2
+    volumes:
+      - "./data/db:/var/lib/mysql:delegated"
+      - "./mysql/my.cnf:/etc/mysql/my.cnf"
+      - "./mysql:/var/log/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    restart: on-failure
+    mem_limit: 3g
+    cpus: 2
+    networks:
+      - default
+
+  litespeed2:
+    image: litespeedtech/openlitespeed:latest
+    container_name: litespeed2
+    env_file:
+      - .env
+    volumes:
+        - ./lsws/conf:/usr/local/lsws/conf
+        - ./lsws/admin-conf:/usr/local/lsws/admin/conf
+        - ./lsws/cache:/usr/local/lsws/cache
+        - ./lsws/cachedata:/usr/local/lsws/cachedata
+        - ./bin/container:/usr/local/bin
+        - ./sites:/var/www/vhosts/
+        - ./acme:/root/.acme.sh/
+        - ./logs:/usr/local/lsws/logs/
+        - ./php/php.ini:/usr/local/lsws/lsphp84/etc/php/8.4/litespeed/php.ini
+    ports:
+      - "8008:80"
+      - "7081:7080"
+    restart: always
+    environment:
+      TZ: ${TimeZone}
+    mem_limit: 3g
+    cpus: 3
+    shm_size: 512m
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+      nproc:
+        soft: 4096
+        hard: 4096
+    networks:
+      - default
+      - shared_network
+
+  phpmyadmin:
+    image: bitnami/phpmyadmin:5.2.2
+    container_name: phpmyadmin2
+    ports:
+      - "8081:8080"
+    environment:
+      DATABASE_HOST: mysql2
+      PMA_HOST: mysql2
+      PMA_PORT: 3306
+    restart: always
+    mem_limit: 128m
+    cpus: 0.5
+    networks:
+      - default
+
+  redis2:
+    image: redis:7-alpine
+    container_name: redis2
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    mem_limit: 256m
+    cpus: 1
+    networks:
+      - default
+
+  mysql-backup:
+      image: fradelg/mysql-cron-backup
+      container_name: mysql-backup
+      restart: always
+
+      depends_on:
+        - mysql2
+
+      environment:
+        MYSQL_HOST: mysql2
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASS: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        CRON_TIME: "0 2 * * *"
+        MAX_BACKUPS: 3
+        TZ: ${TimeZone}
+
+      volumes:
+        - ./backups:/backup
+
+      mem_limit: 128m
+
+      networks:
+        - default
+
+networks:
+  default:
+    driver: bridge
+  shared_network:
+    external: true

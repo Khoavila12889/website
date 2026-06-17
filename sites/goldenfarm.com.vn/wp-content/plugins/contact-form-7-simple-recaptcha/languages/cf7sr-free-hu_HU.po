@@ -1,0 +1,119 @@
+msgid "Settings"
+msgstr "Beállítások"
+
+msgid "Invalid captcha error message"
+msgstr "Érvénytelen captcha hibaüzenet"
+
+msgid "Save Settings"
+msgstr "Beállítások mentése"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Több mint 100 000 vállalkozás bízik benne világszerte. A PRO verzió még jobb!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Az e-mail sikeres elküldése után átirányítja a felhasználókat egy tetszőleges URL-re."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "Integrálj további Honeypot védelmet az űrlapokba a nagyobb biztonság érdekében."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Adj meg egy listát a tiltott szavakról. A tiltott szavakat tartalmazó üzenetek nem lesznek elküldve."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Szerezz IP Blocker hozzáférést a rosszindulatú IP-címekről érkező üzenetek blokkolásához."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Használd a gyakoriságkorlátozást az űrlapok beküldési gyakoriságának kezelésére és a visszaélések megelőzésére."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Engedélyezd a Contact Form 7 üzenetek automatikus mentését az adatbázisba."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Használd a Twilio SMS-t, hogy közvetlenül a telefonodra kapj értesítést az új űrlapbeküldésekről."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Az űrlapbeküldésekből származó adatok közvetlen átvitele a Mailchimp listára."
+
+msgid "Use this link to generate"
+msgstr "Használd ezt a linket a generáláshoz"
+
+msgid "Choose"
+msgstr "Választ"
+
+msgid "Updated successfully!"
+msgstr "Sikeresen frissítve!"
+
+msgid "PRO features:"
+msgstr "PRO funkciók:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Több tulajdonságot is kombinálhatsz, példa shortcode:"
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "A reCaptcha nem fog működni, hacsak nem állítod be az alábbi konfigurációt"
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "A reCaptcha hozzáadásához a Contact Form 7-es űrlaphoz add hozzá a <strong>[cf7sr-recaptcha]</strong> shortcode-ot az űrlapodba (lehetőleg a küldés gomb fölé)"
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "A reCaptcha kényszerítése, hogy egy adott nyelven jelenjen meg. A Google automatikusan felismeri a nyelvet, ha nincs beállítva."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "A reCaptcha alapértelmezett mérete normál, kompakt mérethez használd a shortcode-ot:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "A reCaptcha alapértelmezett színtémája világos, sötét témához használd a shortcode-ot:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "A reCaptcha alapértelmezett típusa kép, hangtípushoz használd a shortcode-ot:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "A hCaptcha nem fog működni, hacsak nem állítod be az alábbi konfigurációt"
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "A hCaptcha hozzáadásához a Contact Form 7-es űrlaphoz add hozzá a <strong>[cf7sr-hcaptcha]</strong> shortcode-ot az űrlapodba (lehetőleg a küldés gomb fölé)"
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "A hCaptcha alapértelmezett mérete normál, kompakt mérethez használd a shortcode-ot:"
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:"
+msgstr "A hCaptcha alapértelmezett színtémája világos, sötét témához használd a shortcode-ot:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Kényszerítse a hCaptchát, hogy egy adott nyelven jelenjen meg."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "A Cloudflare Turnstile CAPTCHA nem fog működni, hacsak alul nem állítja be a konfigurációt"
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Kényszerítse a CAPTCHA-t, hogy egy adott nyelven jelenjen meg."
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "A Cloudflare Turnstile CAPTCHA hozzáadásához a Kapcsolatfelvételi űrlap 7 űrlapjához adja hozzá <strong>[cf7sr-turnstile]</strong>-t az űrlapjához (ajánlottan az elküldés gomb felett)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "A CAPTCHA alapértelmezett mérete normál, kompakt méret esetén használja a rövidkódot:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "A CAPTCHA alapértelmezett szín témája automatikus, sötét vagy világos témához használja a rövidkódot:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "A Kapcsolatfelvételi űrlap 7 Captcha bővítményt frissítették a Google CAPTCHA V2, az hCAPTCHA és a Cloudflare Turnstile CAPTCHA támogatására."
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Szerezze be a Captcha Pro-t kezdve $0.83 havonta:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Szerezze be a Captcha Pro-t és oldja fel az összes erőteljes funkciót"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "A Contact Form 7 Captcha bővítmény frissítve: most támogatja a Cloudflare Turnstile CAPTCHA-t!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "PRO funkció bemutatása: Responsive Captcha."
+
+msgid "View all PRO features."
+msgstr "Az összes PRO funkció megtekintése."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Responsive Captcha - alkalmazkodik kisebb képernyőkhöz, kompakt méretre váltva, amikor egy előre meghatározott szélesség van beállítva."

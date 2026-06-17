@@ -1,0 +1,43 @@
+# --- CÁC FILE ĐƯỢC PHÉP PUSH ---
+# .env và các thư mục code tự viết sẽ được Git theo dõi
+
+# --- DỮ LIỆU & LOGS (Bắt buộc Ignore) ---
+data/
+mysql/
+logs/
+
+# --- BACKUPS & FILE NÉN NẶNG (Bắt buộc Ignore) ---
+backups/
+*.sql
+*.sql.gz
+*.tar.gz
+*.zip
+
+# --- REDIS & SSL ---
+redis/data/
+acme/
+
+# --- WORDPRESS UPLOADS & CACHE ---
+sites/*/wp-content/uploads/
+lsws/cache/
+lsws/cachedata/
+sites/*/wp-content/cache/
+sites/*/wp-content/litespeed/
+
+# --- WORDPRESS CORE ---
+sites/*/wp-admin/
+sites/*/wp-includes/
+sites/*/index.php
+sites/*/wp-*.php
+sites/*/xmlrpc.php
+sites/*/license.txt
+sites/*/readme.html
+
+# --- KEEP CONFIGS ---
+!sites/*/wp-config.php
+
+# --- MÔI TRƯỜNG CÁ NHÂN ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

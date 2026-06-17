@@ -1,0 +1,119 @@
+msgid "Settings"
+msgstr "Seaded"
+
+msgid "Invalid captcha error message"
+msgstr "Vale CAPTCHA veateade"
+
+msgid "Save Settings"
+msgstr "Salvesta seaded"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Usaldavad seda rohkem kui 100 000 ettevõtet terves maailmas. PRO-versioon on isegi veelgi parem!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Suuna kasutajad pärast e-posti edukat saatmist ükskõik millisele URL-ile."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "Tugevama turvalisuse tagamiseks integreerige oma vormidesse täiendav Honeypot-kaitse."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Määratlege piiratud sõnade loend. Sõnumeid, mis sisaldavad piiratud sõnu, ei saadeta."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Hangi IP Blockeri juurdepääs, et blokeerida pahatahtlike IP-aadresside sõnumid."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Kasuta kiiruse piiramist, et kontrollida, kui tihti vorme saab esitada, ja vältida kuritarvitamist."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Luba Contact Form 7 sõnumite automaatne salvestamine andmebaasi."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Kasuta Twilio SMS-i, et saada uusi vormiesituse teateid otse oma telefoni."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Kandevormi esitamise andmed otse oma Mailchimpi nimekirja."
+
+msgid "Use this link to generate"
+msgstr "Selle lingi abil saate genereerida"
+
+msgid "Choose"
+msgstr "Vali"
+
+msgid "Updated successfully!"
+msgstr "Edukalt uuendatud!"
+
+msgid "PRO features:"
+msgstr "PRO funktsioonid:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Saate kombineerida mitu atribuuti, näidis-lühikood:"
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "reCaptcha ei tööta, kui te ei seadista allpool toodud konfiguratsiooni"
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "ReCaptcha lisamiseks Contact Form 7 vormile lisage oma vormile  <strong>[cf7sr-recaptcha]</strong> (eelistatavalt üle esitamise nupu)"
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "Sundige reCaptcha-d renderdama kindlas keeles. Google tuvastab selle automaatselt, kui seda ei ole määratud."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "ReCaptcha vaike suurus on normaalne, kompaktse suuruse jaoks kasutage lühikoodi:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "ReCaptcha vaikimisi värviteema on hele, tumeda teema jaoks kasuta lühikoodi:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "ReCaptcha vaike tüüp on pilt, audiotüübi jaoks kasutage lühikoodi:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "hCaptcha ei tööta, kui te ei seadista allpool toodud konfiguratsiooni"
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "HCaptcha lisamiseks Contact Form 7 vormile lisage oma vormile  <strong>[cf7sr-hcaptcha]</strong> (eelistatavalt üle esitamise nupu)"
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "HCaptcha vaike suurus on normaalne, kompaktse suuruse jaoks kasutage lühikoodi:"
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:"
+msgstr "HCaptcha vaikimisi värviteema on hele, tumeda teema jaoks kasutage lühikoodi:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Sundige hCaptcha konkreetsele keelele."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "Cloudflare Turnstile CAPTCHA ei tööta, kui te ei seadista allpool olevat konfiguratsiooni"
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Sundige CAPTCHA konkreetsele keelele renderduma"
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "Cloudflare Turnstile CAPTCHA lisamiseks Kontaktvormi 7 vormile lisage oma vormis <strong>[cf7sr-turnstile]</strong> (soovitavalt enne saatmise nuppu)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "Vaikimisi CAPTCHA suurus on normaalne, kompaktse suuruse saamiseks kasutage lühikoodi:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "Vaikimisi CAPTCHA värviteema on automaatne, tumeda või heleda teema saamiseks kasutage lühikoodi:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "Kontaktvormi 7 Captcha pistikprogramm on uuendatud Google CAPTCHA V2, hCAPTCHA ja Cloudflare Turnstile CAPTCHA toe saamiseks"
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Hankige Captcha Pro alates $0.83 kuus:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Hankige Captcha Pro ja avage kõik võimsad funktsioonid"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "Contact Form 7 Captcha plugin on uuendatud: toetab nüüd Cloudflare Turnstile CAPTCHA-t!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "PRO funktsiooni tutvustus: Responsive Captcha."
+
+msgid "View all PRO features."
+msgstr "Vaadake kõiki PRO funktsioone."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Responsive Captcha - kohandub väiksematele ekraanidele, lülitades kokkupandava suuruse sisse, kui on määratud eelnevalt laius."

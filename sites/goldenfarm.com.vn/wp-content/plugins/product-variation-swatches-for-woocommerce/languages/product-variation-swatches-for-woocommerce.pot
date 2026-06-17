@@ -1,0 +1,449 @@
+# Copyright (C) 2024 ThemeHigh
+# This file is distributed under the same license as the Product Variation Swatches for Woocommerce plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Product Variation Swatches for Woocommerce 2.3.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/product-variation-swatches-for-woocommerce\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-11-20T10:27:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: product-variation-swatches-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: product-variation-swatches-for-woocommerce.php
+msgid "Product Variation Swatches for Woocommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: product-variation-swatches-for-woocommerce.php
+msgid "https://themehigh.com/product/woocommerce-product-variation-swatches"
+msgstr ""
+
+#. Description of the plugin
+#: product-variation-swatches-for-woocommerce.php
+msgid "Product Variation Swatches for WooCommerce lets you add variation swatches for variable product attributes in your WooCommerce online store."
+msgstr ""
+
+#. Author of the plugin
+#: product-variation-swatches-for-woocommerce.php
+msgid "ThemeHigh"
+msgstr ""
+
+#. Author URI of the plugin
+#: product-variation-swatches-for-woocommerce.php
+msgid "https://themehigh.com/"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:86
+#: admin/class-thwvsf-admin-settings-general.php:80
+msgid "Hide"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:87
+#: admin/class-thwvsf-admin-settings-design.php:93
+#: admin/class-thwvsf-admin-settings-general.php:81
+#: admin/class-thwvsf-admin-settings-general.php:87
+msgid "Blur"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:88
+#: admin/class-thwvsf-admin-settings-design.php:94
+#: admin/class-thwvsf-admin-settings-general.php:82
+#: admin/class-thwvsf-admin-settings-general.php:88
+msgid "Blur With Cross"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:92
+#: admin/class-thwvsf-admin-settings-general.php:86
+msgid "Default"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:98
+msgid "Round"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:99
+msgid "Square"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:103
+msgid "Border Style"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:104
+msgid "Enlarge Style"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:109
+msgid "Borders on selection"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:110
+msgid "Checkmark with border"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:124
+#: admin/class-thwvsf-admin-settings-design.php:143
+msgid "Icon Height"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:125
+#: admin/class-thwvsf-admin-settings-design.php:144
+msgid "Icon Width"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:126
+msgid "Icon Shape"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:145
+msgid "Font Size"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:146
+msgid "Background Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:147
+msgid "Text Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:149
+msgid "Enable Swatch DropDown"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:152
+msgid "Enable Tooltip (Attribute term name will be displayed as Tooltip)"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:153
+msgid "Term Name Background Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:154
+msgid "Term Name Text Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:158
+msgid "Border Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:159
+msgid "Border Color On Selected"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:160
+msgid "Border Color On Hover"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-design.php:216
+msgid "Design  "
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:92
+msgid "Convert all Dropdown Swatches to Label Swatches"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:94
+msgid "Ajax Variation Threshold"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:94
+msgid "By default, if the no. of product variations is less than 30, the product availability check is through JavaScript. If greater than 30, the ajax method is used. This field can control the threshold value of 30."
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:96
+msgid "Clear On Reselect"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:98
+msgid "Disable Swatches Plugin Stylesheet (For applying the theme default stylesheet)"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:100
+msgid "Behavior for Unavailable Variation"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:102
+msgid "Behavior for Out of Stock Variation"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings-general.php:103
+msgid "Enable Swatches on Additional Info"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings.php:26
+msgid "Product Attributes"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings.php:27
+msgid "Swatches Designs"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings.php:28
+msgid "Global Settings"
+msgstr ""
+
+#: admin/class-thwvsf-admin-settings.php:29
+msgid "Premium Features"
+msgstr ""
+
+#: admin/class-thwvsf-admin-swatch-import-export.php:57
+#: admin/class-thwvsf-admin-swatch-import-export.php:239
+msgid "Attribute %d type"
+msgstr ""
+
+#: admin/class-thwvsf-admin-swatch-import-export.php:59
+#: admin/class-thwvsf-admin-swatch-import-export.php:241
+msgid "Attribute %d swatch(s)"
+msgstr ""
+
+#: admin/class-thwvsf-admin-swatch-import-export.php:220
+msgid "Attribute Swatches"
+msgstr ""
+
+#: admin/class-thwvsf-admin-swatch-import-export.php:224
+msgid "Attribute type"
+msgstr ""
+
+#: admin/class-thwvsf-admin-swatch-import-export.php:225
+msgid "Attribute swatch(s)"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:78
+msgid "WooCommerce Product Variation Swatches"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:79
+#: admin/class-thwvsf-admin.php:255
+msgid "Swatches Options"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:92
+msgid "Settings"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:130
+msgid "View plugin documentation"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:130
+msgid "Docs"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:131
+msgid "Visit premium customer support"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:131
+msgid "Premium support"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:229
+#: admin/class-thwvsf-admin.php:362
+#: admin/class-thwvsf-admin.php:592
+msgid "Color"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:230
+#: admin/class-thwvsf-admin.php:392
+#: admin/class-thwvsf-admin.php:594
+msgid "Image"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:231
+#: admin/class-thwvsf-admin.php:593
+msgid "Button/Label"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:232
+#: admin/class-thwvsf-admin.php:595
+msgid "Radio"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:258
+#: admin/class-thwvsf-admin.php:282
+msgid "Design Types"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:269
+msgid "Determines how this attribute types are displayed."
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:292
+msgid "Determines how this attribute's types are displayed."
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:448
+msgid "Label"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:575
+msgid "Swatches Settings"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:591
+msgid "Select"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:605
+msgid "Custom Attribute Settings"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:633
+msgid "Swatch Type"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:658
+msgid "Swatch Design Type"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:739
+#: admin/class-thwvsf-admin.php:847
+msgid "Term Name"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:743
+msgid "Label Text"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:784
+msgid "Term Image"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:919
+#: admin/class-thwvsf-admin.php:937
+#: admin/class-thwvsf-admin.php:964
+msgid "Name:"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:923
+msgid "Color:"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:941
+msgid "Image:"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:968
+msgid "Label:"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1236
+msgid "Ok, You deserve it"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1239
+msgid "Already, Did"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1243
+msgid "Maybe later"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1245
+msgid "Nah, Never"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1277
+msgid "Quick Feedback"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1282
+#: admin/class-thwvsf-admin.php:1317
+msgid "Get Support"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1286
+msgid "If you have a moment, please let us know why you want to deactivate this plugin"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1288
+msgid "In case your swatches are not working properly, click "
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1289
+msgid "here"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1289
+msgid "to get an appropriate solution"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1310
+msgid "This form is only for getting your valuable feedback. We do not collect your personal data. To know more read our "
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1310
+msgid "Privacy Policy"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1314
+msgid "Skip & Deactivate"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1318
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1319
+msgid "Cancel"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1529
+msgid "Upgraded"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1592
+msgid "A specific feature is missing"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1594
+msgid "Type in the feature"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1599
+msgid "Found an error in the plugin/ Plugin was not working"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1601
+msgid "Specify the issue"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1606
+msgid "I found a better Plugin"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1608
+#: admin/class-thwvsf-admin.php:1630
+msgid "Could you please mention the plugin?"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1613
+msgid "It was hard to use"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1615
+msgid "How can we improve your experience?"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1628
+msgid "It’s a temporary deactivation - I’m troubleshooting an issue"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1634
+msgid "Upgraded to premium."
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1641
+msgid "Not mentioned here"
+msgstr ""
+
+#: admin/class-thwvsf-admin.php:1643
+msgid "Kindly tell us your reason, so that we can improve"
+msgstr ""

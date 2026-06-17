@@ -1,0 +1,113 @@
+:root {
+	--main: #f73936;
+}
+.acf-postbox > .acf-fields.-top > .acf-field > .acf-label label {
+	font-size: 20px;
+	background-color: #efefef;
+	padding: 10px !important;
+}
+.acf-postbox > .acf-fields.-top > .acf-field .acf-field-group > .acf-label label {
+	font-size: 16px;
+	background-color: #e3e3e3;
+	padding: 8px !important;
+}
+/* .acf-postbox > .acf-fields.-top > .acf-field-repeater > .acf-label label {
+	font-size: 20px;
+	background-color: #efefef;
+	padding: 10px !important;
+}
+.acf-postbox > .acf-fields.-top > .acf-field-image > .acf-label label {
+	font-size: 20px;
+	background-color: #efefef;
+	padding: 10px !important;
+} */
+body.login {
+	background-color: #f0f0f1;
+}
+#login {
+	width: 690px;
+}
+#loginform {
+	background: #ffffff;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+	border-radius: 10px;
+	border: 0;
+	padding: 75px 60px 30px;
+}
+#loginform input[type="text"]::placeholder,
+#loginform input[type="password"]::placeholder {
+	color: #999999;
+}
+#loginform input[type="text"],
+#loginform input[type="password"] {
+	background: #f5f5f5;
+	border-radius: 25px;
+	height: 50px;
+	border: 0;
+	outline: none;
+	box-shadow: 0 0 0 1px #f5f5f5;
+	transition: 0.3s all ease-in-out;
+	padding: 0 35px;
+	font-size: 14px;
+}
+#loginform label {
+	margin-bottom: 15px;
+}
+#loginform #user_login {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMjEiIHZpZXdCb3g9IjAgMCAxOCAyMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjYyNSAxMi4zNzVINi44NzVDMy4wNDY4OCAxMi4zNzUgMCAxNS40NjA5IDAgMTkuMjVDMCAxOS45NTMxIDAuNTQ2ODc1IDIwLjUgMS4yNSAyMC41SDE2LjI1QzE2LjkxNDEgMjAuNSAxNy41IDE5Ljk1MzEgMTcuNSAxOS4yNUMxNy41IDE1LjQ2MDkgMTQuNDE0MSAxMi4zNzUgMTAuNjI1IDEyLjM3NVpNMS44NzUgMTguNjI1QzIuMTg3NSAxNi4xNjQxIDQuMjk2ODggMTQuMjUgNi44NzUgMTQuMjVIMTAuNjI1QzEzLjE2NDEgMTQuMjUgMTUuMjczNCAxNi4xNjQxIDE1LjU4NTkgMTguNjI1SDEuODc1Wk04Ljc1IDEwLjVDMTEuNDg0NCAxMC41IDEzLjc1IDguMjczNDQgMTMuNzUgNS41QzEzLjc1IDIuNzY1NjIgMTEuNDg0NCAwLjUgOC43NSAwLjVDNS45NzY1NiAwLjUgMy43NSAyLjc2NTYyIDMuNzUgNS41QzMuNzUgOC4yNzM0NCA1Ljk3NjU2IDEwLjUgOC43NSAxMC41Wk04Ljc1IDIuMzc1QzEwLjQ2ODggMi4zNzUgMTEuODc1IDMuNzgxMjUgMTEuODc1IDUuNUMxMS44NzUgNy4yNTc4MSAxMC40Njg4IDguNjI1IDguNzUgOC42MjVDNi45OTIxOSA4LjYyNSA1LjYyNSA3LjI1NzgxIDUuNjI1IDUuNUM1LjYyNSAzLjc4MTI1IDYuOTkyMTkgMi4zNzUgOC43NSAyLjM3NVoiIGZpbGw9IiM5OTk5OTkiLz4KPC9zdmc+Cg==);
+	background-repeat: no-repeat;
+	background-position: center right 20px;
+}
+#loginform input[type="text"]:focus,
+#loginform input[type="password"]:focus {
+	box-shadow: 0 0 0 1px var(--main);
+}
+#login .message {
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+	border-radius: 10px;
+	border-left: 0;
+	border-bottom: 3px solid red;
+}
+.login .button.wp-hide-pw {
+	min-width: 55px;
+	min-height: 50px;
+	border: 0 !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+.wp-hide-pw span::before {
+	color: #999999;
+}
+#login #wp-submit {
+	background: var(--main);
+	border-radius: 25px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #ffffff;
+	font-weight: bold;
+	width: 100%;
+	font-size: 20px;
+	border: 0;
+	outline: none;
+	transition: 0.3s all ease-in-out;
+}
+#login #wp-submit:hover {
+	background-color: #cd2623;
+}
+.forgetmenot {
+	font-size: 14px;
+	color: #666666;
+}
+.forgetmenot input:focus {
+	box-shadow: 0 0 0 1px var(--main);
+	border-color: var(--main);
+}
+#login input[type="checkbox"]:checked::before {
+	filter: invert(56%) sepia(33%) saturate(5832%) hue-rotate(341deg)
+  brightness(97%) contrast(96%)
+}
+#login a:hover {
+    color: var(--main) !important;
+}

@@ -1,0 +1,69 @@
+# Translation of Plugins - Simple Custom CSS Plugin - Development (trunk) in Vietnamese
+# This file is distributed under the same license as the Plugins - Simple Custom CSS Plugin - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-12-19 08:52:39+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: vi_VN\n"
+"Project-Id-Version: Plugins - Simple Custom CSS Plugin - Development (trunk)\n"
+
+#: includes/customizer.php:34
+msgid "Simple Custom CSS allows you to add your own styles that will remain even if you change your theme."
+msgstr "Simple Custom CSS cho phép thêm css và không bị mất khi đổi theme."
+
+#. translators: Placeholder represents the URL to the Customizer Section.
+#: includes/admin.php:185
+msgid "Did you know that you can preview your CSS live in <a href=\"%s\" title=\"Simple Custom CSS in the Customizer\">the Customizer</a>?"
+msgstr "Bạn có biết rằng bạn có thể xem trước CSS ở <a href=\"%s\" title=\"Simple Custom CSS in the Customizer\">Tùy chỉnh</a>?"
+
+#: includes/admin.php:176
+msgid "The styles you save here will remain even if you switch themes."
+msgstr "Style bạn lưu ở đây vẫn được giữ lại ngay cả khi đổi theme."
+
+#: includes/admin.php:158
+msgid "/* Enter Your Custom CSS Here */"
+msgstr "/* Điền CSS tùy chỉnh ở đây */"
+
+#: includes/admin.php:46
+msgid "Add CSS"
+msgstr "Thêm CSS"
+
+#. Description of the plugin
+#: simple-custom-css.php
+msgid "The simple, solid way to add custom CSS to your WordPress website. Simple Custom CSS allows you to add your own styles or override the default CSS of a plugin or theme."
+msgstr "Một cách đơn giản để thêm CSS tùy chỉnh vào website của bạn. Simple Custom CSS cho phép thêm style hoặc đè lên CSS mặc định của plugin hoặc theme."
+
+#. Plugin URI of the plugin
+#: simple-custom-css.php
+msgid "http://johnregan3.github.io/simple-custom-css"
+msgstr "http://johnregan3.github.io/simple-custom-css"
+
+#: includes/admin.php:179 includes/admin.php:203
+msgid "Update Custom CSS"
+msgstr "Cập nhật CSS tùy chỉnh"
+
+#: includes/admin.php:178
+msgid "To use, enter your custom CSS, then click \"Update Custom CSS\".  It's that simple!"
+msgstr "Để sử dụng, điền vào css tùy chỉnh, rồi bấm \"Cập nhật CSS tùy chỉnh\". Rất đơn giản!"
+
+#: includes/admin.php:175
+msgid "Simple Custom CSS allows you to add your own styles or override the default CSS of a plugin or theme."
+msgstr "Simple Custom CSS cho phép thêm style hoặc đè lên CSS mặc định của plugin hoặc theme."
+
+#: includes/admin.php:162
+msgid "Custom CSS updated successfully."
+msgstr "Cập nhật CSS tùy chỉnh thành công."
+
+#: includes/admin.php:133
+msgid "Custom CSS"
+msgstr "CSS tùy chỉnh"
+
+#. Plugin Name of the plugin
+#: simple-custom-css.php includes/admin.php:133 includes/admin.php:166
+#: includes/customizer.php:32
+msgid "Simple Custom CSS"
+msgstr "Simple Custom CSS"

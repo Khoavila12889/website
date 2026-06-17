@@ -1,0 +1,106 @@
+.wrap-comments .reply {
+	display: none;
+}
+.wrap-comments .comments-title {
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-bottom: 30px;
+	padding-top: 20px;
+	margin-top: 30px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid black;
+}
+.wrap-comments .error {
+	color: red;
+}
+.wrap-comments ul.comment-list > li {
+	margin-top: 20px;
+}
+.wrap-comments .comment-by .comment-reply{
+	font-size: 14px;
+	text-decoration: underline;
+	color: #656565;
+}
+.wrap-comments ul.comment-list > li > ul.children  {
+	padding-left: 120px;
+	margin-top: 30px;
+}
+.wrap-comments ul.comment-list > li > ul.children > li  {
+	margin-top: 30px;
+}
+.wrap-comments .comment-item {
+	display: flex;
+}
+.wrap-comments .comment-item .img-thumbnail img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.wrap-comments .comment-item .img-thumbnail {
+	border: 1px solid #cecece;
+	padding: 5px;
+	width: 80px;
+	height: 80px;
+}
+.wrap-comments .comment-block {
+	flex: 1;
+	background-color: #f4f4f4;
+	margin-left: 30px;
+	padding: 15px;
+}
+.wrap-comments .comment-block .comment-by {
+	font-size: 18px;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 5px;
+}
+.wrap-comments .comment-block .date {
+	margin-left: auto;
+	font-size: 14px;
+	display: block;
+	text-align: right;
+	color: #787878;
+	margin-top: 20px;
+}
+.wrap-comments .comment-respond h3{
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-bottom: 30px;
+	padding-top: 20px;
+	margin-top: 10px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid black;
+}
+.wrap-comments .comment-respond textarea{
+	width: 100%;
+	height: 250px;
+	padding: 20px;
+}
+.wrap-comments .comment-respond .form-group input{
+	width: 100%;
+	height: 50px;
+	padding: 5px 20px;
+	margin-top: 10px;
+}
+.wrap-comments .comment-respond .form-submit input[type='submit']{
+	padding: 13px 25px;
+	color: white;
+	background-color: black;
+	margin-top: 15px;
+}
+@media (max-width: 575.98px){
+	.wrap-comments .comment-item .img-thumbnail {
+		width: 50px;
+		height: 50px;
+	}
+	.wrap-comments .comment-block {
+		margin-left: 20px;
+	}
+	.wrap-comments ul.comment-list > li > ul.children{
+		padding-left: 70px;
+		margin-top: 20px;
+	}
+	.wrap-comments ul.comment-list > li > ul.children > li{
+		margin-top: 10px;
+	}
+}

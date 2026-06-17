@@ -1,0 +1,119 @@
+msgid "Settings" 
+msgstr "Setări" 
+
+msgid "Invalid captcha error message"
+msgstr "Mesaj de eroare pentru CAPTCHA invalid"
+
+msgid "Save Settings"
+msgstr "Salvează Setările"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Utilizat cu încredere de peste 100.000 de companii din întreaga lume. Versiunea PRO este și mai bună!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Redirecționează utilizatorii către orice adresă URL după ce e-mailul a fost trimis."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "Integrați protecție suplimentară Honeypot în formularele dvs. pentru o securitate mai puternică."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Definiți o listă de cuvinte restricționate. Mesajele care conțin cuvinte restricționate nu vor fi trimise."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Obțineți acces la IP Blocker pentru a bloca mesajele de pe adrese IP rău intenționate."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Utilizați limitarea ratei pentru a gestiona cât de des pot fi trimise formularele și pentru a preveni abuzul."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Activați salvarea automată a mesajelor Contact Form 7 în baza dvs. de date."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Utilizați Twilio SMS pentru a primi notificări privind noile trimiteri de formulare direct pe telefon."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Transferați date din trimiterile de formulare de contact direct în lista dvs. Mailchimp."
+
+msgid "Use this link to generate"
+msgstr "Utilizați acest link pentru a genera"
+
+msgid "Choose"
+msgstr "Alegeți"
+
+msgid "Updated successfully!"
+msgstr "Actualizat cu succes!"
+
+msgid "PRO features:"
+msgstr "Funcționalități PRO:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Puteți combina mai multe atribute, exemplu de cod scurt:" 
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "reCaptcha nu va funcționa decât dacă efectuați configurarea de mai jos."
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Pentru a adăuga reCAPTCHA într-un formular Contact Form 7, adăugați <strong>[cf7sr-recaptcha]</strong> în formular (de preferință deasupra butonului de trimitere)."
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "Forțați reCAPTCHA să se afișeze într-o anumită limbă. Google detectează automat dacă nu este specificată."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "Dimensiunea implicită a reCAPTCHA este normală, pentru dimensiunea compactă folosiți codul scurt:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "Tema de culoare implicită a reCAPTCHA este deschisă, pentru tema închisă folosiți codul scurt:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "Tipul implicit de reCAPTCHA este imagine, pentru tipul audio folosiți codul scurt:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "hCaptcha nu va funcționa decât dacă efectuați configurarea de mai jos."
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "Pentru a adăuga hCaptcha într-un formular Contact Form 7, adăugați <strong>[cf7sr-hcaptcha]</strong> în formular (de preferință deasupra butonului de trimitere)."
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "Dimensiunea implicită a hCaptcha este normală, pentru dimensiunea compactă folosiți codul scurt:" 
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:" 
+msgstr "Tema de culoare implicită a hCaptcha este deschisă, pentru tema închisă folosiți codul scurt:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Fortați hCaptcha să se afișeze într-o limbă specifică."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "CAPTCHA-ul Cloudflare Turnstile nu va funcționa decât dacă configurați setările de mai jos"
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Forțați CAPTCHA să se afișeze într-o limbă specifică"
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "Pentru a adăuga CAPTCHA-ul Cloudflare Turnstile la formularul Contact Form 7, adăugați <strong>[cf7sr-turnstile]</strong> în formularul dumneavoastră (preferabil deasupra butonului de trimitere)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "Dimensiunea implicită a CAPTCHA-ului este normală, pentru dimensiune compactă folosiți shortcode-ul:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "Tema implicită de culoare a CAPTCHA-ului este automată, pentru temă întunecată sau luminoasă folosiți shortcode-ul:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "Pluginul Captcha pentru Contact Form 7 a fost actualizat pentru a suporta Google CAPTCHA V2, hCAPTCHA și CAPTCHA-ul Cloudflare Turnstile"
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Obțineți Captcha Pro începând de la $0.83 pe lună:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Obțineți Captcha Pro și deblocați toate funcțiile puternice"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "Pluginul Captcha pentru Contact Form 7 a fost actualizat: acum suportă Cloudflare Turnstile CAPTCHA!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "Prezentare funcționalitate PRO: Captcha responsiv."
+
+msgid "View all PRO features."
+msgstr "Vizualizați toate funcționalitățile PRO."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Captcha responsiv - se adaptează la ecrane mai mici prin comutarea la o dimensiune compactă când este setată o lățime predefinită."

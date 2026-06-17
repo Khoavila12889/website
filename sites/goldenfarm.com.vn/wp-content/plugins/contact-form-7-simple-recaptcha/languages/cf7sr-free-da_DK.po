@@ -1,0 +1,119 @@
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Invalid captcha error message"
+msgstr "Ugyldig captcha-fejlmeddelelse"
+
+msgid "Save Settings"
+msgstr "Gem indstillinger"
+
+msgid "Trusted by more than 100,000 businesses worldwide. PRO version is even better!"
+msgstr "Bruges af over 100.000 virksomheder på verdensplan. PRO-versionen er endnu bedre!"
+
+msgid "Redirect users to any url after mail sent successfully."
+msgstr "Omdiriger brugere til en hvilken som helst URL, efter mail er sendt."
+
+msgid "Integrate additional Honeypot protection into your forms for stronger security."
+msgstr "Integrer yderligere Honeypot-beskyttelse i dine formularer for stærkere sikkerhed."
+
+msgid "Define a list of restricted words. Messages containing restricted words will not be sent."
+msgstr "Definer en liste over begrænsede ord. Beskeder, der indeholder begrænsede ord, bliver ikke sendt."
+
+msgid "Get IP Blocker access to block messages from malicious IP addresses."
+msgstr "Få IP Blocker-adgang til at blokere beskeder fra ondsindede IP-adresser."
+
+msgid "Use rate limiting to manage how often forms can be submitted and prevent abuse."
+msgstr "Brug ratebegrænsning til at styre, hvor ofte formularer kan indsendes, og forhindre misbrug."
+
+msgid "Enable automatic saving of Contact Form 7 messages to your database."
+msgstr "Aktiver automatisk lagring af Contact Form 7-beskeder i din database."
+
+msgid "Use Twilio SMS to receive new form submission notifications directly to your phone."
+msgstr "Brug Twilio SMS til at modtage notifikationer om nye formularindsendelser direkte på din telefon."
+
+msgid "Transfer data from contact form submissions directly into your Mailchimp list."
+msgstr "Overfør data fra indsendelser af kontaktformularer direkte til din Mailchimp-liste."
+
+msgid "Use this link to generate"
+msgstr "Brug dette link til at generere"
+
+msgid "Choose"
+msgstr "Vælg"
+
+msgid "Updated successfully!"
+msgstr "Opdateret med succes!"
+
+msgid "PRO features:"
+msgstr "PRO-funktioner:"
+
+msgid "You can combine multiple attributes, sample shortcode:"
+msgstr "Du kan kombinere flere attributter, eksempel på shortcode:"
+
+msgid "reCaptcha will not work unless you set up the configuration below"
+msgstr "reCaptcha vil ikke fungere, medmindre du konfigurerer nedenstående indstillinger"
+
+msgid "To add reCaptcha to Contact Form 7 form, add <strong>[cf7sr-recaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "For at tilføje reCaptcha til en Contact Form 7-formular, skal du tilføje <strong>[cf7sr-recaptcha]</strong> i din formular (helst over submit-knappen)"
+
+msgid "Force reCaptcha to render in a specific language. Google auto-detects if unspecified."
+msgstr "Tving reCaptcha til at rendere på et specifikt sprog. Google registrerer automatisk, hvis det ikke er angivet."
+
+msgid "Default size of reCaptcha is normal, for compact size use shortcode:"
+msgstr "Standardstørrelsen på reCaptcha er normal. For kompakt størrelse brug shortcode:"
+
+msgid "Default color theme of reCaptcha is light, for dark theme use shortcode:"
+msgstr "Standard farvetema for reCaptcha er lys, for mørkt tema brug shortcode:"
+
+msgid "Default type of reCaptcha is image, for audio type use shortcode:"
+msgstr "Standardtypen for reCaptcha er billede, for lydtype brug shortcode:"
+
+msgid "hCaptcha will not work unless you set up the configuration below"
+msgstr "hCaptcha vil ikke fungere, medmindre du konfigurerer nedenstående indstillinger"
+
+msgid "To add hCaptcha to Contact Form 7 form, add <strong>[cf7sr-hcaptcha]</strong> in your form ( preferable above submit button )"
+msgstr "For at tilføje hCaptcha til en Contact Form 7-formular, skal du tilføje<strong>[cf7sr-hcaptcha]</strong> i din formular (helst over submit-knappen)"
+
+msgid "Default size of hCaptcha is normal, for compact size use shortcode:"
+msgstr "Standardstørrelsen på hCaptcha er normal. For kompakt størrelse brug shortcode:"
+
+msgid "Default color theme of hCaptcha is light, for dark theme use shortcode:"
+msgstr "Standard farvetema for hCaptcha er lys, for mørkt tema brug shortcode:"
+
+msgid "Force hCaptcha to render in a specific language."
+msgstr "Tving hCaptcha til at vises på et bestemt sprog."
+
+msgid "Cloudflare Turnstile CAPTCHA will not work unless you set up the configuration below"
+msgstr "Cloudflare Turnstile CAPTCHA vil ikke fungere, medmindre du konfigurerer nedenstående indstillinger"
+
+msgid "Force CAPTCHA to render in a specific language"
+msgstr "Tving CAPTCHA til at vises på et bestemt sprog"
+
+msgid "To add Cloudflare Turnstile CAPTCHA to Contact Form 7 form, add <strong>[cf7sr-turnstile]</strong> in your form ( preferable above submit button )"
+msgstr "For at tilføje Cloudflare Turnstile CAPTCHA til Kontaktformular 7, tilføj <strong>[cf7sr-turnstile]</strong> i din formular (helst oven over send-knappen)"
+
+msgid "Default size of CAPTCHA is normal, for compact size use shortcode:"
+msgstr "Standardstørrelsen på CAPTCHA er normal, for kompakt størrelse, brug kortkode:"
+
+msgid "Default color theme of CAPTCHA is auto, for dark or light theme use shortcode:"
+msgstr "Standardfarvetemaet på CAPTCHA er auto, for mørkt eller lyst tema, brug kortkode:"
+
+msgid "Contact Form 7 Captcha plugin updated to support Google CAPTCHA V2, hCAPTCHA and Cloudflare Turnstile CAPTCHA"
+msgstr "Kontaktformular 7 Captcha-plugin opdateret til at understøtte Google CAPTCHA V2, hCAPTCHA og Cloudflare Turnstile CAPTCHA"
+
+msgid "Get Captcha Pro starting from $0.83 per month:"
+msgstr "Få Captcha Pro fra $0.83 om måneden:"
+
+msgid "Get Captcha Pro and Unlock all the Powerful Features"
+msgstr "Få Captcha Pro og lås op for alle de kraftfulde funktioner"
+
+msgid "Contact Form 7 Captcha plugin updated: now supports Cloudflare Turnstile CAPTCHA!"
+msgstr "Opdatering af Contact Form 7 Captcha-plugin: understøtter nu Cloudflare Turnstile CAPTCHA!"
+
+msgid "Introducing PRO Feature: Responsive Captcha."
+msgstr "Introduktion af PRO-funktion: Responsive Captcha."
+
+msgid "View all PRO features."
+msgstr "Se alle PRO-funktioner."
+
+msgid "Responsive Captcha - adapts to smaller screens by switching to compact size when a predefined width is set."
+msgstr "Responsivt Captcha - tilpasser sig mindre skærme ved at skifte til kompakt størrelse, når en foruddefineret bredde er indstillet."

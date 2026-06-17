@@ -1,0 +1,6 @@
+Mar 05 2026 01:06:24
+{"type":2,"message":"mkdir(): Permission denied","file":"\/var\/www\/vhosts\/goldenfarm.com.vn\/wp-content\/plugins\/all-in-one-wp-migration\/lib\/vendor\/servmask\/filesystem\/class-ai1wm-directory.php","line":43}
+
+Mar 12 2026 01:11:46
+{"type":2,"message":"mkdir(): Permission denied","file":"\/var\/www\/vhosts\/goldenfarm.com.vn\/wp-content\/plugins\/all-in-one-wp-migration\/lib\/vendor\/servmask\/filesystem\/class-ai1wm-directory.php","line":43}
+
