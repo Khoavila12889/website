@@ -71,11 +71,29 @@ final class GF_PF_Plugin {
 	private function __construct() {
 		add_action( 'init', array( $this, 'register_shortcode' ) );
 		add_action( 'wp_enqueue_scripts', array( 'GF_PF_Assets', 'maybe_enqueue' ), 20 );
+		add_filter( 'do_shortcode_tag', array( $this, 'replace_yith_shortcode' ), 10, 3 );
 
 		add_action( 'created_product_cat', array( $this, 'invalidate_term_cache' ) );
 		add_action( 'edited_product_cat', array( $this, 'invalidate_term_cache' ) );
 		add_action( 'delete_product_cat', array( $this, 'invalidate_term_cache' ) );
 		add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
+	}
+
+	/**
+	 * Auto-replace [yith_wcan_filters] with [goldenfarm_product_filter].
+	 *
+	 * @param string|false $return Shortcode return value. False to skip.
+	 * @param string $tag Shortcode name.
+	 * @param array $attr Shortcode attributes.
+	 * @return string|false
+	 */
+	public function replace_yith_shortcode( $return, $tag, $attr ) {
+		if ( 'yith_wcan_filters' !== $tag ) {
+			return $return;
+		}
+
+		// Use goldenfarm_product_filter instead
+		return GF_PF_Renderer::shortcode( $attr );
 	}
 
 	/**

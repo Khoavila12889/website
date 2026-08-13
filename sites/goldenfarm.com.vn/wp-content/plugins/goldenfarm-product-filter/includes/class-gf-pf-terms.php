@@ -194,13 +194,22 @@ class GF_PF_Terms {
 	 * unchecking it clears the filter. When $multiple is true the term is
 	 * appended to / removed from a comma-separated list (OR relation).
 	 *
+	 * For single-select: redirects to term archive URL (e.g. /danh-muc-san-pham/socola-set-den)
+	 * For multiple-select: appends to / removes from current selection.
+	 *
 	 * @param WP_Term $term     Term to toggle.
 	 * @param bool    $multiple Whether multiple terms can be selected.
 	 * @return string
 	 */
 	public static function get_term_url( $term, $multiple = false ) {
 		$taxonomy = self::taxonomy();
-		$active   = self::get_active_slugs();
+
+		// Single-select: redirect to term archive URL (clean SEO-friendly)
+		if ( ! $multiple && ! self::is_term_active( $term ) ) {
+			return get_term_link( $term, $taxonomy );
+		}
+
+		$active = self::get_active_slugs();
 
 		if ( self::is_term_active( $term ) ) {
 			$selected = array_values( array_diff( $active, array( $term->slug ) ) );

@@ -45,7 +45,8 @@ do_action('woocommerce_before_main_content');
 		<div class="row -mt-8 row-16">
 			<div class="col w-full mt-8 lg:w-1/4 col-pro-l">
 				<?php
-				get_template_part('woocommerce/product-filter-menu');
+				// Plugin will auto-replace [yith_wcan_filters] via filter
+				echo do_shortcode('[yith_wcan_filters slug="draft-preset"]');
 				?>
 			</div>
 			<div class="col w-full mt-8 lg:w-3/4 col-pro-r">
