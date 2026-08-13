@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Plugin Name: GoldenFarm Product Filter
  * Description: Replaces the YITH AJAX Product Filter UI with a lightweight, native product_cat filter tree. Keeps the WooCommerce native query (product_cat query var), renders a hierarchical checkbox tree with YITH-compatible markup so the theme CSS keeps working, and uses clean cacheable URLs (?product_cat=<slugs>) without the yith_wcan param.
@@ -73,9 +73,15 @@ final class GF_PF_Plugin {
 		add_action( 'wp_enqueue_scripts', array( 'GF_PF_Assets', 'maybe_enqueue' ), 20 );
 		add_filter( 'do_shortcode_tag', array( $this, 'replace_yith_shortcode' ), 10, 3 );
 
-		add_action( 'created_product_cat', array( $this, 'invalidate_term_cache' ) );
-		add_action( 'edited_product_cat', array( $this, 'invalidate_term_cache' ) );
-		add_action( 'delete_product_cat', array( $this, 'invalidate_term_cache' ) );
+		// Invalidate term-tree caches for both filter taxonomies (product_cat and
+	// the configured brand taxonomy) whenever their terms change.
+	foreach ( array( 'product_cat', GF_PF_Terms::brand_taxonomy() ) as $taxonomy ) {
+		add_action( "created_{$taxonomy}", array( $this, 'invalidate_term_cache' ) );
+		add_action( "edited_{$taxonomy}", array( $this, 'invalidate_term_cache' ) );
+		add_action( "delete_{$taxonomy}", array( $this, 'invalidate_term_cache' ) );
+	}
+	
+	
 		add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 	}
 
