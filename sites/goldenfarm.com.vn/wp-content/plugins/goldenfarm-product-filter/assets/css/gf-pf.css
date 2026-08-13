@@ -1,0 +1,66 @@
+/**
+ * GoldenFarm Product Filter — minimal base styles.
+ *
+ * The visual design is provided by the theme (CanhCamTheme main.min.css,
+ * yith-wcan* overrides). This file only restores the base list/checkbox
+ * behaviour previously shipped by YITH's shortcodes.css and keeps the UI
+ * functional when JS is disabled.
+ */
+
+.yith-wcan-filters .yith-wcan-filter .filter-items {
+	list-style: none;
+	padding-left: 0;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items.level-0 {
+	margin: 0;
+	padding: 0;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items.level-0 ul {
+	padding-left: 15px;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item {
+	line-height: 2;
+	margin: 0;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > a,
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > label > a {
+	text-decoration: none;
+}
+
+/* Native checkbox is decorative only; the theme paints the box via
+   .filter-item > label a:before (Font Awesome). Selection state is driven by
+   the .active class, not the checkbox. */
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+	width: 0;
+	height: 0;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > label {
+	cursor: pointer;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item.level-0 > ul {
+	display: none;
+}
+
+.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item.level-0.opened > ul {
+	display: block;
+}
+
+@media (max-width: 991px) {
+	.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item input[type="checkbox"] {
+		pointer-events: auto;
+		position: static;
+		opacity: 1;
+		width: auto;
+		height: auto;
+		margin-right: 6px;
+	}
+}
