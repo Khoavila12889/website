@@ -2,7 +2,7 @@
 
 ## Overview
 
-GoldenFarm Product Filter là plugin thay thế YITH WooCommerce AJAX Product Filter bằng một giải pháp lightweight, native WooCommerce, thân thiện với SEO và hiệu năng cao.
+GoldenFarm Product Filter là plugin thay thế YITH WooCommerce AJAX Product Filter bằng một giải pháp lightweight, native WooCommerce, thân thiện với SEO và hiệu năng cao. Plugin chỉ tập trung vào **1 taxonomy duy nhất: `product_cat`** và render **1 block duy nhất** (THƯƠNG HIỆU) theo cây 3 cấp (Brand root → Nhóm ngành hàng → Sản phẩm con).
 
 ### Lý do thay đổi
 
@@ -104,7 +104,8 @@ add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 | `get_active_slugs()` | Return currently selected term slugs |
 | `is_term_active( $term )` | Check if term is active |
 | `get_base_url()` | Return current page URL (no query string) |
-| `get_term_url( $term, $multiple )` | Build toggle URL for term |
+| `get_term_url( $term, $taxonomy, $multiple )` | Build toggle URL for term |
+| `get_term_counts( $taxonomy )` | Product counts per term (cached) |
 | `invalidate_cache( $taxonomy )` | Bump cache version |
 
 **Cache structure:**
@@ -141,8 +142,8 @@ array(
 |--------|-------------|
 | `shortcode( $atts )` | Shortcode callback |
 | `render( $args )` | Echo HTML directly |
-| `get_filters_html( $args )` | Build container HTML |
-| `render_term( $term, $level, $multiple )` | Recursive term rendering |
+| `get_filters_html( $args )` | Build container HTML (ONE block: THƯƠNG HIỆU) |
+| `render_term_recursive( $term, $level, $multiple, $taxonomy, $counts, $show_counts )` | Recursive term rendering (Level 1 có con → `<ul class="filter-items level-2">`)
 
 **Output structure:**
 ```html
@@ -185,6 +186,88 @@ array(
 | `.active` | ✅ (if term selected) |
 | `.toggle-handle` | ✅ |
 | `.term-label` | ✅ (link with `data-term-slug`) |
+
+**Hierarchy classes (thêm bởi `GF_PF_Renderer::render_term_recursive()`):**
+
+| Class | Level | Ý nghĩa |
+|-------|-------|---------|
+| `is-brand-root` | `level-0` | Cấp 0 — Thương hiệu / gốc lớn nhất |
+| `is-group-parent` | `level-1` | Cấp 1 — Nhóm ngành hàng (Thực phẩm, NLPC & Làm bánh, ...) |
+| `is-product-leaf` | `level-2+` | Cấp 2+ — Sản phẩm con / lá |
+
+> Mapping được tính tự động theo độ sâu trong `render_term_recursive()`: `level 0 → is-brand-root`, `level 1 → is-group-parent`, `level ≥ 2 → is-product-leaf`. Không cần sửa renderer khi thêm nhánh mới.
+
+---
+
+## Taxonomy CSS — Quy trình & Maintenance
+
+Toàn bộ style của cây phân cấp taxonomy nằm trong **`assets/css/gf-pf.css`**, mục **`/* hierarchy levels */`** (cuối file, trước khối mobile media query). Đây là nơi duy nhất cần sửa khi điều chỉnh giao diện theo cấp.
+
+### 1. Cấu trúc 3 cấp
+
+| Cấp | Class | Ví dụ | Giao diện hiện tại |
+|-----|-------|-------|--------------------|
+| 0 | `.filter-item.is-brand-root > label .term-label` | Thương hiệu | `#2b7837`, **800**, uppercase, `14px` |
+| 1 | `.filter-item.is-group-parent > label .term-label` | Thực phẩm / NLPC & Làm bánh | `#333`, **600**, italic, `13px` |
+| 2 | `.filter-item.is-product-leaf > label .term-label` | Sản phẩm con | `#555`, 400, `13px` |
+
+Thụt lề được kiểm soát bởi:
+- Cấp 1: `.yith-wcan-filters.gf-pf-filters .filter-items.level-1 { padding-left: 12px; }`
+- Cấp 2: `.yith-wcan-filters.gf-pf-filters .filter-items.level-2 { padding-left: 18px; margin-top: 3px; }`
+
+### 2. Quy tắc bắt buộc khi sửa CSS
+
+1. **Luôn prefix** selector với `.yith-wcan-filters.gf-pf-filters` để không ảnh hưởng ngoài plugin.
+2. **Target `.term-label`** (là thẻ `<a>`), không target `label` chung — tránh đè styles cơ bản.
+3. Dùng **tab indentation** và biến CSS (`--gf-pf-*`) nếu có thể; màu cấp đặc thù có thể hardcode.
+4. Giữ `!important` chỉ ở cấp 0/1 (đè `font-weight` mặc định của `label`); cấp 2 không cần.
+5. Không thêm media query cho từng cấp — responsive đã xử lý ở khối mobile chung.
+6. Khi thay đổi, **bump version** trong `goldenfarm-product-filter.php` (`GF_PF_VERSION`) để trình duyệt/CDN nạp lại CSS mới.
+
+### 3. Thêm cấp thứ 4 (ví dụ)
+
+1. Renderer tự gán `is-product-leaf` cho mọi level ≥ 2 → không cần đổi PHP.
+2. Trong CSS, thêm rule cho `is-product-leaf` (cấp 3+) hoặc tạo class mới:
+   ```css
+   .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label { /* style cấp sâu */ }
+   ```
+3. Điều chỉnh thụt lề bằng `.filter-items.level-3`.
+
+### 4. CSS hierarchy hiện tại (reference)
+
+```css
+/* Cấp 0: Thương hiệu (Lớn nhất, Xanh lá đậm, Viết hoa) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label .term-label {
+	font-weight: 800 !important;
+	text-transform: uppercase;
+	color: #2b7837;
+	font-size: 14px;
+}
+
+/* Cấp 1: Nhóm ngành hàng (Ví dụ: Thực phẩm / NLPC & Làm bánh) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-group-parent > label .term-label {
+	font-weight: 600 !important;
+	color: #333;
+	font-size: 13px;
+	font-style: italic;
+}
+
+/* Cấp 2: Sản phẩm con (Thụt lề, màu tiêu chuẩn) */
+.yith-wcan-filters.gf-pf-filters .filter-items.level-1 {
+	padding-left: 12px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items.level-2 {
+	padding-left: 18px;
+	margin-top: 3px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label {
+	font-weight: 400;
+	font-size: 13px;
+	color: #555;
+}
+```
 
 ---
 
@@ -292,7 +375,7 @@ add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 - Versioned (invalidation khi taxonomy change)
 
 ### 2. CSS/JS
-- CSS: ~1KB (base list styles)
+- CSS: ~5KB (base styles + hierarchy levels)
 - JS: ~1.5KB (toggle handle + navigation)
 - Conditional enqueue (chỉ product pages)
 
@@ -361,5 +444,5 @@ GPLv2 or later — same as WordPress
 ---
 
 **Author:** GoldenFarm Dev  
-**Version:** 1.0.0  
+**Version:** 1.2.1  
 **Requires:** WooCommerce, WordPress 6.0+, PHP 7.4+

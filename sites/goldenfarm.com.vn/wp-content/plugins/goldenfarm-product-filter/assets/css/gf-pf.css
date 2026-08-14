@@ -1,40 +1,193 @@
 /**
- * GoldenFarm Product Filter — minimal base styles.
+ * GoldenFarm Product Filter — professional UI layer.
  *
- * The visual design is provided by the theme (CanhCamTheme main.min.css,
- * yith-wcan* overrides). This file only restores the base list/checkbox
- * behaviour previously shipped by YITH's shortcodes.css and keeps the UI
- * functional when JS is disabled.
+ * Built on top of the YITH-compatible markup (.yith-wcan-*) already styled by
+ * the theme (CanhCamTheme main.min.css). This file only adds the polished
+ * GoldenFarm layer: toolbar/reset, title icons, count badges, hover/active
+ * feedback, smooth accordion and a sticky sidebar.
  */
 
-.yith-wcan-filters .yith-wcan-filter .filter-items {
-	list-style: none;
-	padding-left: 0;
+:root {
+	--gf-pf-accent: #007a62;
+	--gf-pf-accent-2: #009973;
+	--gf-pf-title: #36bd4f;
+	--gf-pf-bg: #ffffff;
+	--gf-pf-bg-soft: #f7f7f7;
+	--gf-pf-text: #222222;
+	--gf-pf-muted: #888888;
+	--gf-pf-border: #e6e6e6;
+	--gf-pf-radius: 10px;
 }
 
-.yith-wcan-filters .yith-wcan-filter .filter-items.level-0 {
+/* ---------------------------------------------------------------- wrapper */
+.yith-wcan-filters.gf-pf-filters {
+	background: transparent;
+}
+
+.yith-wcan-filters.gf-pf-filters .filters-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+@media (min-width: 1024px) {
+	.yith-wcan-filters.gf-pf-filters {
+		position: sticky;
+		top: 24px;
+		align-self: flex-start;
+	}
+}
+
+/* --------------------------------------------------------------- toolbar */
+.gf-pf-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 12px 16px;
+	background: var(--gf-pf-bg);
+	border: 1px solid var(--gf-pf-border);
+	border-radius: var(--gf-pf-radius);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.gf-pf-toolbar-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--gf-pf-accent);
+}
+
+.gf-pf-toolbar-status i {
+	font-size: 14px;
+}
+
+.gf-pf-reset {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border: 1px solid var(--gf-pf-border);
+	border-radius: 999px;
+	background: var(--gf-pf-bg-soft);
+	color: var(--gf-pf-text);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none !important;
+	transition: all 0.2s ease;
+}
+
+.gf-pf-reset:hover,
+.gf-pf-reset:focus {
+	border-color: var(--gf-pf-accent);
+	background: var(--gf-pf-accent);
+	color: #ffffff;
+}
+
+/* ----------------------------------------------------------------- blocks */
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter.gf-pf-block {
+	position: relative;
+	margin-bottom: 0;
+	border: 1px solid var(--gf-pf-border);
+	border-radius: var(--gf-pf-radius);
+	background: var(--gf-pf-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	overflow: hidden;
+}
+
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 14px 16px;
+	background: linear-gradient(180deg, #ffffff 0%, #f2f2f2 100%);
+	border-bottom: 1px solid var(--gf-pf-border);
+	color: var(--gf-pf-text);
+	font-weight: 700;
+	font-size: 15px;
+	line-height: 1.3;
+	letter-spacing: 0.02em;
+	text-transform: none;
+}
+
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-title-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	background: rgba(0, 122, 98, 0.1);
+	color: var(--gf-pf-accent);
+	font-size: 14px;
+	flex: 0 0 auto;
+}
+
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-title-text {
+	flex: 1 1 auto;
+}
+
+/* ---------------------------------------------------------------- terms */
+.yith-wcan-filters.gf-pf-filters .filter-content {
+	padding: 0;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items {
+	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.yith-wcan-filters .yith-wcan-filter .filter-items.level-0 ul {
-	padding-left: 15px;
-}
-
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item {
-	line-height: 2;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item {
+	position: relative;
 	margin: 0;
+	line-height: 1.4;
 }
 
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > a,
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > label > a {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 16px;
+	background: transparent;
+	border-bottom: 1px solid var(--gf-pf-border);
+	color: var(--gf-pf-text);
+	font-weight: 500;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label:hover {
+	background: rgba(0, 122, 98, 0.06);
+	padding-left: 20px;
+	color: var(--gf-pf-accent);
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.active > label {
+	background: rgba(0, 122, 98, 0.1);
+	color: var(--gf-pf-accent);
+	font-weight: 600;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label a {
+	color: inherit;
+	text-decoration: none;
+	flex: 1 1 auto;
+	min-width: 0;
+	word-break: break-word;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label a:hover {
 	text-decoration: none;
 }
 
-/* Native checkbox is decorative only; the theme paints the box via
-   .filter-item > label a:before (Font Awesome). Selection state is driven by
-   the .active class, not the checkbox. */
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item input[type="checkbox"] {
+/* Reusable native checkbox -> custom square via FA (theme hook), keep hidden. */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"] {
 	position: absolute;
 	opacity: 0;
 	pointer-events: none;
@@ -42,25 +195,160 @@
 	height: 0;
 }
 
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item > label {
-	cursor: pointer;
-}
-
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item.level-0 > ul {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > ul {
 	display: none;
+	padding: 0;
+	margin: 0;
+	background: var(--gf-pf-bg-soft);
+	border-bottom: 1px solid var(--gf-pf-border);
 }
 
-.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item.level-0.opened > ul {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0.opened > ul {
 	display: block;
 }
 
-@media (max-width: 991px) {
-	.yith-wcan-filters .yith-wcan-filter .filter-items .filter-item input[type="checkbox"] {
-		pointer-events: auto;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0.opened > .toggle-handle {
+	transform: rotate(180deg);
+}
+
+/* ---------------------------------------------------------- count badges */
+.gf-pf-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 22px;
+	height: 20px;
+	padding: 0 6px;
+	border-radius: 999px;
+	background: var(--gf-pf-bg-soft);
+	border: 1px solid var(--gf-pf-border);
+	color: var(--gf-pf-muted);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1;
+	flex: 0 0 auto;
+	transition: all 0.15s ease;
+}
+
+.filter-item.active > label .gf-pf-count,
+.filter-item > label:hover .gf-pf-count {
+	background: var(--gf-pf-accent);
+	border-color: var(--gf-pf-accent);
+	color: #ffffff;
+}
+
+/* ------------------------------------------------------------ toggle handle */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	right: 12px;
+	top: 10px;
+	cursor: pointer;
+	color: var(--gf-pf-muted);
+	font-size: 0;
+	transition: transform 0.2s ease, color 0.15s ease;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle::after {
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(45deg);
+	margin-top: -4px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle:hover {
+	color: var(--gf-pf-accent);
+}
+
+/* Nesting levels */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items {
+	padding-left: 0;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label {
+	padding-left: 32px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label:hover {
+	padding-left: 38px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label a::before {
+	content: "";
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--gf-pf-border);
+	margin-right: 0;
+	transition: background 0.15s ease;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item.active > label a::before,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label:hover a::before {
+	background: var(--gf-pf-accent);
+}
+
+/* --------------------------------------------------------- hierarchy levels */
+
+/* Cấp 0: Thương hiệu (Lớn nhất, Xanh lá đậm, Viết hoa) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label .term-label {
+	font-weight: 800 !important;
+	text-transform: uppercase;
+	color: #2b7837;
+	font-size: 14px;
+}
+
+/* Cấp 1: Nhóm ngành hàng (Ví dụ: Thực phẩm / NLPC & Làm bánh) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-group-parent > label .term-label {
+	font-weight: 600 !important;
+	color: #333;
+	font-size: 13px;
+	font-style: italic;
+}
+
+/* Cấp 2: Sản phẩm con (Thụt lề, màu tiêu chuẩn) */
+.yith-wcan-filters.gf-pf-filters .filter-items.level-1 {
+	padding-left: 12px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items.level-2 {
+	padding-left: 18px;
+	margin-top: 3px;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label {
+	font-weight: 400;
+	font-size: 13px;
+	color: #555;
+}
+
+/* ----------------------------------------------------------------- mobile */
+@media (max-width: 1023.98px) {
+	.yith-wcan-filters.gf-pf-filters {
 		position: static;
-		opacity: 1;
-		width: auto;
-		height: auto;
-		margin-right: 6px;
+	}
+
+	.yith-wcan-filters.gf-pf-filters .filters-container {
+		gap: 12px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.gf-pf-toolbar {
+		flex-direction: column;
+		align-items: stretch;
+		text-align: center;
+	}
+
+	.gf-pf-reset {
+		justify-content: center;
 	}
 }
