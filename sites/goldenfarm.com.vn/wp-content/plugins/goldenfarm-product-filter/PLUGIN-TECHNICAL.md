@@ -2,17 +2,17 @@
 
 ## Overview
 
-GoldenFarm Product Filter là plugin thay thế YITH WooCommerce AJAX Product Filter bằng một giải pháp lightweight, native WooCommerce, thân thiện với SEO và hiệu năng cao. Plugin chỉ tập trung vào **1 taxonomy duy nhất: `product_cat`** và render **1 block duy nhất** (THƯƠNG HIỆU) theo cây 3 cấp (Brand root → Nhóm ngành hàng → Sản phẩm con).
+GoldenFarm Product Filter là plugin thay thế YITH WooCommerce AJAX Product Filter bằng một giải pháp lightweight, native WooCommerce, thân thiện với SEO và hiệu năng cao. Plugin lọc theo **2 taxonomy**: `product_brand` (Thương hiệu) và `product_cat` (Danh mục), render **1 block duy nhất** (THƯƠNG HIỆU) theo cây phân cấp (Brand root → Nhóm ngành hàng → Loại sản phẩm → cấp sâu hơn).
 
 ### Lý do thay đổi
 
 | Vấn đề với YITH | Giải pháp GoldenFarm |
 |-----------------|----------------------|
-| Query không native (`yith_wcan_*`) | Dùng native `product_cat` query var |
+| Query không native (`yith_wcan_*`) | Dùng native `product_cat` / `product_brand` query var |
 | URL không cache (`?yith_wcan=...`) | URL cacheable (`?product_cat=slugs`) |
 | AJAX requests phức tạp | Full-page navigation (no JS) |
 |依赖 jQuery ion.range-slider, WPML | Không dependency ngoài |
-| CSS ~20KB | CSS ~1KB |
+| CSS ~20KB | CSS ~5KB |
 
 ---
 
@@ -22,12 +22,14 @@ GoldenFarm Product Filter là plugin thay thế YITH WooCommerce AJAX Product Fi
 goldenfarm-product-filter/
 ├── goldenfarm-product-filter.php    # Main plugin controller
 ├── includes/
-│   ├── class-gf-pf-terms.php        # Term tree + URL building
-│   ├── class-gf-pf-renderer.php     # HTML renderer
+│   ├── class-gf-pf-terms.php        # Term tree + URL building (DB-driven)
+│   ├── class-gf-pf-renderer.php     # HTML renderer (recursive)
 │   └── class-gf-pf-assets.php       # CSS/JS enqueuer
-└── assets/
-    ├── css/gf-pf.css                # Minimal base styles
-    └── js/gf-pf.js                  # Toggle handling
+├── assets/
+│   ├── css/gf-pf.css                # Base styles + hierarchy levels
+│   └── js/gf-pf.js                  # Toggle handling (mọi cấp)
+├── filter.py                        # CLI tool: xuất cây Brand→Cat từ DB ra STRUCTURE.md
+└── clean_db.py                      # CLI tool: dọn danh mục rác / chuẩn hóa cấp
 ```
 
 ---
@@ -41,24 +43,29 @@ sequenceDiagram
     participant Plugin as GF_PF_Plugin
     participant Renderer as GF_PF_Renderer
     participant Terms as GF_PF_Terms
-    participant WC as WooCommerce Query
+    participant DB as MySQL
     participant Cache as Redis Cache
+    participant WC as WooCommerce Query
 
-    User->>Theme: Visit /shop?product_cat=slug1
+    User->>Theme: Visit /shop?product_cat=slug1&product_brand=brand1
     Theme->>Plugin: do_shortcode('[goldenfarm_product_filter]')
     Plugin->>Renderer: render()
-    Renderer->>Terms: get_tree()
-    Terms->>Cache: gf_pf_tree_product_cat
-    Cache-->>Terms: Returns cached tree
-    Terms-->>Renderer: WP_Term[] roots + children
-    Renderer-->>Theme: HTML markup (.yith-wcan-filters)
+    Renderer->>Terms: get_brand_tree()
+    Terms->>Cache: gf_pf_brand_tree_v2
+    Cache-->>Terms: Returns cached tree (nếu version khớp)
+    alt Cache miss
+        Terms->>DB: 2x get_terms + 2 aggregate SQL (brand/cat counts)
+        DB-->>Terms: brand_id → cat_id → COUNT(DISTINCT product)
+        Terms->>Terms: build_cat_nodes() — prune nhánh rỗng, gán count
+        Terms->>Cache: wp_cache_set(gf_pf_brand_tree_v2, DAY_IN_SECONDS)
+    end
+    Terms-->>Renderer: Brand → tree category (term + count + children)
+    Renderer-->>Theme: HTML markup (.yith-wcan-filters + .gf-pf-count)
     Theme-->>User: Render page with filters
 
     User->>Theme: Click term label (link to ?product_cat=slug1,slug2)
     Note over Theme,WC: Full page navigation (no AJAX)
-    Theme->>WC: Query posts with product_cat query var
-    WC->>Terms: Build WHERE clause from term slugs
-    Terms-->>WC: MySQL JOIN product_term_relationships
+    Theme->>WC: Query posts với product_cat / product_brand query vars
     WC-->>User: Return filtered products
 ```
 
@@ -91,39 +98,58 @@ add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 
 ### 2. `GF_PF_Terms`
 
-**Vai trò:** Đọc `product_cat` taxonomy, build tree cache, URL building
+**Vai trò:** Đọc taxonomy, **build cây Brand→Category từ quan hệ thực tế trong DB** (giống `filter.py`), URL building.
 
 **Methods:**
 
 | Method | Description |
 |--------|-------------|
-| `taxonomy()` | Return taxonomy name (default: `product_cat`) |
+| `taxonomy()` | Return category taxonomy (default: `product_cat`) |
+| `brand_taxonomy()` | Return brand taxonomy (default: `product_brand`) |
 | `get_roots()` | Return root terms (parent=0) |
-| `get_tree()` | Return full hierarchical tree (cached in Redis) |
+| `get_tree()` | Return full hierarchical tree của 1 taxonomy (cached) |
 | `get_children( $parent_id )` | Return children of a term |
-| `get_active_slugs()` | Return currently selected term slugs |
+| `get_brand_tree()` | **Cây Brand → Category (đã prune nhánh rỗng, có count), cached** |
+| `build_brand_tree()` | (private) Lấy brands + cats + counts từ DB |
+| `query_brand_counts()` | (private) `brand_id => COUNT(DISTINCT publish product)` |
+| `query_brand_category_counts()` | (private) `brand_id => [cat_id => count]` — 1 câu aggregate duy nhất |
+| `build_cat_nodes()` | (private) Dựng/đệ quy cắt nhánh không có sản phẩm |
+| `get_active_slugs()` | Return currently selected term slugs (memo tĩnh trong request) |
 | `is_term_active( $term )` | Check if term is active |
 | `get_base_url()` | Return current page URL (no query string) |
 | `get_term_url( $term, $taxonomy, $multiple )` | Build toggle URL for term |
+| `get_reset_url()` | URL xóa **cả `product_cat` lẫn `product_brand`** (giữ sort/search) |
 | `get_term_counts( $taxonomy )` | Product counts per term (cached) |
 | `invalidate_cache( $taxonomy )` | Bump cache version |
 
-**Cache structure:**
+**Cache structure (brand tree):**
 ```php
-// Cache key: 'gf_pf_tree_product_cat'
+// Cache key: 'gf_pf_brand_tree_v2'
 // Cache group: 'gf_pf'
 // TTL: DAY_IN_SECONDS
 
 array(
-  'version'  => '1620000000', // Bumped on taxonomy change
-  'roots'    => array( WP_Term, WP_Term, ... ),
-  'children' => array(
-    12 => array( WP_Term, WP_Term ), // children of term 12
-    15 => array( WP_Term ),
-    ...
-  )
+  'version' => '1620000000', // Bumped khi product_brand/product_cat thay đổi
+  'items'   => array(
+    array(
+      'brand'      => WP_Term,            // product_brand term
+      'count'      => 131,                // số SP publish của brand
+      'categories' => array(
+        array(
+          'term'     => WP_Term,          // product_cat term
+          'count'    => 116,              // SP publish gán trực tiếp vào cat này
+          'children' => array( /* đệ quy */ ),
+        ),
+      ),
+    ),
+  ),
 )
 ```
+
+**Logic tối ưu (theo `filter.py`):**
+- Cây được dựng từ **quan hệ sản phẩm thực tế**: 1 câu SQL aggregate `wp_posts ⋈ wp_term_relationships ⋈ wp_term_taxonomy` đếm `COUNT(DISTINCT p.ID)` cho từng cặp `(brand, cat)` — **không N+1 query**, không dùng heuristic ghép slug.
+- **Prune nhánh rỗng**: một category chỉ giữ lại khi có SP của brand đó hoặc là tổ tiên của category có SP (nhánh 0 SP bị cắt).
+- `count` chỉ tính sản phẩm `post_status = 'publish'`.
 
 **Active slugs detection:**
 - `is_tax( product_cat )` →queried term
@@ -134,7 +160,7 @@ array(
 
 ### 3. `GF_PF_Renderer`
 
-**Vai trò:** Render HTML giống YITH (`yith-wcan-*` classes)
+**Vai trò:** Render HTML giống YITH (`yith-wcan-*` classes), đệ quy theo độ sâu cây.
 
 **Methods:**
 
@@ -142,26 +168,42 @@ array(
 |--------|-------------|
 | `shortcode( $atts )` | Shortcode callback |
 | `render( $args )` | Echo HTML directly |
-| `get_filters_html( $args )` | Build container HTML (ONE block: THƯƠNG HIỆU) |
-| `render_term_recursive( $term, $level, $multiple, $taxonomy, $counts, $show_counts )` | Recursive term rendering (Level 1 có con → `<ul class="filter-items level-2">`)
+| `get_filters_html( $args )` | Build container HTML (ONE block: THƯƠNG HIỆU + nút Xóa bộ lọc) |
+| `render_cat_level( $nodes, $level, $taxonomy )` | **Đệ quy** render một cấp danh mục (level-1 group, level-2+ leaf) |
+| `cat_node_has_active( $nodes, $taxonomy )` | Kiểm tra subtree có node đang active (để auto-mở nhánh) |
 
 **Output structure:**
 ```html
-<div class="yith-wcan-filters no-title" id="gf-pf-filters">
+<div class="yith-wcan-filters no-title gf-pf-filters" id="gf-pf-filters">
   <div class="filters-container">
     <form method="get" action="{base_url}">
-      <div class="yith-wcan-filter filter-tax hierarchical checkbox-design">
-        <h4 class="filter-title">{title}</h4>
+      <div class="yith-wcan-filter filter-tax hierarchical checkbox-design gf-pf-block">
+        <h4 class="filter-title">
+          <span class="gf-pf-title-text">{title}</span>
+          <a class="gf-pf-reset" href="{reset_url}">Xóa bộ lọc</a>
+        </h4>
         <div class="filter-content">
           <ul class="filter-items level-0">
-            <li class="filter-item checkbox level-0 active opened">
+            <li class="filter-item checkbox level-0 is-brand-root has-children opened active">
               <label>
-                <input type="checkbox" value="{slug}" checked>
-                <a href="{term_url}" class="term-label">{term_name}</a>
+                <input type="checkbox" name="product_brand" value="{brand_slug}" checked>
+                <a href="{term_url}" class="term-label">{brand_name}</a>
+                <span class="gf-pf-count">131</span>
               </label>
               <span class="toggle-handle"></span>
-              <ul>
-                <!-- children -->
+              <ul class="filter-items level-1">
+                <li class="filter-item checkbox level-1 is-group-parent has-children opened">
+                  <label>
+                    <input type="checkbox" name="product_cat" value="{group_slug}">
+                    <a href="{term_url}" class="term-label">Sản Phẩm</a>
+                  </label>
+                  <span class="toggle-handle"></span>
+                  <ul class="filter-items level-2">
+                    <li class="filter-item checkbox level-2 is-product-leaf has-children">
+                      <!-- ... -->
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </li>
           </ul>
@@ -177,25 +219,30 @@ array(
 |------------|------------|
 | `.yith-wcan-filters` | ✅ |
 | `.yith-wcan-filter` | ✅ |
-| `.filter-title` | ✅ |
+| `.filter-title` | ✅ (+ nút `.gf-pf-reset` bên phải) |
 | `.filter-content` | ✅ |
 | `.filter-items.level-N` | ✅ |
 | `.filter-item` | ✅ |
 | `.checkbox` | ✅ |
-| `.opened` | ✅ (expanded by default) |
-| `.active` | ✅ (if term selected) |
-| `.toggle-handle` | ✅ |
-| `.term-label` | ✅ (link with `data-term-slug`) |
+| `.opened` | ✅ (mở sẵn theo level) |
+| `.active` | ✅ (nếu term đang chọn) |
+| `.toggle-handle` | ✅ (mọi cấp có nhánh con) |
+| `.term-label` | ✅ |
+| `.gf-pf-count` | ✅ (badge số lượng SP publish) |
 
-**Hierarchy classes (thêm bởi `GF_PF_Renderer::render_term_recursive()`):**
+**Hierarchy classes (tự động theo độ sâu trong `render_cat_level()`):**
 
 | Class | Level | Ý nghĩa |
 |-------|-------|---------|
 | `is-brand-root` | `level-0` | Cấp 0 — Thương hiệu / gốc lớn nhất |
-| `is-group-parent` | `level-1` | Cấp 1 — Nhóm ngành hàng (Thực phẩm, NLPC & Làm bánh, ...) |
-| `is-product-leaf` | `level-2+` | Cấp 2+ — Sản phẩm con / lá |
+| `is-group-parent` | `level-1` | Cấp 1 — Nhóm ngành hàng (Sản Phẩm, Chuyên mục Trang Chủ, ...) |
+| `is-product-leaf` | `level-2+` | Cấp 2+ — Loại sản phẩm / lá |
 
-> Mapping được tính tự động theo độ sâu trong `render_term_recursive()`: `level 0 → is-brand-root`, `level 1 → is-group-parent`, `level ≥ 2 → is-product-leaf`. Không cần sửa renderer khi thêm nhánh mới.
+> Không cần sửa renderer khi thêm nhánh mới: level 1 → `is-group-parent`, level ≥ 2 → `is-product-leaf`. Cấp sâu hơn chỉ cần thêm CSS thụt lề.
+
+**Trạng thái mở/đóng:**
+- Brand (`level-0`) và nhóm cấp 1 (`level-1`) luôn `opened` mặc định.
+- Nhánh cấp ≥ 2 chỉ `opened` khi bản thân hoặc hậu duệ đang active.
 
 ---
 
@@ -208,12 +255,17 @@ Toàn bộ style của cây phân cấp taxonomy nằm trong **`assets/css/gf-pf
 | Cấp | Class | Ví dụ | Giao diện hiện tại |
 |-----|-------|-------|--------------------|
 | 0 | `.filter-item.is-brand-root > label .term-label` | Thương hiệu | `#2b7837`, **800**, uppercase, `14px` |
-| 1 | `.filter-item.is-group-parent > label .term-label` | Thực phẩm / NLPC & Làm bánh | `#333`, **600**, italic, `13px` |
-| 2 | `.filter-item.is-product-leaf > label .term-label` | Sản phẩm con | `#555`, 400, `13px` |
+| 1 | `.filter-item.is-group-parent > label .term-label` | Nhóm ngành hàng | `#333`, **600**, italic, `13px` |
+| 2+ | `.filter-item.is-product-leaf > label .term-label` | Loại sản phẩm | `#555`, 400, `13px` |
 
-Thụt lề được kiểm soát bởi:
-- Cấp 1: `.yith-wcan-filters.gf-pf-filters .filter-items.level-1 { padding-left: 12px; }`
-- Cấp 2: `.yith-wcan-filters.gf-pf-filters .filter-items.level-2 { padding-left: 18px; margin-top: 3px; }`
+**Thu gọn/mở nhánh (mọi cấp):**
+- `.filter-item.has-children > ul.filter-items { display: none; }`
+- `.filter-item.has-children.opened > ul.filter-items { display: block; }`
+- `.filter-item.has-children > .toggle-handle` (mũi tên xoay 180° khi `.opened`)
+
+**Thụt lề (đệ quy, cộng dồn theo cấp):**
+- `.filter-items .filter-items { padding-left: 14px; }`
+- Label có nhánh con: `padding-right: 36px` (tránh đè lên toggle-handle)
 
 ### 2. Quy tắc bắt buộc khi sửa CSS
 
@@ -231,7 +283,7 @@ Thụt lề được kiểm soát bởi:
    ```css
    .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label { /* style cấp sâu */ }
    ```
-3. Điều chỉnh thụt lề bằng `.filter-items.level-3`.
+3. Thụt lề tự cộng dồn qua `.filter-items .filter-items { padding-left: 14px; }` — không cần rule riêng.
 
 ### 4. CSS hierarchy hiện tại (reference)
 
@@ -244,7 +296,7 @@ Thụt lề được kiểm soát bởi:
 	font-size: 14px;
 }
 
-/* Cấp 1: Nhóm ngành hàng (Ví dụ: Thực phẩm / NLPC & Làm bánh) */
+/* Cấp 1: Nhóm ngành hàng */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-group-parent > label .term-label {
 	font-weight: 600 !important;
 	color: #333;
@@ -252,21 +304,19 @@ Thụt lề được kiểm soát bởi:
 	font-style: italic;
 }
 
-/* Cấp 2: Sản phẩm con (Thụt lề, màu tiêu chuẩn) */
-.yith-wcan-filters.gf-pf-filters .filter-items.level-1 {
-	padding-left: 12px;
-}
-
-.yith-wcan-filters.gf-pf-filters .filter-items.level-2 {
-	padding-left: 18px;
-	margin-top: 3px;
-}
-
+/* Cấp 2+: Sản phẩm con */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label {
 	font-weight: 400;
 	font-size: 13px;
 	color: #555;
 }
+
+/* Thu gọn/mở mọi cấp */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > ul.filter-items { display: none; }
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > ul.filter-items { display: block; }
+
+/* Thụt lề đệ quy */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items { padding-left: 14px; }
 ```
 
 ---
@@ -298,10 +348,10 @@ Thụt lề được kiểm soát bởi:
 
 | Filter | Description | Default |
 |--------|-------------|---------|
-| `gf_pf_taxonomy` | Taxonomy used for filtering | `product_cat` |
+| `gf_pf_taxonomy` | Category taxonomy used for filtering | `product_cat` |
+| `gf_pf_brand_taxonomy` | Brand taxonomy used for filtering | `product_brand` |
 | `gf_pf_orderby` | Term ordering | `name` |
 | `gf_pf_order` | Term order direction | `ASC` |
-| `gf_pf_multiple` | Allow multiple selection | `false` |
 | `gf_pf_base_url` | Base URL for filter links | `home_url( $wp->request )` |
 | `gf_pf_enqueue` | Force enqueue assets | `false` |
 
@@ -316,7 +366,7 @@ Thụt lề được kiểm soát bởi:
 
 ## Usage
 
-### 1.替换 shortcode trong theme
+### 1. Thay shortcode trong theme
 
 **Before (YITH):**
 ```php
@@ -335,16 +385,14 @@ echo do_shortcode('[goldenfarm_product_filter title="Thương hiệu"]');
 | Attribute | Description | Default |
 |-----------|-------------|---------|
 | `title` | Filter section title | `Thương hiệu` |
-| `multiple` | Allow multiple selection (`yes`/`no`) | `no` |
 
 ### 3. Template function
 
 ```php
-// Trong theme template
+// Trong theme template (CanhCamTheme/woocommerce/product-filter-menu.php)
 if ( function_exists( 'gf_pf_render_filters' ) ) {
     gf_pf_render_filters( array(
-        'title'    => 'Danh mục sản phẩm',
-        'multiple' => true,
+        'title' => 'Danh mục sản phẩm',
     ) );
 }
 ```
@@ -353,33 +401,40 @@ if ( function_exists( 'gf_pf_render_filters' ) ) {
 
 ## Cache invalidation
 
-Cache được invalid tự động khi:
+Cache được invalid tự động khi taxonomy thay đổi:
 
 ```php
-// goldenfarm-product-filter.php
 add_action( 'created_product_cat', array( $this, 'invalidate_term_cache' ) );
 add_action( 'edited_product_cat', array( $this, 'invalidate_term_cache' ) );
 add_action( 'delete_product_cat', array( $this, 'invalidate_term_cache' ) );
 add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 ```
 
-**Cache version format:** `gf_pf_term_version_product_cat`
+**Cache version format:** `gf_pf_term_version_{taxonomy}` (vd: `gf_pf_term_version_product_cat`, `gf_pf_term_version_product_brand`)
+
+**Key chính:** `gf_pf_brand_tree_v2` (group `gf_pf`, TTL `DAY_IN_SECONDS`)
+
+> **Lưu ý khi deploy v1.3.0:** nếu cache cũ (key `gf_pf_brand_tree`) còn trong Redis, flush thủ công các key `gf_pf_*` để cây mới render ngay.
 
 ---
 
 ## Performance optimization
 
-### 1. Term tree cache
-- Cache trong Redis (object cache)
-- TTL: `DAY_IN_SECONDS`
-- Versioned (invalidation khi taxonomy change)
+### 1. Brand tree
+- **1 câu SQL aggregate duy nhất** đếm toàn bộ `(brand, cat)` → **không N+1 query** (trước đây: `get_term_by` + `get_children` mỗi brand).
+- Chỉ tính sản phẩm `publish`; **prune nhánh rỗng** → HTML gọn hơn.
+- Cache trong Redis (object cache), TTL `DAY_IN_SECONDS`, versioned.
 
-### 2. CSS/JS
+### 2. Renderer
+- `get_active_slugs()` memo tĩnh theo request → không truy vấn lặp lại mỗi term.
+- Đệ quy theo độ sâu thực tế, chỉ render nhánh có sản phẩm.
+
+### 3. CSS/JS
 - CSS: ~5KB (base styles + hierarchy levels)
-- JS: ~1.5KB (toggle handle + navigation)
+- JS: ~1.5KB (toggle handle mọi cấp + navigation)
 - Conditional enqueue (chỉ product pages)
 
-### 3. No external dependencies
+### 4. No external dependencies
 - Không dùng jQuery UI
 - Không dùng ion.range-slider
 - Không dùng selectWoo
@@ -413,27 +468,33 @@ add_action( 'set_object_terms', array( $this, 'invalidate_term_cache' ) );
 2. Kiểm tra theme gọi đúng shortcode
 3. Kiểm tra `is_shop()` hoặc `is_post_type_archive( 'product' )`
 
-### Term không hiển thị
-1. Kiểm tra `product_cat` taxonomy có terms
-2. Kiểm tra `gf_pf_tree_product_cat` trong Redis
-3. Manual: `wp_cache_delete( 'gf_pf_tree_product_cat', 'gf_pf' );`
+### Nhánh danh mục bị thiếu / cây sai
+1. Kiểm tra sản phẩm đã được gán `product_brand` và `product_cat` đúng chưa
+2. Kiểm tra `gf_pf_brand_tree_v2` trong Redis (flush `gf_pf_*` để build lại)
+3. Chạy `filter.py` để xuất `STRUCTURE.md` đối chiếu cây thực tế
+4. Manual: `wp_cache_delete( 'gf_pf_brand_tree_v2', 'gf_pf' );`
 
 ### URL không working
-1. Kiểm tra `product_cat` query var được rewrite đúng
+1. Kiểm tra `product_cat` / `product_brand` query var được rewrite đúng
 2. Kiểm tra permalinks structure
 3. `settings/permalink.php` → Save lại
 
 ---
 
-## Future enhancements
+## Changelog
 
-### proposals
-- [ ] AJAX live update (tùy chọn, disable default navigation)
-- [ ] Price range filter (native WooCommerce price filter)
-- [ ] Stock/On-sale filter
-- [ ] Custom taxonomies support
-- [ ] Widget support
-- [ ] Elementor block
+### v1.3.0 — DB-driven brand tree (tối ưu cách lọc sản phẩm)
+- **`GF_PF_Terms::get_brand_tree()`** dựng cây Brand → Category từ **quan hệ thực tế trong DB** (giống `filter.py`), thay cho heuristic ghép slug: 1 câu SQL aggregate đếm `(brand, cat)` cho sản phẩm `publish`, không N+1.
+- **Prune nhánh rỗng**: chỉ giữ category có sản phẩm của brand hoặc tổ tiên của chúng (bỏ nhánh 0 SP).
+- **Badge số lượng** (`.gf-pf-count`) cho brand và từng category.
+- **Renderer đệ quy** (`render_cat_level()`) render cây nhiều cấp; level-1 group mở sẵn, nhánh sâu tự mở khi active.
+- **Nút "Xóa bộ lọc"** trong tiêu đề; `get_reset_url()` xóa cả `product_cat` lẫn `product_brand`.
+- **Toggle-handle mọi cấp** (CSS + JS) thay vì chỉ level-0; thụt lề đệ quy theo `level-N`.
+- `get_active_slugs()` memo tĩnh theo request.
+- Cache key mới `gf_pf_brand_tree_v2`.
+
+### v1.2.1
+- Single THƯƠNG HIỆU block, 3-level tree layout, `product_cat`-only refactor.
 
 ---
 
@@ -444,5 +505,5 @@ GPLv2 or later — same as WordPress
 ---
 
 **Author:** GoldenFarm Dev  
-**Version:** 1.2.1  
+**Version:** 1.3.0  
 **Requires:** WooCommerce, WordPress 6.0+, PHP 7.4+

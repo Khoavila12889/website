@@ -18,8 +18,8 @@
 
 	var DURATION = 220;
 
-	// Expand / collapse a branch without navigating.
-	$filters.on('click', '.filter-item.level-0 > .toggle-handle', function(e) {
+	// Expand / collapse a branch without navigating (works at every level).
+	$filters.on('click', '.filter-item.has-children > .toggle-handle', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 

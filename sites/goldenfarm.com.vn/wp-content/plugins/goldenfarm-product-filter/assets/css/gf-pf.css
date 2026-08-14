@@ -195,20 +195,29 @@
 	height: 0;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > ul {
+/* Branch collapsing (works at every depth) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > ul.filter-items {
 	display: none;
 	padding: 0;
 	margin: 0;
-	background: var(--gf-pf-bg-soft);
-	border-bottom: 1px solid var(--gf-pf-border);
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0.opened > ul {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > ul.filter-items {
 	display: block;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0.opened > .toggle-handle {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > .toggle-handle {
 	transform: rotate(180deg);
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > label {
+	padding-right: 36px;
+}
+
+/* Level-0 (brand) branch panel look */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > ul.filter-items {
+	background: var(--gf-pf-bg-soft);
+	border-bottom: 1px solid var(--gf-pf-border);
 }
 
 /* ---------------------------------------------------------- count badges */
@@ -238,7 +247,7 @@
 }
 
 /* ------------------------------------------------------------ toggle handle */
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -253,7 +262,7 @@
 	transition: transform 0.2s ease, color 0.15s ease;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle::after {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle::after {
 	content: "";
 	width: 8px;
 	height: 8px;
@@ -263,21 +272,13 @@
 	margin-top: -4px;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > .toggle-handle:hover {
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle:hover {
 	color: var(--gf-pf-accent);
 }
 
 /* Nesting levels */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-items {
-	padding-left: 0;
-}
-
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label {
-	padding-left: 32px;
-}
-
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label:hover {
-	padding-left: 38px;
+	padding-left: 14px;
 }
 
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label a::before {
@@ -314,20 +315,18 @@
 	font-style: italic;
 }
 
-/* Cấp 2: Sản phẩm con (Thụt lề, màu tiêu chuẩn) */
-.yith-wcan-filters.gf-pf-filters .filter-items.level-1 {
-	padding-left: 12px;
-}
-
-.yith-wcan-filters.gf-pf-filters .filter-items.level-2 {
-	padding-left: 18px;
-	margin-top: 3px;
-}
-
+/* Cấp 2+: Sản phẩm con (màu tiêu chuẩn) */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label {
 	font-weight: 400;
 	font-size: 13px;
 	color: #555;
+}
+
+/* Reset button embedded in the filter title row */
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-reset {
+	margin-left: auto;
+	padding: 4px 10px;
+	font-size: 12px;
 }
 
 /* ----------------------------------------------------------------- mobile */

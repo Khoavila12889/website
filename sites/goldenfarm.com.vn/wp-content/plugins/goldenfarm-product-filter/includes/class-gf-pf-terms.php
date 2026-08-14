@@ -22,6 +22,15 @@ class GF_PF_Terms {
 	}
 
 	/**
+	 * Taxonomy used for brands.
+	 *
+	 * @return string
+	 */
+	public static function brand_taxonomy() {
+		return apply_filters( 'gf_pf_brand_taxonomy', 'product_brand' );
+	}
+
+	/**
 	 * Root terms of a given taxonomy.
 	 *
 	 * @param string $taxonomy Taxonomy slug.
@@ -102,6 +111,184 @@ class GF_PF_Terms {
 	}
 
 	/**
+	 * Brand -> categories tree.
+	 *
+	 * The tree is derived from the real product -> brand / product -> category
+	 * relationships in the database (same logic as filter.py), not from a
+	 * slug-matching heuristic:
+	 *
+	 * - A category is kept for a brand only when it contains published
+	 *   products of that brand, or when it is an ancestor of such a category
+	 *   (empty branches are pruned).
+	 * - Each node carries a live 'count' = distinct published products of the
+	 *   brand directly assigned to that category.
+	 *
+	 * @return array[] Array of items: array( 'brand' => WP_Term, 'count' => int, 'categories' => array ).
+	 */
+	public static function get_brand_tree() {
+		$cache_key = 'gf_pf_brand_tree_v2';
+		$version   = self::cache_version( self::brand_taxonomy() ) . '_' . self::cache_version( self::taxonomy() );
+
+		$tree = wp_cache_get( $cache_key, 'gf_pf' );
+
+		if ( false === $tree || empty( $tree['version'] ) || $tree['version'] !== $version ) {
+			$tree = array(
+				'version' => $version,
+				'items'   => self::build_brand_tree(),
+			);
+
+			wp_cache_set( $cache_key, $tree, 'gf_pf', DAY_IN_SECONDS );
+		}
+
+		return $tree['items'];
+	}
+
+	/**
+	 * Builds the brand -> categories tree straight from the database.
+	 *
+	 * @return array
+	 */
+	private static function build_brand_tree() {
+		$brands = get_terms(
+			array(
+				'taxonomy'   => self::brand_taxonomy(),
+				'hide_empty' => false,
+				'orderby'    => apply_filters( 'gf_pf_orderby', 'term_order', self::brand_taxonomy() ),
+				'order'      => apply_filters( 'gf_pf_order', 'ASC', self::brand_taxonomy() ),
+			)
+		);
+
+		if ( is_wp_error( $brands ) || empty( $brands ) ) {
+			return array();
+		}
+
+		$cats = get_terms(
+			array(
+				'taxonomy'   => self::taxonomy(),
+				'hide_empty' => false,
+				'orderby'    => apply_filters( 'gf_pf_orderby', 'term_order', self::taxonomy() ),
+				'order'      => apply_filters( 'gf_pf_order', 'ASC', self::taxonomy() ),
+			)
+		);
+
+		$cat_by_id    = array();
+		$children_map = array();
+		if ( ! is_wp_error( $cats ) ) {
+			foreach ( $cats as $cat ) {
+				$cat_by_id[ $cat->term_id ] = $cat;
+				$children_map[ (int) $cat->parent ][ $cat->term_id ] = $cat->term_id;
+			}
+		}
+
+		$counts       = self::query_brand_category_counts();
+		$brand_counts = self::query_brand_counts();
+
+		$items = array();
+		foreach ( $brands as $brand ) {
+			$active = isset( $counts[ $brand->term_id ] ) ? $counts[ $brand->term_id ] : array();
+
+			$items[] = array(
+				'brand'      => $brand,
+				'count'      => isset( $brand_counts[ $brand->term_id ] ) ? $brand_counts[ $brand->term_id ] : 0,
+				'categories' => self::build_cat_nodes( 0, $active, $cat_by_id, $children_map ),
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Published product count per brand.
+	 *
+	 * @return array brand_id => int
+	 */
+	private static function query_brand_counts() {
+		global $wpdb;
+
+		$sql = "SELECT bt.term_id AS brand_id, COUNT(DISTINCT p.ID) AS cnt
+				FROM {$wpdb->posts} AS p
+				INNER JOIN {$wpdb->term_relationships} AS br ON br.object_id = p.ID
+				INNER JOIN {$wpdb->term_taxonomy} AS bt ON bt.term_taxonomy_id = br.term_taxonomy_id AND bt.taxonomy = %s
+				WHERE p.post_type = 'product' AND p.post_status = 'publish'
+				GROUP BY bt.term_id";
+
+		$rows = $wpdb->get_results( $wpdb->prepare( $sql, self::brand_taxonomy() ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		$counts = array();
+		foreach ( (array) $rows as $row ) {
+			$counts[ (int) $row->brand_id ] = (int) $row->cnt;
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * brand_id => array( cat_id => distinct published product count ).
+	 *
+	 * Single aggregate query over posts + term relationships so the whole
+	 * brand/category grid is fetched in one round trip (no N+1 queries).
+	 *
+	 * @return array
+	 */
+	private static function query_brand_category_counts() {
+		global $wpdb;
+
+		$sql = "SELECT bt.term_id AS brand_id, ct.term_id AS cat_id, COUNT(DISTINCT p.ID) AS cnt
+				FROM {$wpdb->posts} AS p
+				INNER JOIN {$wpdb->term_relationships} AS br ON br.object_id = p.ID
+				INNER JOIN {$wpdb->term_taxonomy} AS bt ON bt.term_taxonomy_id = br.term_taxonomy_id AND bt.taxonomy = %s
+				INNER JOIN {$wpdb->term_relationships} AS cr ON cr.object_id = p.ID
+				INNER JOIN {$wpdb->term_taxonomy} AS ct ON ct.term_taxonomy_id = cr.term_taxonomy_id AND ct.taxonomy = %s
+				WHERE p.post_type = 'product' AND p.post_status = 'publish'
+				GROUP BY bt.term_id, ct.term_id";
+
+		$rows = $wpdb->get_results( $wpdb->prepare( $sql, self::brand_taxonomy(), self::taxonomy() ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		$counts = array();
+		foreach ( (array) $rows as $row ) {
+			$counts[ (int) $row->brand_id ][ (int) $row->cat_id ] = (int) $row->cnt;
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * Recursively prunes and builds one brand's category tree.
+	 *
+	 * A node is kept when it has products for the brand or when any descendant
+	 * has products (ancestors on the path to a real category are preserved).
+	 *
+	 * @param int   $parent_id    Parent term id.
+	 * @param array $active       Active category counts (cat_id => count).
+	 * @param array $cat_by_id    term_id => WP_Term.
+	 * @param array $children_map parent_id => term_id[].
+	 * @return array
+	 */
+	private static function build_cat_nodes( $parent_id, $active, $cat_by_id, $children_map ) {
+		$nodes = array();
+
+		if ( empty( $children_map[ $parent_id ] ) ) {
+			return $nodes;
+		}
+
+		foreach ( $children_map[ $parent_id ] as $child_id ) {
+			$child_nodes = self::build_cat_nodes( $child_id, $active, $cat_by_id, $children_map );
+
+			if ( ! isset( $active[ $child_id ] ) && empty( $child_nodes ) ) {
+				continue;
+			}
+
+			$nodes[] = array(
+				'term'     => $cat_by_id[ $child_id ],
+				'count'    => isset( $active[ $child_id ] ) ? $active[ $child_id ] : 0,
+				'children' => $child_nodes,
+			);
+		}
+
+		return $nodes;
+	}
+
+	/**
 	 * Version used to invalidate term cache.
 	 *
 	 * @param string $taxonomy Taxonomy name.
@@ -136,6 +323,12 @@ class GF_PF_Terms {
 	 * @return string[]
 	 */
 	public static function get_active_slugs( $taxonomy = 'product_cat' ) {
+		static $cache = array();
+
+		if ( isset( $cache[ $taxonomy ] ) ) {
+			return $cache[ $taxonomy ];
+		}
+
 		$slugs = array();
 
 		if ( is_tax( $taxonomy ) ) {
@@ -154,7 +347,11 @@ class GF_PF_Terms {
 			$slugs = array_merge( $slugs, self::split_slugs( wp_unslash( $_GET[ $taxonomy ] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
-		return array_values( array_unique( $slugs ) );
+		$slugs = array_values( array_unique( $slugs ) );
+
+		$cache[ $taxonomy ] = $slugs;
+
+		return $slugs;
 	}
 
 	/**
@@ -233,7 +430,7 @@ class GF_PF_Terms {
 	public static function get_reset_url() {
 		$query_args = self::get_preserved_args();
 
-		return add_query_arg( $query_args, remove_query_arg( self::taxonomy(), self::get_base_url() ) );
+		return add_query_arg( $query_args, remove_query_arg( array( self::taxonomy(), self::brand_taxonomy() ), self::get_base_url() ) );
 	}
 
 	/**

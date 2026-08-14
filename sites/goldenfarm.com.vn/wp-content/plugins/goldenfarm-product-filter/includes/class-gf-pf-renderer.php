@@ -1,29 +1,18 @@
 <?php
 /**
- * Renders a single hierarchical product_cat filter block (3 levels: Brand root -> Group -> Products) with YITH markup compatibility.
+ * Smart Tree Renderer for Brand -> Product Categories
  *
  * @package GF_PF
  */
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Class GF_PF_Renderer
- */
 class GF_PF_Renderer {
 
-	/**
-	 * Shortcode callback.
-	 *
-	 * @param array $atts Attributes.
-	 * @return string
-	 */
 	public static function shortcode( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'title'       => '',
-				'multiple'    => 'yes',
-				'show_counts' => '',
+				'title' => __( 'THƯƠNG HIỆU', 'goldenfarm-product-filter' ),
 			),
 			$atts,
 			'goldenfarm_product_filter'
@@ -32,88 +21,70 @@ class GF_PF_Renderer {
 		return self::get_filters_html( $atts );
 	}
 
-	/**
-	 * Echoes filter markup.
-	 *
-	 * @param array $args Options.
-	 * @return void
-	 */
 	public static function render( $args = array() ) {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// phpcs:ignore
 		echo self::get_filters_html( $args );
 	}
 
-	/**
-	 * Builds wrapper containing ONE filter block (THƯƠNG HIỆU).
-	 *
-	 * @param array $args Render options.
-	 * @return string
-	 */
 	public static function get_filters_html( $args = array() ) {
-		$cat_tax = GF_PF_Terms::taxonomy();
+		$tree = GF_PF_Terms::get_brand_tree();
 
-		$cat_roots = GF_PF_Terms::get_roots( $cat_tax );
-
-		if ( empty( $cat_roots ) ) {
+		if ( empty( $tree ) ) {
 			return '';
 		}
 
-		$multiple = 'no' !== ( isset( $args['multiple'] ) ? $args['multiple'] : 'yes' );
-		$multiple = apply_filters( 'gf_pf_multiple', $multiple );
-
-		$show_counts = '' !== ( isset( $args['show_counts'] ) ? $args['show_counts'] : '' )
-			? 'no' !== $args['show_counts']
-			: apply_filters( 'gf_pf_show_counts', true );
-
-		$title = ! empty( $args['title'] )
-			? $args['title']
-			: __( 'Thương hiệu', 'goldenfarm-product-filter' );
-
-		$cat_active = GF_PF_Terms::get_active_slugs( $cat_tax );
-		$has_active = ! empty( $cat_active );
-
-		$cat_counts = $show_counts ? GF_PF_Terms::get_term_counts( $cat_tax ) : array();
+		$title         = isset( $args['title'] ) ? $args['title'] : __( 'THƯƠNG HIỆU', 'goldenfarm-product-filter' );
+		$brand_taxonomy = GF_PF_Terms::brand_taxonomy();
+		$cat_taxonomy   = GF_PF_Terms::taxonomy();
 
 		ob_start();
 		?>
 		<div class="yith-wcan-filters no-title gf-pf-filters" id="gf-pf-filters">
 			<div class="filters-container">
-
-				<?php if ( $has_active ) : ?>
-					<div class="gf-pf-toolbar">
-						<span class="gf-pf-toolbar-status">
-							<i class="fa-light fa-filter" aria-hidden="true"></i>
-							<?php echo esc_html__( 'Bộ lọc đang áp dụng', 'goldenfarm-product-filter' ); ?>
-						</span>
-						<a class="gf-pf-reset" href="<?php echo esc_url( GF_PF_Terms::get_reset_url() ); ?>" role="button">
-							<i class="fa-light fa-rotate-left" aria-hidden="true"></i>
-							<?php echo esc_html__( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?>
-						</a>
-					</div>
-				<?php endif; ?>
-
 				<form method="get" action="<?php echo esc_url( GF_PF_Terms::get_base_url() ); ?>">
-
-					<?php
-					// THƯƠNG HIỆU (PRODUCT_CAT 3-LEVEL TREE)
-					?>
-					<div class="yith-wcan-filter filter-tax hierarchical checkbox-design gf-pf-block" id="filter_gf_pf_cat" data-taxonomy="<?php echo esc_attr( $cat_tax ); ?>">
+					<div class="yith-wcan-filter filter-tax hierarchical checkbox-design gf-pf-block">
 						<h4 class="filter-title">
-							<span class="gf-pf-title-icon" aria-hidden="true"><i class="fa-light fa-tags"></i></span>
 							<span class="gf-pf-title-text"><?php echo esc_html( $title ); ?></span>
+							<a href="<?php echo esc_url( GF_PF_Terms::get_reset_url() ); ?>" class="gf-pf-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
 						</h4>
 						<div class="filter-content">
 							<ul class="filter-items level-0">
 								<?php
-								foreach ( $cat_roots as $term ) {
-									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-									echo self::render_term_recursive( $term, 0, $multiple, $cat_tax, $cat_counts, $show_counts );
-								}
-								?>
+								foreach ( $tree as $item ) {
+									$brand        = $item['brand'];
+									$brand_count  = isset( $item['count'] ) ? (int) $item['count'] : 0;
+									$categories   = $item['categories'];
+									$brand_active = GF_PF_Terms::is_term_active( $brand, $brand_taxonomy );
+
+									$classes = array( 'filter-item', 'checkbox', 'level-0', 'is-brand-root' );
+									if ( $brand_active ) {
+										$classes[] = 'active';
+									}
+									if ( ! empty( $categories ) ) {
+										$classes[] = 'has-children opened';
+									}
+
+									$brand_item_id = 'gf-pf-brand-' . $brand->term_id;
+									?>
+									<li class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
+										<label for="<?php echo esc_attr( $brand_item_id ); ?>">
+											<input type="checkbox" id="<?php echo esc_attr( $brand_item_id ); ?>" name="product_brand" value="<?php echo esc_attr( $brand->slug ); ?>" <?php checked( $brand_active ); ?>>
+											<a href="<?php echo esc_url( GF_PF_Terms::get_term_url( $brand, $brand_taxonomy ) ); ?>" class="term-label"><?php echo esc_html( $brand->name ); ?></a>
+											<?php if ( $brand_count > 0 ) : ?>
+												<span class="gf-pf-count"><?php echo esc_html( number_format_i18n( $brand_count ) ); ?></span>
+											<?php endif; ?>
+										</label>
+										<?php if ( ! empty( $categories ) ) : ?>
+											<span class="toggle-handle"></span>
+											<ul class="filter-items level-1">
+												<?php echo self::render_cat_level( $categories, 1, $cat_taxonomy ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+											</ul>
+										<?php endif; ?>
+									</li>
+								<?php } ?>
 							</ul>
 						</div>
 					</div>
-
 				</form>
 			</div>
 		</div>
@@ -122,68 +93,80 @@ class GF_PF_Renderer {
 	}
 
 	/**
-	 * Recursively renders a term and its children.
+	 * Recursively renders one category level of a brand tree.
 	 *
-	 * @param WP_Term $term Term object.
-	 * @param int     $level Nesting level.
-	 * @param bool    $multiple Multiple selection toggle.
-	 * @param string  $taxonomy Taxonomy slug.
-	 * @param array   $counts term_id => product count.
-	 * @param bool    $show_counts Whether to render count badges.
+	 * @param array  $nodes    Category nodes (term/count/children).
+	 * @param int    $level    Tree depth (1 = group parent, 2+ = product leaf).
+	 * @param string $taxonomy Category taxonomy.
 	 * @return string
 	 */
-	protected static function render_term_recursive( $term, $level, $multiple, $taxonomy, $counts = array(), $show_counts = true ) {
-		$children     = GF_PF_Terms::get_children( $term->term_id, $taxonomy );
-		$has_children = ! empty( $children );
-		$active       = GF_PF_Terms::is_term_active( $term, $taxonomy );
-		$item_id      = 'gf-pf-' . $taxonomy . '-' . $term->term_id;
-		$classes      = array( 'filter-item', 'checkbox', 'level-' . $level );
+	protected static function render_cat_level( $nodes, $level, $taxonomy ) {
+		$html = '';
 
-		if ( $active ) {
-			$classes[] = 'active';
-		}
+		foreach ( $nodes as $node ) {
+			$term     = $node['term'];
+			$count    = (int) $node['count'];
+			$children = $node['children'];
+			$active   = GF_PF_Terms::is_term_active( $term, $taxonomy );
 
-		if ( 0 === $level ) {
-			$classes[] = 'is-root';
-			$classes[] = 'is-brand-root';
-		} elseif ( 1 === $level ) {
-			$classes[] = 'is-group-parent';
-		} else {
-			$classes[] = 'is-product-leaf';
-		}
+			$classes = array(
+				'filter-item',
+				'checkbox',
+				'level-' . $level,
+				$level <= 1 ? 'is-group-parent' : 'is-product-leaf',
+			);
 
-		if ( $has_children ) {
-			$classes[] = 'has-children';
-		}
-
-		if ( $has_children && ( $active || GF_PF_Terms::has_active_descendant( $term, $taxonomy ) ) ) {
-			$classes[] = 'opened';
-		}
-
-		$count_html = '';
-		if ( $show_counts && isset( $counts[ $term->term_id ] ) && $counts[ $term->term_id ] > 0 ) {
-			$count_html = '<span class="gf-pf-count">' . esc_html( number_format_i18n( $counts[ $term->term_id ] ) ) . '</span>';
-		}
-
-		$html  = '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-		$html .= '<label for="' . esc_attr( $item_id ) . '">';
-		$html .= '<input type="checkbox" id="' . esc_attr( $item_id ) . '" name="' . esc_attr( $taxonomy ) . '" value="' . esc_attr( $term->slug ) . '" ' . checked( $active, true, false ) . '>';
-		$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $term, $taxonomy, $multiple ) ) . '" role="button" class="term-label" data-term-slug="' . esc_attr( $term->slug ) . '">' . esc_html( $term->name ) . '</a>';
-		$html .= $count_html;
-		$html .= '</label>';
-
-		if ( $has_children ) {
-			$html .= '<span class="toggle-handle" aria-hidden="true"></span>';
-			$html .= '<ul class="filter-items level-' . ( $level + 1 ) . '">';
-			foreach ( $children as $child ) {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				$html .= self::render_term_recursive( $child, $level + 1, $multiple, $taxonomy, $counts, $show_counts );
+			if ( $active ) {
+				$classes[] = 'active';
 			}
-			$html .= '</ul>';
-		}
+			if ( ! empty( $children ) ) {
+				$classes[] = 'has-children';
 
-		$html .= '</li>';
+				// Level-1 groups stay expanded; deeper branches open only when
+				// active or when they lead to an active category.
+				if ( $level === 1 || $active || self::cat_node_has_active( $children, $taxonomy ) ) {
+					$classes[] = 'opened';
+				}
+			}
+
+			$item_id = 'gf-pf-cat-' . $term->term_id;
+
+			$html .= '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+			$html .= '<label for="' . esc_attr( $item_id ) . '">';
+			$html .= '<input type="checkbox" id="' . esc_attr( $item_id ) . '" name="' . esc_attr( $taxonomy ) . '" value="' . esc_attr( $term->slug ) . '"' . checked( $active, true, false ) . '>';
+			$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $term, $taxonomy ) ) . '" class="term-label">' . esc_html( $term->name ) . '</a>';
+			if ( $count > 0 ) {
+				$html .= '<span class="gf-pf-count">' . esc_html( number_format_i18n( $count ) ) . '</span>';
+			}
+			$html .= '</label>';
+
+			if ( ! empty( $children ) ) {
+				$html .= '<span class="toggle-handle"></span>';
+				$html .= '<ul class="filter-items level-' . ( $level + 1 ) . '">';
+				$html .= self::render_cat_level( $children, $level + 1, $taxonomy );
+				$html .= '</ul>';
+			}
+
+			$html .= '</li>';
+		}
 
 		return $html;
+	}
+
+	/**
+	 * Whether any node in the given subtree is currently active.
+	 *
+	 * @param array  $nodes    Category nodes.
+	 * @param string $taxonomy Category taxonomy.
+	 * @return bool
+	 */
+	protected static function cat_node_has_active( $nodes, $taxonomy ) {
+		foreach ( $nodes as $node ) {
+			if ( GF_PF_Terms::is_term_active( $node['term'], $taxonomy ) || self::cat_node_has_active( $node['children'], $taxonomy ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
