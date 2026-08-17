@@ -41,9 +41,12 @@ class GF_PF_Renderer {
 		// Sắp xếp các thương hiệu (Cấp 0) theo thứ tự A-Z
 		self::sort_brand_items( $tree );
 
-		$title         = isset( $args['title'] ) ? $args['title'] : __( 'THƯƠNG HIỆU', 'goldenfarm-product-filter' );
-		$multiple      = 'no' !== ( isset( $args['multiple'] ) ? $args['multiple'] : 'yes' );
+		$title          = isset( $args['title'] ) ? $args['title'] : __( 'THƯƠNG HIỆU', 'goldenfarm-product-filter' );
+		$multiple       = 'no' !== ( isset( $args['multiple'] ) ? $args['multiple'] : 'yes' );
 		$brand_taxonomy = GF_PF_Terms::brand_taxonomy();
+
+		// Tính 1 lần duy nhất cho toàn bộ cây: base URL, slug active, reset URL.
+		$context = GF_PF_Terms::get_url_context();
 
 		ob_start();
 		?>
@@ -58,18 +61,18 @@ class GF_PF_Renderer {
 					<button type="button" class="gf-pf-close-btn" aria-label="<?php esc_attr_e( 'Đóng bộ lọc', 'goldenfarm-product-filter' ); ?>">&times;</button>
 				</div>
 				<div class="filters-container">
-					<form method="get" action="<?php echo esc_url( GF_PF_Terms::get_base_url() ); ?>">
+					<form method="get" action="<?php echo esc_url( $context['base_url'] ); ?>">
 						<div class="yith-wcan-filter filter-tax hierarchical checkbox-design gf-pf-block">
 							<h4 class="filter-title">
 								<span class="gf-pf-title-text"><?php echo esc_html( $title ); ?></span>
-								<a href="<?php echo esc_url( GF_PF_Terms::get_reset_url() ); ?>" class="gf-pf-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
+								<a href="<?php echo esc_url( $context['reset_url'] ); ?>" class="gf-pf-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
 							</h4>
 							<div class="filter-content">
 								<ul class="filter-items level-0">
 									<?php
 									foreach ( $tree as $item ) {
 										// phpcs:ignore
-										echo self::render_brand( $item, $multiple, $brand_taxonomy );
+										echo self::render_brand( $item, $multiple, $brand_taxonomy, $context );
 									}
 									?>
 								</ul>
@@ -78,7 +81,7 @@ class GF_PF_Renderer {
 					</form>
 				</div>
 				<div class="gf-pf-mobile-footer">
-					<a href="<?php echo esc_url( GF_PF_Terms::get_reset_url() ); ?>" class="btn-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
+					<a href="<?php echo esc_url( $context['reset_url'] ); ?>" class="btn-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -92,13 +95,14 @@ class GF_PF_Renderer {
 	 * @param array  $item          Brand item: array( 'brand', 'count', 'categories' ).
 	 * @param bool   $multiple      Cho phép chọn nhiều.
 	 * @param string $brand_taxonomy Taxonomy thương hiệu.
+	 * @param array  $context       URL context tính 1 lần (xem get_url_context()).
 	 * @return string
 	 */
-	protected static function render_brand( $item, $multiple, $brand_taxonomy ) {
+	protected static function render_brand( $item, $multiple, $brand_taxonomy, $context ) {
 		$brand       = $item['brand'];
 		$brand_count = isset( $item['count'] ) ? (int) $item['count'] : 0;
 		$categories  = isset( $item['categories'] ) ? $item['categories'] : array();
-		$active      = GF_PF_Terms::is_term_active( $brand, $brand_taxonomy );
+		$active      = in_array( $brand->slug, $context['active'][ $brand_taxonomy ], true );
 
 		// Sắp xếp danh mục con theo A-Z
 		self::sort_cat_nodes( $categories );
@@ -117,7 +121,7 @@ class GF_PF_Renderer {
 		$html  = '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 		$html .= '<label for="' . esc_attr( $item_id ) . '">';
 		$html .= '<input type="checkbox" id="' . esc_attr( $item_id ) . '" name="' . esc_attr( $input_name ) . '" value="' . esc_attr( $brand->slug ) . '" ' . checked( $active, true, false ) . '>';
-		$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $brand, $brand_taxonomy, $multiple ) ) . '" class="term-label">' . esc_html( $brand->name ) . '</a>';
+		$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $brand, $brand_taxonomy, $multiple, $context ) ) . '" class="term-label">' . esc_html( $brand->name ) . '</a>';
 		if ( $brand_count > 0 ) {
 			$html .= '<span class="gf-pf-count">' . esc_html( number_format_i18n( $brand_count ) ) . '</span>';
 		}
@@ -127,7 +131,7 @@ class GF_PF_Renderer {
 			$html .= '<span class="toggle-handle"></span>';
 			$html .= '<ul class="filter-items level-1">';
 			foreach ( $categories as $node ) {
-				$html .= self::render_cat_node( $node, 1, $multiple );
+				$html .= self::render_cat_node( $node, 1, $multiple, $context );
 			}
 			$html .= '</ul>';
 		}
@@ -143,13 +147,15 @@ class GF_PF_Renderer {
 	 * @param array $node     Node: array( 'term', 'count', 'children' ).
 	 * @param int   $level    Độ sâu cây (1 = nhóm, 2+ = sản phẩm con).
 	 * @param bool  $multiple Cho phép chọn nhiều.
+	 * @param array $context  URL context tính 1 lần (xem get_url_context()).
 	 * @return string
 	 */
-	protected static function render_cat_node( $node, $level, $multiple ) {
+	protected static function render_cat_node( $node, $level, $multiple, $context ) {
 		$term     = $node['term'];
 		$count    = isset( $node['count'] ) ? (int) $node['count'] : 0;
 		$children = isset( $node['children'] ) ? $node['children'] : array();
-		$active   = GF_PF_Terms::is_term_active( $term );
+		$taxonomy = GF_PF_Terms::taxonomy();
+		$active   = in_array( $term->slug, $context['active'][ $taxonomy ], true );
 
 		// Sắp xếp danh mục con theo A-Z
 		self::sort_cat_nodes( $children );
@@ -173,7 +179,7 @@ class GF_PF_Renderer {
 		$html  = '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 		$html .= '<label for="' . esc_attr( $item_id ) . '">';
 		$html .= '<input type="checkbox" id="' . esc_attr( $item_id ) . '" name="' . esc_attr( $input_name ) . '" value="' . esc_attr( $term->slug ) . '" ' . checked( $active, true, false ) . '>';
-		$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $term, GF_PF_Terms::taxonomy(), $multiple ) ) . '" class="term-label">' . esc_html( $term->name ) . '</a>';
+		$html .= '<a href="' . esc_url( GF_PF_Terms::get_term_url( $term, $taxonomy, $multiple, $context ) ) . '" class="term-label">' . esc_html( $term->name ) . '</a>';
 		if ( $count > 0 ) {
 			$html .= '<span class="gf-pf-count">' . esc_html( number_format_i18n( $count ) ) . '</span>';
 		}
@@ -183,7 +189,7 @@ class GF_PF_Renderer {
 			$html .= '<span class="toggle-handle"></span>';
 			$html .= '<ul class="filter-items level-' . ( $level + 1 ) . '">';
 			foreach ( $children as $child_node ) {
-				$html .= self::render_cat_node( $child_node, $level + 1, $multiple );
+				$html .= self::render_cat_node( $child_node, $level + 1, $multiple, $context );
 			}
 			$html .= '</ul>';
 		}
@@ -231,17 +237,20 @@ class GF_PF_Renderer {
 	 * @return int
 	 */
 	protected static function compare_names( $a, $b ) {
-		if ( class_exists( 'Collator' ) ) {
+		static $collator = null;
+
+		if ( null === $collator && class_exists( 'Collator' ) ) {
 			try {
 				$collator = new Collator( 'vi_VN' );
-				if ( $collator ) {
-					$cmp = $collator->compare( $a, $b );
-					if ( false !== $cmp ) {
-						return $cmp;
-					}
-				}
 			} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-				// Fall back to strnatcasecmp below.
+				$collator = false;
+			}
+		}
+
+		if ( $collator ) {
+			$cmp = $collator->compare( $a, $b );
+			if ( false !== $cmp ) {
+				return $cmp;
 			}
 		}
 		return strnatcasecmp( $a, $b );

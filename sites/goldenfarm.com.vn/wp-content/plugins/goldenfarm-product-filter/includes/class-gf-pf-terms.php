@@ -428,12 +428,20 @@ class GF_PF_Terms {
 	 * @return string
 	 */
 	public static function get_base_url() {
+		static $base_url = null;
+
+		if ( null !== $base_url ) {
+			return $base_url;
+		}
+
 		// Always use the shop page as the base for filter links.
 		$shop_url = function_exists( 'wc_get_page_permalink' )
 			? wc_get_page_permalink( 'shop' )
 			: home_url( '/shop/' );
 
-		return apply_filters( 'gf_pf_base_url', $shop_url );
+		$base_url = apply_filters( 'gf_pf_base_url', $shop_url );
+
+		return $base_url;
 	}
 
 	/**
@@ -442,6 +450,12 @@ class GF_PF_Terms {
 	 * @return array
 	 */
 	protected static function get_preserved_args() {
+		static $args = null;
+
+		if ( null !== $args ) {
+			return $args;
+		}
+
 		$args = array();
 
 		foreach ( array( 'orderby', 's' ) as $key ) {
@@ -450,7 +464,37 @@ class GF_PF_Terms {
 			}
 		}
 
-		return apply_filters( 'gf_pf_preserve_args', $args );
+		$args = apply_filters( 'gf_pf_preserve_args', $args );
+
+		return $args;
+	}
+
+	/**
+	 * Precomputed URL-building context, computed once per request.
+	 *
+	 * Avoids re-parsing $_GET and re-resolving the shop URL for every term
+	 * while rendering the filter tree (no N+1 work in the render loop).
+	 *
+	 * @return array{base_url:string,preserved:array,active:array,reset_url:string}
+	 */
+	public static function get_url_context() {
+		static $context = null;
+
+		if ( null !== $context ) {
+			return $context;
+		}
+
+		$context = array(
+			'base_url'  => self::get_base_url(),
+			'preserved' => self::get_preserved_args(),
+			'active'    => array(
+				self::brand_taxonomy() => self::get_active_slugs( self::brand_taxonomy() ),
+				self::taxonomy()       => self::get_active_slugs( self::taxonomy() ),
+			),
+			'reset_url' => self::get_reset_url(),
+		);
+
+		return $context;
 	}
 
 	/**
@@ -463,13 +507,20 @@ class GF_PF_Terms {
 	 * @param WP_Term $term Term to toggle.
 	 * @param string  $taxonomy Target taxonomy.
 	 * @param bool    $multiple Whether multiple terms allowed.
+	 * @param array   $context  Optional precomputed URL context (see get_url_context()).
 	 * @return string
 	 */
-	public static function get_term_url( $term, $taxonomy = 'product_cat', $multiple = true ) {
-		$active_current = self::get_active_slugs( $taxonomy );
+	public static function get_term_url( $term, $taxonomy = 'product_cat', $multiple = true, $context = null ) {
+		if ( null === $context ) {
+			$context = self::get_url_context();
+		}
+
+		$active_current = isset( $context['active'][ $taxonomy ] )
+			? $context['active'][ $taxonomy ]
+			: self::get_active_slugs( $taxonomy );
 
 		// Determine the selected slugs for this taxonomy after the toggle.
-		if ( self::is_term_active( $term, $taxonomy ) ) {
+		if ( in_array( $term->slug, $active_current, true ) ) {
 			// Term is active, so clicking it should remove it.
 			$selected = array_values( array_diff( $active_current, array( $term->slug ) ) );
 		} elseif ( $multiple ) {
@@ -482,7 +533,7 @@ class GF_PF_Terms {
 		}
 
 		// Start with preserved query args (orderby, search, etc.).
-		$query_args = self::get_preserved_args();
+		$query_args = $context['preserved'];
 
 		// Add the current taxonomy's selected slugs.
 		if ( ! empty( $selected ) ) {
@@ -492,14 +543,16 @@ class GF_PF_Terms {
 		// For category filters, preserve the active brand filter.
 		// For brand filters, preserve the active category filter.
 		$other_taxonomy = ( $taxonomy === self::brand_taxonomy() ) ? self::taxonomy() : self::brand_taxonomy();
-		$other_active   = self::get_active_slugs( $other_taxonomy );
+		$other_active   = isset( $context['active'][ $other_taxonomy ] )
+			? $context['active'][ $other_taxonomy ]
+			: self::get_active_slugs( $other_taxonomy );
 
 		if ( ! empty( $other_active ) ) {
 			$query_args[ $other_taxonomy ] = implode( ',', $other_active );
 		}
 
 		// Build clean URL: [shop_url]/?taxonomy=slug1,slug2&other_taxonomy=slug
-		return add_query_arg( $query_args, self::get_base_url() );
+		return add_query_arg( $query_args, $context['base_url'] );
 	}
 
 	/**
