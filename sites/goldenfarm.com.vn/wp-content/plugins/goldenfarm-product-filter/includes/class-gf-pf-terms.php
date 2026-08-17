@@ -278,7 +278,7 @@ class GF_PF_Terms {
 		// List of slugs to exclude from the tree structure.
 		$excluded_slugs = apply_filters(
 			'gf_pf_excluded_category_slugs',
-			array( 'san-pham', 'chuyen-muc-trang-chu' )
+			array( 'san-pham', 'chuyen-muc-trang-chu', 'thuc-pham', 'nguyen-pha-che-lam-banh' )
 		);
 
 		foreach ( $children_map[ $parent_id ] as $child_id ) {
