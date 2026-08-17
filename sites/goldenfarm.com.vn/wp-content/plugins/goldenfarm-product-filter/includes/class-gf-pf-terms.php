@@ -258,6 +258,10 @@ class GF_PF_Terms {
 	 * A node is kept when it has products for the brand or when any descendant
 	 * has products (ancestors on the path to a real category are preserved).
 	 *
+	 * NEW: Excludes unwanted wrapper categories (san-pham, chuyen-muc-trang-chu)
+	 * and flattens the hierarchy by bypassing excluded parents and promoting
+	 * their valid children directly to the parent level.
+	 *
 	 * @param int   $parent_id    Parent term id.
 	 * @param array $active       Active category counts (cat_id => count).
 	 * @param array $cat_by_id    term_id => WP_Term.
@@ -271,21 +275,70 @@ class GF_PF_Terms {
 			return $nodes;
 		}
 
+		// List of slugs to exclude from the tree structure.
+		$excluded_slugs = apply_filters(
+			'gf_pf_excluded_category_slugs',
+			array( 'san-pham', 'chuyen-muc-trang-chu' )
+		);
+
 		foreach ( $children_map[ $parent_id ] as $child_id ) {
+			$term = $cat_by_id[ $child_id ];
+
+			// Check if this category should be excluded (wrapper categories).
+			$is_excluded = in_array( $term->slug, $excluded_slugs, true );
+
+			// Recursively get children for this node.
 			$child_nodes = self::build_cat_nodes( $child_id, $active, $cat_by_id, $children_map );
 
+			// If the current category is excluded, flatten by promoting its children.
+			if ( $is_excluded ) {
+				// Don't add the excluded node itself, but merge its children into current level.
+				$nodes = array_merge( $nodes, $child_nodes );
+				continue;
+			}
+
+			// Remove nodes with 0 count and no valid descendants.
 			if ( ! isset( $active[ $child_id ] ) && empty( $child_nodes ) ) {
 				continue;
 			}
 
+			// Only include nodes that have a non-zero count OR have valid children.
+			$count = isset( $active[ $child_id ] ) ? $active[ $child_id ] : 0;
+
+			// Skip nodes with 0 count that only have children with 0 count.
+			if ( $count === 0 && ! empty( $child_nodes ) ) {
+				// Check if any child has a non-zero count recursively.
+				if ( ! self::has_valid_descendants( $child_nodes ) ) {
+					continue;
+				}
+			}
+
 			$nodes[] = array(
-				'term'     => $cat_by_id[ $child_id ],
-				'count'    => isset( $active[ $child_id ] ) ? $active[ $child_id ] : 0,
+				'term'     => $term,
+				'count'    => $count,
 				'children' => $child_nodes,
 			);
 		}
 
 		return $nodes;
+	}
+
+	/**
+	 * Check if a node tree has any valid descendants with count > 0.
+	 *
+	 * @param array $nodes Array of category nodes.
+	 * @return bool
+	 */
+	private static function has_valid_descendants( $nodes ) {
+		foreach ( $nodes as $node ) {
+			if ( $node['count'] > 0 ) {
+				return true;
+			}
+			if ( ! empty( $node['children'] ) && self::has_valid_descendants( $node['children'] ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -319,6 +372,10 @@ class GF_PF_Terms {
 	/**
 	 * Active slugs for a specific taxonomy from query vars.
 	 *
+	 * FIXED: Only reads from query parameters (?product_cat=slug), not from
+	 * the current taxonomy archive page context. This prevents conflicts when
+	 * users are on a category archive but want to filter by a different taxonomy.
+	 *
 	 * @param string $taxonomy Taxonomy slug.
 	 * @return string[]
 	 */
@@ -331,22 +388,18 @@ class GF_PF_Terms {
 
 		$slugs = array();
 
-		if ( is_tax( $taxonomy ) ) {
-			$term = get_queried_object();
-			if ( $term instanceof WP_Term ) {
-				$slugs[] = $term->slug;
-			}
-		}
-
+		// Read from query var (e.g., ?product_cat=slug1,slug2).
 		$query_var = get_query_var( $taxonomy );
 		if ( ! empty( $query_var ) ) {
 			$slugs = array_merge( $slugs, self::split_slugs( $query_var ) );
 		}
 
+		// Read from $_GET as fallback (e.g., when query_var isn't set).
 		if ( isset( $_GET[ $taxonomy ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$slugs = array_merge( $slugs, self::split_slugs( wp_unslash( $_GET[ $taxonomy ] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
+		// Remove duplicates and reindex.
 		$slugs = array_values( array_unique( $slugs ) );
 
 		$cache[ $taxonomy ] = $slugs;
@@ -368,12 +421,19 @@ class GF_PF_Terms {
 	/**
 	 * Base URL for filter links.
 	 *
+	 * FIXED: Always returns the WooCommerce shop page URL instead of the
+	 * current page URL. This prevents conflicts when filtering from a
+	 * category archive page (e.g., /mama-rosa/) to a different brand filter.
+	 *
 	 * @return string
 	 */
 	public static function get_base_url() {
-		global $wp;
+		// Always use the shop page as the base for filter links.
+		$shop_url = function_exists( 'wc_get_page_permalink' )
+			? wc_get_page_permalink( 'shop' )
+			: home_url( '/shop/' );
 
-		return apply_filters( 'gf_pf_base_url', home_url( $wp->request ) );
+		return apply_filters( 'gf_pf_base_url', $shop_url );
 	}
 
 	/**
@@ -396,6 +456,10 @@ class GF_PF_Terms {
 	/**
 	 * Builds toggle URL for a term (preserves sort/search + current selection).
 	 *
+	 * FIXED: Uses shop page as base URL and builds clean query parameters.
+	 * - Brand filters: [shop]/?product_brand=[slug]
+	 * - Category filters: [shop]/?product_cat=[slug]&product_brand=[brand_slug]
+	 *
 	 * @param WP_Term $term Term to toggle.
 	 * @param string  $taxonomy Target taxonomy.
 	 * @param bool    $multiple Whether multiple terms allowed.
@@ -404,33 +468,62 @@ class GF_PF_Terms {
 	public static function get_term_url( $term, $taxonomy = 'product_cat', $multiple = true ) {
 		$active_current = self::get_active_slugs( $taxonomy );
 
+		// Determine the selected slugs for this taxonomy after the toggle.
 		if ( self::is_term_active( $term, $taxonomy ) ) {
+			// Term is active, so clicking it should remove it.
 			$selected = array_values( array_diff( $active_current, array( $term->slug ) ) );
 		} elseif ( $multiple ) {
+			// Multiple selection allowed, add to existing selection.
 			$selected   = $active_current;
 			$selected[] = $term->slug;
 		} else {
+			// Single selection mode, replace with this term only.
 			$selected = array( $term->slug );
 		}
 
+		// Start with preserved query args (orderby, search, etc.).
 		$query_args = self::get_preserved_args();
 
+		// Add the current taxonomy's selected slugs.
 		if ( ! empty( $selected ) ) {
 			$query_args[ $taxonomy ] = implode( ',', $selected );
 		}
 
+		// For category filters, preserve the active brand filter.
+		// For brand filters, preserve the active category filter.
+		$other_taxonomy = ( $taxonomy === self::brand_taxonomy() ) ? self::taxonomy() : self::brand_taxonomy();
+		$other_active   = self::get_active_slugs( $other_taxonomy );
+
+		if ( ! empty( $other_active ) ) {
+			$query_args[ $other_taxonomy ] = implode( ',', $other_active );
+		}
+
+		// Build clean URL: [shop_url]/?taxonomy=slug1,slug2&other_taxonomy=slug
 		return add_query_arg( $query_args, self::get_base_url() );
 	}
 
 	/**
 	 * URL that clears all active filter selections (keeps sort/search).
 	 *
+	 * FIXED: Returns clean shop page URL with only preserved args (orderby, search).
+	 * Removes all taxonomy query parameters (product_cat, product_brand).
+	 *
 	 * @return string
 	 */
 	public static function get_reset_url() {
+		// Start with base shop URL (no query params).
+		$base_url = self::get_base_url();
+
+		// Get preserved args (orderby, search) but NOT taxonomy filters.
 		$query_args = self::get_preserved_args();
 
-		return add_query_arg( $query_args, remove_query_arg( array( self::taxonomy(), self::brand_taxonomy() ), self::get_base_url() ) );
+		// Build URL with only preserved args, if any.
+		if ( ! empty( $query_args ) ) {
+			return add_query_arg( $query_args, $base_url );
+		}
+
+		// Return clean shop URL if no preserved args.
+		return $base_url;
 	}
 
 	/**

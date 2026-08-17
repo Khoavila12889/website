@@ -49,5 +49,13 @@ class GF_PF_Assets {
 			GF_PF_VERSION,
 			true
 		);
+
+		wp_enqueue_script(
+			'gf-pf-drawer',
+			GF_PF_PLUGIN_URL . 'assets/js/filter-drawer.js',
+			array(),
+			GF_PF_VERSION,
+			true
+		);
 	}
 }

@@ -1,353 +1,535 @@
 /**
- * GoldenFarm Product Filter — professional UI layer.
- *
- * Built on top of the YITH-compatible markup (.yith-wcan-*) already styled by
- * the theme (CanhCamTheme main.min.css). This file only adds the polished
- * GoldenFarm layer: toolbar/reset, title icons, count badges, hover/active
- * feedback, smooth accordion and a sticky sidebar.
+ * GoldenFarm Product Filter — Dark Mode & Mobile Drawer (Complete Version)
  */
 
 :root {
-	--gf-pf-accent: #007a62;
-	--gf-pf-accent-2: #009973;
-	--gf-pf-title: #36bd4f;
-	--gf-pf-bg: #ffffff;
-	--gf-pf-bg-soft: #f7f7f7;
-	--gf-pf-text: #222222;
-	--gf-pf-muted: #888888;
-	--gf-pf-border: #e6e6e6;
-	--gf-pf-radius: 10px;
+    --gf-pf-accent: #009973;       /* Xanh lá chủ đạo */
+    --gf-pf-accent-2: #007a62;
+    --gf-pf-title: #36bd4f;        /* Xanh lá sáng (neon) mặc định */
+    --gf-pf-bg: #121212;           /* Màu nền tối cho các block */
+    --gf-pf-bg-soft: #1e1e1e;      /* Màu nền xám tối cho hover/sub-menu */
+    --gf-pf-text: #ffffff;         /* Chữ màu trắng */
+    --gf-pf-muted: #888888;        /* Chữ xám mờ */
+    --gf-pf-border: #333333;       /* Viền xám tối, tiệp với nền đen */
+    --gf-pf-radius: 10px;
 }
 
-/* ---------------------------------------------------------------- wrapper */
+/* ---------------------------------------------------------------- Wrapper Desktop */
 .yith-wcan-filters.gf-pf-filters {
-	background: transparent;
+    background: transparent;
 }
 
 .yith-wcan-filters.gf-pf-filters .filters-container {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 @media (min-width: 1024px) {
-	.yith-wcan-filters.gf-pf-filters {
-		position: sticky;
-		top: 24px;
-		align-self: flex-start;
-	}
+    .yith-wcan-filters.gf-pf-filters {
+        position: sticky;
+        top: 24px;
+        align-self: flex-start;
+    }
 }
 
-/* --------------------------------------------------------------- toolbar */
+/* --------------------------------------------------------------- Toolbar */
 .gf-pf-toolbar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	padding: 12px 16px;
-	background: var(--gf-pf-bg);
-	border: 1px solid var(--gf-pf-border);
-	border-radius: var(--gf-pf-radius);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--gf-pf-bg);
+    border: 1px solid var(--gf-pf-border);
+    border-radius: var(--gf-pf-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .gf-pf-toolbar-status {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--gf-pf-accent);
-}
-
-.gf-pf-toolbar-status i {
-	font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gf-pf-title);
 }
 
 .gf-pf-reset {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	padding: 6px 12px;
-	border: 1px solid var(--gf-pf-border);
-	border-radius: 999px;
-	background: var(--gf-pf-bg-soft);
-	color: var(--gf-pf-text);
-	font-size: 13px;
-	font-weight: 600;
-	line-height: 1;
-	text-decoration: none !important;
-	transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px !important;
+    border: 1px solid var(--gf-pf-border);
+    border-radius: 20px !important;
+    background: var(--gf-pf-bg-soft);
+    color: var(--gf-pf-text);
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
 }
 
 .gf-pf-reset:hover,
 .gf-pf-reset:focus {
-	border-color: var(--gf-pf-accent);
-	background: var(--gf-pf-accent);
-	color: #ffffff;
+    border-color: var(--gf-pf-accent);
+    background: var(--gf-pf-accent);
+    color: #ffffff;
 }
 
-/* ----------------------------------------------------------------- blocks */
+/* ----------------------------------------------------------------- Blocks */
 .yith-wcan-filters.gf-pf-filters .yith-wcan-filter.gf-pf-block {
-	position: relative;
-	margin-bottom: 0;
-	border: 1px solid var(--gf-pf-border);
-	border-radius: var(--gf-pf-radius);
-	background: var(--gf-pf-bg);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-	overflow: hidden;
+    position: relative;
+    margin-bottom: 0;
+    border: 1px solid var(--gf-pf-border);
+    border-radius: var(--gf-pf-radius);
+    background: var(--gf-pf-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 }
 
 .yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin: 0;
-	padding: 14px 16px;
-	background: linear-gradient(180deg, #ffffff 0%, #f2f2f2 100%);
-	border-bottom: 1px solid var(--gf-pf-border);
-	color: var(--gf-pf-text);
-	font-weight: 700;
-	font-size: 15px;
-	line-height: 1.3;
-	letter-spacing: 0.02em;
-	text-transform: none;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px;
+    margin: 0;
+    padding: 14px 16px !important;
+    background: linear-gradient(180deg, #1e1e1e 0%, #121212 100%);
+    border-bottom: 1px solid var(--gf-pf-border);
+    color: var(--gf-pf-title);
+    font-weight: 800 !important;
+    font-size: 18px !important;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
-.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-title-icon {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 28px;
-	height: 28px;
-	border-radius: 8px;
-	background: rgba(0, 122, 98, 0.1);
-	color: var(--gf-pf-accent);
-	font-size: 14px;
-	flex: 0 0 auto;
+.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-reset {
+    margin-left: auto !important;
 }
 
-.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-title-text {
-	flex: 1 1 auto;
-}
-
-/* ---------------------------------------------------------------- terms */
+/* ---------------------------------------------------------------- Tree Structure & Layout */
 .yith-wcan-filters.gf-pf-filters .filter-content {
-	padding: 0;
+    padding: 0;
 }
 
 .yith-wcan-filters.gf-pf-filters .filter-items {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item {
-	position: relative;
-	margin: 0;
-	line-height: 1.4;
+    position: relative;
+    margin: 0;
+    line-height: 1.4;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	padding: 10px 16px;
-	background: transparent;
-	border-bottom: 1px solid var(--gf-pf-border);
-	color: var(--gf-pf-text);
-	font-weight: 500;
-	font-size: 14px;
-	cursor: pointer;
-	transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+/* Align Checkbox and Text Content in columns */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item .filter-item-content {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 16px;
+    padding-right: 20px;
+    background: transparent !important;
+    border-bottom: 1px solid var(--gf-pf-border);
+    color: var(--gf-pf-text);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label:hover {
-	background: rgba(0, 122, 98, 0.06);
-	padding-left: 20px;
-	color: var(--gf-pf-accent);
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children .filter-item-content {
+    padding-right: 54px !important;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.active > label {
-	background: rgba(0, 122, 98, 0.1);
-	color: var(--gf-pf-accent);
-	font-weight: 600;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label:hover,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item .filter-item-content:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label a {
-	color: inherit;
-	text-decoration: none;
-	flex: 1 1 auto;
-	min-width: 0;
-	word-break: break-word;
-}
-
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label a:hover {
-	text-decoration: none;
-}
-
-/* Reusable native checkbox -> custom square via FA (theme hook), keep hidden. */
+/* Custom Checkbox Container */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"] {
-	position: absolute;
-	opacity: 0;
-	pointer-events: none;
-	width: 0;
-	height: 0;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    flex: 0 0 auto !important;
+    position: relative !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: 1px !important;
+    border: 2px solid #555555;
+    border-radius: 4px !important;
+    background: transparent !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Branch collapsing (works at every depth) */
+/* Checkbox Dot inside */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"]::after {
+    content: "" !important;
+    width: 10px !important;
+    height: 10px !important;
+    background-color: var(--gf-pf-title);
+    border-radius: 50% !important;
+    transform: scale(0) !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"]:checked::after,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.active input[type="checkbox"]::after {
+    transform: scale(1) !important;
+}
+
+/* Term Label wrapping */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item .term-label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > label a {
+    color: inherit !important;
+    text-decoration: none !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    line-height: 1.35 !important;
+    word-break: break-word;
+}
+
+/* Remove theme old green dot */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item label a::before,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item .term-label::before,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Branch Collapsing & Tree Indentation */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > ul.filter-items {
-	display: none;
-	padding: 0;
-	margin: 0;
+    display: none;
+    margin: 0;
 }
 
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > ul.filter-items {
-	display: block;
+    display: block;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > .toggle-handle {
-	transform: rotate(180deg);
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > ul.filter-items {
+    padding-left: 18px !important;
+    border-left: 1px solid #282828;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > label {
-	padding-right: 36px;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > ul.filter-items {
+    padding-left: 16px !important;
 }
 
-/* Level-0 (brand) branch panel look */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-0 > ul.filter-items {
-	background: var(--gf-pf-bg-soft);
-	border-bottom: 1px solid var(--gf-pf-border);
+    background: var(--gf-pf-bg-soft);
 }
 
-/* ---------------------------------------------------------- count badges */
+/* ---------------------------------------------------------- Badges & Toggle Handles */
 .gf-pf-count {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 22px;
-	height: 20px;
-	padding: 0 6px;
-	border-radius: 999px;
-	background: var(--gf-pf-bg-soft);
-	border: 1px solid var(--gf-pf-border);
-	color: var(--gf-pf-muted);
-	font-size: 11px;
-	font-weight: 600;
-	line-height: 1;
-	flex: 0 0 auto;
-	transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #222222 !important;
+    border: 1px solid #444444 !important;
+    color: #cccccc !important;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    flex: 0 0 auto;
+    transition: all 0.15s ease;
 }
 
-.filter-item.active > label .gf-pf-count,
-.filter-item > label:hover .gf-pf-count {
-	background: var(--gf-pf-accent);
-	border-color: var(--gf-pf-accent);
-	color: #ffffff;
-}
-
-/* ------------------------------------------------------------ toggle handle */
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 24px;
-	height: 24px;
-	position: absolute;
-	right: 12px;
-	top: 10px;
-	cursor: pointer;
-	color: var(--gf-pf-muted);
-	font-size: 0;
-	transition: transform 0.2s ease, color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    cursor: pointer;
+    color: var(--gf-pf-muted);
+    font-size: 0;
+    transition: transform 0.2s ease, color 0.15s ease;
 }
 
 .yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle::after {
-	content: "";
-	width: 8px;
-	height: 8px;
-	border-right: 2px solid currentColor;
-	border-bottom: 2px solid currentColor;
-	transform: rotate(45deg);
-	margin-top: -4px;
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    margin-top: -4px;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children > .toggle-handle:hover {
-	color: var(--gf-pf-accent);
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.has-children.opened > .toggle-handle {
+    transform: rotate(180deg);
 }
 
-/* Nesting levels */
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items {
-	padding-left: 14px;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item > .toggle-handle::before {
+    content: none !important;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label a::before {
-	content: "";
-	display: inline-block;
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background: var(--gf-pf-border);
-	margin-right: 0;
-	transition: background 0.15s ease;
+/* --------------------------------------------------------- Hierarchy Base Typography */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label a,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label .term-label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > .filter-item-content .term-label {
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item.active > label a::before,
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-items .filter-item > label:hover a::before {
-	background: var(--gf-pf-accent);
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-1 .term-label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #e0e0e0 !important;
 }
 
-/* --------------------------------------------------------- hierarchy levels */
-
-/* Cấp 0: Thương hiệu (Lớn nhất, Xanh lá đậm, Viết hoa) */
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-brand-root > label .term-label {
-	font-weight: 800 !important;
-	text-transform: uppercase;
-	color: #2b7837;
-	font-size: 14px;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.level-2 .term-label {
+    font-size: 12px !important;
+    color: #cccccc !important;
 }
 
-/* Cấp 1: Nhóm ngành hàng (Ví dụ: Thực phẩm / NLPC & Làm bánh) */
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-group-parent > label .term-label {
-	font-weight: 600 !important;
-	color: #333;
-	font-size: 13px;
-	font-style: italic;
+/* =========================================================
+   PHÂN MÀU TÊN THƯƠNG HIỆU & MŨI TÊN (CHECKBOX GIỮ NGUYÊN MÀU XANH)
+   ========================================================= */
+
+/* Ep tat ca o Checkbox & Dau cham xanh luon dung mau xanh mac dinh */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"]:checked,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.active input[type="checkbox"] {
+    border-color: #36bd4f !important;
 }
 
-/* Cấp 2+: Sản phẩm con (màu tiêu chuẩn) */
-.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.is-product-leaf > label .term-label {
-	font-weight: 400;
-	font-size: 13px;
-	color: #555;
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item input[type="checkbox"]::after {
+    background-color: #36bd4f !important;
 }
 
-/* Reset button embedded in the filter title row */
-.yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title .gf-pf-reset {
-	margin-left: auto;
-	padding: 4px 10px;
-	font-size: 12px;
+/* 1. GOLDEN FARM (Chữ & Mũi tên màu Xanh lá #36bd4f) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-golden-farm > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-golden-farm > label a,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-golden-farm > .filter-item-content .term-label {
+    color: #36bd4f !important;
+}
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-golden-farm > .toggle-handle {
+    color: #36bd4f !important;
 }
 
-/* ----------------------------------------------------------------- mobile */
+/* 2. MAMA ROSA (Chữ & Mũi tên màu Xanh Cốm #98cb4f) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-mama-rosa > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-mama-rosa > label a,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-mama-rosa > .filter-item-content .term-label {
+    color: #98cb4f !important;
+}
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-mama-rosa > .toggle-handle {
+    color: #98cb4f !important;
+}
+
+/* 3. VỊ Á (Chữ & Mũi tên màu Đỏ #d92328) */
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-vi-a > label,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-vi-a > label a,
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-vi-a > .filter-item-content .term-label {
+    color: #d92328 !important;
+}
+.yith-wcan-filters.gf-pf-filters .filter-items .filter-item.term-slug-vi-a > .toggle-handle {
+    color: #d92328 !important;
+}
+
+/* ----------------------------------------------------------------- Mobile Off-Canvas Sidebar */
+.gf-pf-mobile-toggle,
+.gf-pf-mobile-header,
+.gf-pf-mobile-footer {
+    display: none;
+}
+
+body.gf-pf-filter-open {
+    overflow: hidden;
+}
+
 @media (max-width: 1023.98px) {
-	.yith-wcan-filters.gf-pf-filters {
-		position: static;
-	}
+    .gf-pf-mobile-toggle {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 8px;
+        width: auto !important;
+        margin: 0 0 16px 0;
+        padding: 8px 18px;
+        background: #1a1a1a;
+        border: 1px solid var(--gf-pf-border);
+        border-radius: 30px;
+        color: var(--gf-pf-title);
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease;
+    }
 
-	.yith-wcan-filters.gf-pf-filters .filters-container {
-		gap: 12px;
-	}
-}
+    .gf-pf-mobile-toggle:hover,
+    .gf-pf-mobile-toggle:active {
+        background: #242424;
+        border-color: var(--gf-pf-accent);
+        transform: translateY(-1px);
+    }
 
-@media (max-width: 575.98px) {
-	.gf-pf-toolbar {
-		flex-direction: column;
-		align-items: stretch;
-		text-align: center;
-	}
+    .gf-pf-mobile-toggle .gf-pf-search-icon {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--gf-pf-title);
+        border-radius: 50%;
+        position: relative;
+        flex-shrink: 0;
+    }
 
-	.gf-pf-reset {
-		justify-content: center;
-	}
+    .gf-pf-mobile-toggle .gf-pf-search-icon::after {
+        content: "";
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        width: 6px;
+        height: 2px;
+        background: var(--gf-pf-title);
+        transform: rotate(45deg);
+    }
+
+    .gf-pf-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 999998;
+    }
+
+    .gf-pf-overlay.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .yith-wcan-filters.gf-pf-filters {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 82vw !important;
+        max-width: 330px !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        background: #141414 !important;
+        z-index: 999999 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .yith-wcan-filters.gf-pf-filters.is-open {
+        transform: translateX(0);
+    }
+
+    .gf-pf-mobile-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #1d1d1d;
+        border-bottom: 1px solid #2a2a2a;
+        flex-shrink: 0;
+    }
+
+    .gf-pf-mobile-header h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--gf-pf-title);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .gf-pf-close-btn {
+        background: transparent;
+        border: none;
+        color: #888888;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 2px 6px;
+        transition: color 0.2s ease;
+    }
+
+    .gf-pf-close-btn:hover {
+        color: #ffffff;
+    }
+
+    .yith-wcan-filters.gf-pf-filters .filters-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 12px;
+    }
+
+    .yith-wcan-filters.gf-pf-filters .yith-wcan-filter {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .yith-wcan-filters.gf-pf-filters .yith-wcan-filter .filter-title {
+        display: none !important;
+    }
+
+    .gf-pf-mobile-footer {
+        display: flex !important;
+        gap: 8px;
+        padding: 12px 16px;
+        background: #1d1d1d;
+        border-top: 1px solid #2a2a2a;
+        flex-shrink: 0;
+    }
+
+    .gf-pf-mobile-footer .btn-reset {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #333333;
+        border-radius: 6px;
+        background: transparent;
+        color: #aaaaaa;
+        font-weight: 600;
+        font-size: 12px;
+        text-align: center;
+        text-decoration: none !important;
+    }
+
+    .gf-pf-mobile-footer .btn-apply {
+        flex: 2;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        background: var(--gf-pf-accent);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
 }
