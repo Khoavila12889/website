@@ -1,5 +1,5 @@
 /* =========================================================
-   GOLDENFARM CUSTOM CSS (OPTIMIZED)
+   GOLDENFARM CUSTOM CSS (FULL OPTIMIZED)
    ========================================================= */
 
 /* FONT FACES */
@@ -78,7 +78,7 @@
     background: #27ae60;
 }
 
-/* MESSENGER BUTTON (Native SVG Icon - Không phụ thuộc FontAwesome) */
+/* MESSENGER BUTTON */
 .product-no-price-contact {
     margin: 1.5rem 0;
 }
@@ -116,7 +116,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE GRID SYSTEM
+   RESPONSIVE GRID SYSTEM (DESKTOP / TABLET)
    ========================================================= */
 
 /* Desktop Default (>= 1025px) */
@@ -164,111 +164,28 @@
 }
 
 /* =========================================================
-   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES
-   ========================================================= */
-@media (max-width: 768px) {
-    html body .global-breadcrumb .container {
-        overflow: hidden !important;
-        max-width: 100% !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
-
-    html body .global-breadcrumb .nav-product-detail {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 8px 0 !important;
-        margin: 0 !important;
-        gap: 8px !important;
-        width: 100% !important;
-        scrollbar-width: none !important; /* Firefox */
-        -ms-overflow-style: none !important;
-    }
-
-    html body .global-breadcrumb .nav-product-detail::-webkit-scrollbar {
-        display: none !important; /* Chrome / Safari */
-        width: 0 !important;
-        height: 0 !important;
-    }
-
-    html body .global-breadcrumb .nav-product-detail > li {
-        display: inline-flex !important;
-        flex: 0 0 auto !important; /* Ngăn co giãn, ép nằm 1 hàng */
-        flex-shrink: 0 !important;
-        width: auto !important;
-        float: none !important;
-        margin: 0 !important;
-    }
-
-    /* Nút danh mục CHƯA CHỌN: Gộp thuộc tính, chữ trắng sáng, nền xám nổi bật */
-    html body .global-breadcrumb .nav-product-detail > li > a {
-        display: inline-block !important;
-        white-space: nowrap !important;
-        padding: 6px 14px !important;
-        font-size: 12px !important;
-        border-radius: 20px !important;
-        line-height: 1.2 !important;
-        color: #ffffff !important;
-        background: #2c2c2c !important;
-        border: 1px solid #444444 !important;
-        font-weight: 500 !important;
-        opacity: 0.9 !important;
-    }
-
-    /* Nút danh mục ĐANG CHỌN (Active): Nổi bật với màu xanh Golden Farm */
-    html body .global-breadcrumb .nav-product-detail > li.active {
-        color: inherit !important;
-    }
-
-    html body .global-breadcrumb .nav-product-detail > li.active > a {
-        color: #ffffff !important;
-        background: #007b62 !important; /* Màu xanh thương hiệu Golden Farm */
-        border-color: #009973 !important;
-        font-weight: 700 !important;
-        opacity: 1 !important;
-        box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
-    }
-}
-
-/* =========================================================
-   FIX MOBILE: BỘ LỌC (TRÁI) & SẮP XẾP (PHẢI) CÙNG 1 HÀNG
-   Nút toggle do plugin render: .col-pro-l > .gf-pf-wrap > .gf-pf-mobile-toggle
-
-   DOM THẬT (đã xác minh từ HTML phục vụ trên site):
-   .product-section .row
-     .col-pro-l                          -> nút Bộ lọc (plugin)
-     .col-pro-r (display: contents)
-       .gf-pf-head-row .flex wrapper     -> h1.site-title + .form-right
-         h1.site-title
-         .form-right
-           form.gf-pf-orderby            -> dropdown Sắp xếp
-       .product-list.mt-5                -> grid sản phẩm (KHÔNG phải ul.products)
+   MOBILE SHOP LAYOUT FIX (DOM EXACT)
+   - Order 1: Title & Notices
+   - Order 2: Filter Button (Left 48%)
+   - Order 3: Orderby Dropdown (Right 48%)
+   - Order 4: Product Grid (2 columns)
+   - Order 5: Pagination (Bottom)
    ========================================================= */
 @media (max-width: 1024px) {
-    /* 1. Ép container chính sang Flexbox */
     html body .product-section .row {
         display: flex !important;
         flex-wrap: wrap !important;
         align-items: center !important;
     }
 
-    /* 2. Phẳng hóa .col-pro-r VÀ wrapper header + .form-right
-          để h1.site-title và form.gf-pf-orderby thành flex item trực tiếp
-          của .row (order chỉ có tác dụng với flex item cấp 1). */
+    /* Flatten DOM structure */
     html body .product-section .col-pro-r,
     html body .product-section .gf-pf-head-row,
     html body .product-section .col-pro-r .form-right {
         display: contents !important;
     }
 
-    /* 3. Tiêu đề (h1.site-title): Hàng 1 (Nằm trên cùng) */
+    /* 1. Page Title & Notices */
     html body .product-section .col-pro-r .site-title {
         order: 1 !important;
         width: 100% !important;
@@ -277,7 +194,6 @@
         margin-bottom: 12px !important;
     }
 
-    /* 3b. Result count / Notices: cũng nằm ở Hàng 1, không phá bố cục flex */
     html body .product-section .woocommerce-notices-wrapper,
     html body .product-section .woocommerce-result-count {
         order: 1 !important;
@@ -288,7 +204,7 @@
         text-align: left !important;
     }
 
-    /* 4. Nút BỘ LỌC: Hàng 2 - Nằm BÊN TRÁI (48%) */
+    /* 2. Filter Button (Left 48%) */
     html body .product-section .col-pro-l {
         order: 2 !important;
         width: 48% !important;
@@ -300,8 +216,6 @@
         padding: 0 !important;
     }
 
-    /* 4a. LUÔN hiển thị nút Toggle (đè display:none mặc định của plugin)
-          và style bo tròn - KHÔNG phụ thuộc gf-pf.css có được load hay không */
     html body .product-section .col-pro-l .gf-pf-mobile-toggle,
     html body .product-section .col-pro-l button.gf-pf-mobile-toggle {
         display: flex !important;
@@ -334,13 +248,11 @@
         border-color: #009973 !important;
     }
 
-    /* Icon lọc bên trong nút (plugin vẽ bằng CSS thuần) */
     html body .product-section .col-pro-l .gf-pf-mobile-toggle .gf-pf-search-icon {
         display: inline-block !important;
         flex: 0 0 auto !important;
     }
 
-    /* 4b. Khung nội dung bộ lọc: ẩn mặc định, hiện dạng Drawer khi mở (.is-open) */
     html body .product-section .col-pro-l .yith-wcan-filters.gf-pf-filters,
     html body .product-section .col-pro-l .gf-pf-filters {
         display: none !important;
@@ -351,7 +263,7 @@
         display: flex !important;
     }
 
-    /* 5. Dropdown SẮP XẾP: Hàng 2 - Nằm BÊN PHẢI (48%) */
+    /* 3. Dropdown Ordering (Right 48%) */
     html body .product-section .gf-pf-orderby {
         order: 3 !important;
         width: 48% !important;
@@ -389,7 +301,7 @@
         appearance: none !important;
     }
 
-    /* 6. Grid Sản phẩm (.product-list): Hàng 3 (Nằm phía dưới) - 2 cột mobile */
+    /* 4. Product Grid (2 columns) */
     html body .product-section .product-list {
         order: 4 !important;
         width: 100% !important;
@@ -406,16 +318,20 @@
         min-width: 0 !important;
     }
 
-    /* 7. Phân trang: Hàng CUỐI (sau grid sản phẩm) - không nằm trên đầu */
-    html body .product-section .woocommerce-pagination {
+    /* 5. Pagination (Bottom) */
+    html body .product-section .woocommerce-pagination,
+    html body .product-section nav.woocommerce-pagination {
         order: 5 !important;
         width: 100% !important;
         flex: 0 0 100% !important;
         max-width: 100% !important;
-        margin: 20px 0 0 0 !important;
+        margin: 25px 0 0 0 !important;
         float: none !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 }
+
 /* =========================================================
    FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES
    ========================================================= */
@@ -441,26 +357,25 @@
         margin: 0 !important;
         gap: 8px !important;
         width: 100% !important;
-        scrollbar-width: none !important; /* Firefox */
+        scrollbar-width: none !important;
         -ms-overflow-style: none !important;
     }
 
     html body .global-breadcrumb .nav-product-detail::-webkit-scrollbar {
-        display: none !important; /* Chrome / Safari */
+        display: none !important;
         width: 0 !important;
         height: 0 !important;
     }
 
     html body .global-breadcrumb .nav-product-detail > li {
         display: inline-flex !important;
-        flex: 0 0 auto !important; /* Ngăn co giãn, ép nằm 1 hàng */
+        flex: 0 0 auto !important;
         flex-shrink: 0 !important;
         width: auto !important;
         float: none !important;
         margin: 0 !important;
     }
 
-    /* Nút danh mục CHƯA CHỌN: Gộp thuộc tính, chữ trắng sáng, nền xám nổi bật */
     html body .global-breadcrumb .nav-product-detail > li > a {
         display: inline-block !important;
         white-space: nowrap !important;
@@ -475,14 +390,13 @@
         opacity: 0.9 !important;
     }
 
-    /* Nút danh mục ĐANG CHỌN (Active): Nổi bật với màu xanh Golden Farm */
     html body .global-breadcrumb .nav-product-detail > li.active {
         color: inherit !important;
     }
 
     html body .global-breadcrumb .nav-product-detail > li.active > a {
         color: #ffffff !important;
-        background: #007b62 !important; /* Màu xanh thương hiệu Golden Farm */
+        background: #007b62 !important;
         border-color: #009973 !important;
         font-weight: 700 !important;
         opacity: 1 !important;

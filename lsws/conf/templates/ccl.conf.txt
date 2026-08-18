@@ -1,14 +1,28 @@
 enablescript 1
+vhroot $SERVER_ROOT/$VH_NAME/
 configfile $SERVER_ROOT/conf/vhosts/$VH_NAME/vhconf.conf
 restrained 1
-setuidmode 0
 allowsymbollink 1
 chrootmode 0
-vhroot $SERVER_ROOT/$VH_NAME/
+setuidmode 0
 
 virtualhostconfig  {
     enablegzip 1
     docroot $VH_ROOT/html/
+
+    hotlinkctrl  {
+        allowedhosts 
+        enablehotlinkctrl 0
+        suffixes gif, jpeg, jpg
+        onlyself 1
+        allowdirectaccess 1
+        redirecturi 
+    }
+
+    rewrite  {
+        enable 0
+        loglevel 0
+    }
 
     index  {
         useserver 0
@@ -17,46 +31,10 @@ virtualhostconfig  {
         autoindexuri /_autoindex/default.php
     }
 
-    expires  {
-        expiresdefault 
-        enableexpires 1
-    }
-
-    hotlinkctrl  {
-        allowdirectaccess 1
-        redirecturi 
-        allowedhosts 
-        onlyself 1
-        enablehotlinkctrl 0
-        suffixes gif, jpeg, jpg
-    }
-
-    general  {
-        enablecontextac 0
-    }
-
-    errorlog  {
-        useserver 1
-    }
-
     context /cgi-bin/ {
         type cgi
         location $VH_ROOT/cgi-bin/
         allowbrowse 1
-    }
-
-    rewrite  {
-        enable 0
-        loglevel 0
-    }
-
-    accesslog $SERVER_ROOT/logs/$VH_NAME.access.log {
-        loguseragent 1
-        logreferer 1
-        useserver 0
-        keepdays 30
-        rollingsize 100M
-        compressarchive 1
     }
 
     context / {
@@ -64,8 +42,8 @@ virtualhostconfig  {
         location $DOC_ROOT/
 
         rewrite  {
-            rules rewritefile .htaccess
             unknownkeywords rewritefile .htaccess
+            rules rewritefile .htaccess
         }
     }
 
@@ -77,6 +55,28 @@ virtualhostconfig  {
         sitedomain localhost
         workingdir $VH_ROOT/awstats
         awstatsuri /awstats/
+    }
+
+    expires  {
+        enableexpires 1
+        expiresdefault 
+    }
+
+    general  {
+        enablecontextac 0
+    }
+
+    accesslog $SERVER_ROOT/logs/$VH_NAME.access.log {
+        useserver 0
+        keepdays 30
+        rollingsize 100M
+        compressarchive 1
+        loguseragent 1
+        logreferer 1
+    }
+
+    errorlog  {
+        useserver 1
     }
 
     accesscontrol  {

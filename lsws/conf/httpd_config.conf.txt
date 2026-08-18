@@ -9,13 +9,13 @@ gracefulrestarttimeout 300
 mime conf/mime.properties
 showversionnumber 0
 adminemails root@localhost
-indexfiles index.html, index.php
+indexfiles index.php, index.html
 
 errorlog logs/error.log {
     loglevel ERROR
     debuglevel 0
     rollingsize 100M
-    compressarchive 1        # Bật compress
+    compressarchive 1
     enablestderrlog 1
 }
 
@@ -31,11 +31,11 @@ expires  {
 }
 
 tuning  {
-    maxconnections 200
-    maxsslconnections 150
-    conntimeout 30
-    maxkeepalivereq 100
-    keepalivetimeout 5
+    maxconnections 2000
+    maxsslconnections 1500
+    conntimeout 300
+    maxkeepalivereq 1000
+    keepalivetimeout 15
     sndbufsize 0
     rcvbufsize 0
     maxrequrllen 32768
@@ -108,22 +108,23 @@ accesscontrol  {
 extprocessor lsphp {
     type lsapi
     address uds://tmp/lshttpd/lsphp.sock
-    maxconns 150
-    env LSAPI_CHILDREN=150
+    maxconns 35
+    env LSAPI_CHILDREN=35
     env PHP_LSAPI_MAX_REQUESTS=500
+    env PHP_LSAPI_MAX_IDLE=60
     inittimeout 300
     retrytimeout 0
     persistconn 1
     respbuffer 0
     autostart 2
-    path /usr/local/lsws/lsphp84/bin/lsphp
+    path /usr/local/lsws/lsphp83/bin/lsphp
     backlog 100
     instances 1
     priority 0
-    memsoftlimit 2147483648
-    memhardlimit 3221225472
-    procsoftlimit 1600
-    prochardlimit 0
+    memsoftlimit 2047M
+    memhardlimit 2047M
+    procsoftlimit 40
+    prochardlimit 45
 }
 
 scripthandler  {
@@ -214,16 +215,14 @@ privateexpireinseconds 3600
     ls_enabled 1
 }
 
-virtualhost goldenfarm {
+virtualhost goldenfarm.com.vn {
     vhroot /var/www/vhosts/goldenfarm.com.vn
     configfile conf/vhosts/goldenfarm/vhconf.conf
     allowsymbollink 1
     enablescript 1
-    restrained 1
-    staticreqpersec 200
-    dynreqpersec 200
-    outbandwidth 10485760
-    inbandwidth 10485760
+    restrained 0
+    staticreqpersec 0
+    dynreqpersec 0
 }
 
 listener Default {
@@ -234,7 +233,7 @@ listener Default {
 listener HTTP {
     address *:80
     secure 0
-    map goldenfarm goldenfarm.com.vn, www.goldenfarm.com.vn, canhdongvang.com, www.canhdongvang.com
+    map goldenfarm.com.vn goldenfarm.com.vn, www.goldenfarm.com.vn, canhdongvang.com, www.canhdongvang.com, *
 }
 
 listener HTTPS {

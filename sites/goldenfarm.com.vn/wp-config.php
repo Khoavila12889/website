@@ -1,4 +1,5 @@
 <?php
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $_SERVER['HTTPS'] = 'on'; }
 define( 'WP_CACHE', true );
 
 
@@ -67,8 +68,8 @@ define( 'NONCE_SALT',       '&bAd ]frefF=4?F<`HZ<!rK/:^l/Fj{<;=7TIyg5SO<))HI|hfK
 
 /**#@-*/
 // Memory limit
-define('WP_MEMORY_LIMIT', '512');
-define('WP_MAX_MEMORY_LIMIT', '512');
+define('WP_MEMORY_LIMIT', '512M');
+define('WP_MAX_MEMORY_LIMIT', '512M');
 // Connection timeout
 define('MYSQL_CLIENT_FLAGS', MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
 // Redis cache
@@ -140,3 +141,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+@ini_set( 'max_input_vars', 3000 );

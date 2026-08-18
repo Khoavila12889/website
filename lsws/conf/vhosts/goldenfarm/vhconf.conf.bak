@@ -28,9 +28,9 @@ scripthandler  {
 
 extprocessor lsphp {
   type                    lsapi
-  address                 uds://tmp/lshttpd/lsphp81.sock
-  maxConns                60
-  env                     PHP_LSAPI_CHILDREN=60
+  address                 uds://tmp/lshttpd/lsphp.sock
+  maxConns                150
+  env                     PHP_LSAPI_CHILDREN=25
   env                     LSAPI_AVOID_FORK=0
   env                     LSAPI_EXTRA_HEADERS=1
   env                     LSAPI_MAX_IDLE=30
@@ -40,12 +40,11 @@ extprocessor lsphp {
   persistConn             1
   respBuffer              0
   autoStart               2
-  path                    /usr/local/lsws/lsphp81/bin/lsphp
-  backlog                 100
+  path                    /usr/local/lsws/lsphp84/bin/lsphp
+  backlog                 300
   instances               1
-  memSoftLimit            2147483648
-  memHardLimit            3221225472
-}
+  memSoftLimit            1073741824
+  memHardLimit            1610612736
 
 rewrite  {
   enable                  1
@@ -72,3 +71,4 @@ noCacheUrl              /checkout
 noCacheUrl              /my-account
   ls_enabled              1
 }
+

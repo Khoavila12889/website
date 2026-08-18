@@ -29,21 +29,21 @@ scripthandler  {
 extprocessor lsphp {
     type lsapi
     address uds://tmp/lshttpd/lsphp.sock
-    maxconns 60
-    env PHP_LSAPI_CHILDREN=60
+    maxconns 40
+    env PHP_LSAPI_CHILDREN=35
     env LSAPI_AVOID_FORK=0
     env LSAPI_EXTRA_HEADERS=1
     env LSAPI_MAX_IDLE=30
     env LSAPI_MAX_IDLE_CHILDREN=5
-    inittimeout 300
+    inittimeout 60
     retrytimeout 0
     persistconn 1
     respbuffer 0
     autostart 2
     path /usr/local/lsws/lsphp84/bin/lsphp
-    backlog 100
+    backlog 300
     instances 1
-    memsoftlimit 2147483648
+    memsoftlimit 2684354560
     memhardlimit 3221225472
 }
 
@@ -52,42 +52,19 @@ rewrite  {
     autoloadhtaccess 1
 }
 
-module cache {
-    param <<<MY_END
-storagepath /usr/local/lsws/cachedata/goldenfarm
-checkprivatecache 1
-checkpubliccache 1
-maxcacheobjsize 10485760
-maxstaleage 200
-qscache 0
-reqcookiecache 0
-respcookiecache 0
-enablecache 1
-expireinseconds 3600
-enableprivatecache 0
-nocacheurl /wp-admin
-nocacheurl /wp-login.php
-nocacheurl /wp-cron.php
-nocacheurl /cart
-nocacheurl /checkout
-nocacheurl /my-account
-    MY_END
-    unknownkeywords storagepath /usr/local/lsws/cachedata/goldenfarm
-    unknownkeywords checkprivatecache 1
-    unknownkeywords checkpubliccache 1
-    unknownkeywords maxcacheobjsize 10485760
-    unknownkeywords maxstaleage 200
-    unknownkeywords qscache 0
-    unknownkeywords reqcookiecache 0
-    unknownkeywords respcookiecache 0
-    unknownkeywords enablecache 1
-    unknownkeywords expireinseconds 3600
-    unknownkeywords enableprivatecache 0
-    unknownkeywords nocacheurl /wp-admin
-    unknownkeywords nocacheurl /wp-login.php
-    unknownkeywords nocacheurl /wp-cron.php
-    unknownkeywords nocacheurl /cart
-    unknownkeywords nocacheurl /checkout
-    unknownkeywords nocacheurl /my-account
-    ls_enabled 1
+accesscontrol  {
+    allow *
+}
+
+context / {
+    location $DOC_ROOT/
+    allowbrowse 1
+
+    rewrite  {
+        enable 1
+        rules <<<MY_END
+RewriteCond %{REQUEST_URI} \.(env|env\.|bak|backup|old|orig|sql|log|git|DS_Store)($|\.) [NC]
+RewriteRule .* - [F,L]
+        MY_END
+    }
 }

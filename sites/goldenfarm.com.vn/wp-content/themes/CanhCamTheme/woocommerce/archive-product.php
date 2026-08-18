@@ -46,7 +46,7 @@ do_action('woocommerce_before_main_content');
 			<div class="col w-full mt-8 lg:w-1/4 col-pro-l">
 				<?php
 				// Plugin will auto-replace [yith_wcan_filters] via filter
-				echo do_shortcode('[yith_wcan_filters slug="draft-preset"]');
+				echo do_shortcode('[goldenfarm_product_filter]');
 				?>
 			</div>
 			<div class="col w-full mt-8 lg:w-3/4 col-pro-r">

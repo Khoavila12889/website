@@ -1,0 +1,5 @@
+FROM litespeedtech/openlitespeed:latest
+
+RUN apt-get update && \
+    apt-get install -y lsphp83 lsphp83-common lsphp83-mysql lsphp83-opcache lsphp83-curl && \
+    rm -rf /var/lib/apt/lists/*

@@ -1,0 +1,57 @@
+docRoot                   /var/www/vhosts/goldenfarm.com.vn
+vhDomain                  goldenfarm.com.vn
+vhAliases                 www.goldenfarm.com.vn, canhdongvang.com, www.canhdongvang.com
+adminEmails               it@goldenfarm.com.vn
+enableGzip                1
+enableIpGeo               0
+
+errorlog logs/$VH_NAME.error.log {
+  logLevel                WARN
+  rollingSize             10M
+  keepDays                7
+}
+
+accesslog logs/$VH_NAME.access.log {
+  logFormat               "%h %l %u %t \"%r\" %>s %b"
+  rollingSize             10M
+  keepDays                7
+}
+
+index  {
+  useServer               0
+  indexFiles              index.php, index.html
+}
+
+scripthandler  {
+  add                     lsapi:lsphp php
+}
+
+extprocessor lsphp {
+  type                    lsapi
+  address                 uds://tmp/lshttpd/lsphp.sock
+  maxConns                150
+  env                     PHP_LSAPI_CHILDREN=25
+  env                     LSAPI_AVOID_FORK=0
+  env                     LSAPI_EXTRA_HEADERS=1
+  env                     LSAPI_MAX_IDLE=30
+  env                     LSAPI_MAX_IDLE_CHILDREN=5
+  initTimeout             60
+  retryTimeout            0
+  persistConn             1
+  respBuffer              0
+  autoStart               2
+  path                    /usr/local/lsws/lsphp83/bin/lsphp
+  backlog                 300
+  instances               1
+  memSoftLimit            1073741824
+  memHardLimit            1610612736
+}
+
+rewrite  {
+  enable                  1
+  autoLoadHtaccess        1
+}
+
+accessControl  {
+  allow                   *
+}

@@ -3,6 +3,8 @@ services:
   mysql2:
     image: mariadb:11.4
     container_name: mysql2
+    ports:
+     - "127.0.0.1:3306:3306"
     volumes:
       - "./data/db:/var/lib/mysql:delegated"
       - "./mysql/my.cnf:/etc/mysql/my.cnf"
@@ -33,7 +35,7 @@ services:
         - ./sites:/var/www/vhosts/
         - ./acme:/root/.acme.sh/
         - ./logs:/usr/local/lsws/logs/
-        - ./php/php.ini:/usr/local/lsws/lsphp84/etc/php/8.4/litespeed/php.ini
+        - ./php/php.ini:/usr/local/lsws/lsphp83/etc/php/8.3/litespeed/php.ini
     ports:
       - "8008:80"
       - "7081:7080"
@@ -81,6 +83,7 @@ services:
     cpus: 1
     networks:
       - default
+      - shared_network
 
   mysql-backup:
       image: fradelg/mysql-cron-backup

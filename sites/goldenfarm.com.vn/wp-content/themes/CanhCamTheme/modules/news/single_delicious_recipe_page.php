@@ -20,17 +20,19 @@
 					if ($time_list || $level_of_difficult) :
 					?>
 						<div class="step-list mt-8 space-y-4">
-							<?php foreach ($time_list as $item) : ?>
-								<div class="step-item">
-									<div class="step-title">
-										<?php echo $item['title'] ?>
+							<?php if (is_array($time_list)) : ?>
+								<?php foreach ($time_list as $item) : ?>
+									<div class="step-item">
+										<div class="step-title">
+											<?php echo isset($item['title']) ? $item['title'] : '' ?>
+										</div>
+										<div class="step-content">
+											<?php echo isset($item['time']) ? $item['time'] : '' ?>
+										</div>
 									</div>
-									<div class="step-content">
-										<?php echo $item['time'] ?>
-									</div>
-								</div>
-							<?php endforeach; ?>
-							<?php if ($is_level_of_difficult) : ?>
+								<?php endforeach; ?>
+							<?php endif; ?>
+							<?php if ($is_level_of_difficult && isset($level_of_difficult['label'])) : ?>
 								<div class="step-item">
 									<div class="step-title">
 										<?php echo _e('Độ khó', 'canhcamtheme') ?>
@@ -80,12 +82,14 @@
 											<div class="swiper-slide">
 												<?php $post_object = get_post($product_item->ID); ?>
 												<?php
-												setup_postdata($GLOBALS['post'] = &$post_object);
-												wc_get_template_part('content-product', '', $product_item->ID); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
-												wp_reset_postdata();
+												if ($post_object) {
+													setup_postdata($GLOBALS['post'] = &$post_object);
+													wc_get_template_part('content-product', '', $product_item->ID);
+													wp_reset_postdata();
+												}
 												?>
 											</div>
-										<?php endforeach;  ?>
+										<?php endforeach; ?>
 									</div>
 								</div>
 								<div class="mobile-only">
@@ -105,35 +109,40 @@
 			<div class="col w-full mt-8 lg:w-1/3 xl:w-1/4">
 				<?php
 				$category = get_the_category();
-				$categoryParent = get_category($category[0]->category_parent);
-				$categoryID = $categoryParent->cat_ID;
-				$args = array(
-					'post_type' => 'post',
-					'posts_per_page' => 4,
-					'order' => 'DESC',
-					'orderby' => 'date',
-					'post_status' => 'publish',
-					'cat' => $category[0]->term_id,
-					'post__not_in' => array(get_the_ID())
-				);
-				$the_query_other = new WP_Query($args);
-				if ($the_query_other->have_posts()) :
-				?>
-					<div class="box-delicious-recipe-other">
-						<h3 class="section-header-32 font-bold text-primary-new-1">
-							<?php echo _e('Công thức khác', 'canhcamtheme') ?>
-						</h3>
-						<div class="delicious-recipe-other-list space-y-8 mt-8">
-							<?php
-							while ($the_query_other->have_posts()) : $the_query_other->the_post();
-								get_template_part('modules/news/delicious_recipe_item', '', array('idPost' => get_the_ID()));
-							endwhile;
-							?>
+				
+				// Kiểm tra nếu bài viết thực sự có chuyên mục thì mới truy vấn bài viết liên quan
+				if (!empty($category) && isset($category[0])) {
+					$categoryParent = get_category($category[0]->category_parent);
+					$categoryID = ($categoryParent && !is_wp_error($categoryParent)) ? $categoryParent->cat_ID : 0;
+					
+					$args = array(
+						'post_type' => 'post',
+						'posts_per_page' => 4,
+						'order' => 'DESC',
+						'orderby' => 'date',
+						'post_status' => 'publish',
+						'cat' => $category[0]->term_id,
+						'post__not_in' => array(get_the_ID())
+					);
+					$the_query_other = new WP_Query($args);
+					if ($the_query_other->have_posts()) :
+					?>
+						<div class="box-delicious-recipe-other">
+							<h3 class="section-header-32 font-bold text-primary-new-1">
+								<?php echo _e('Công thức khác', 'canhcamtheme') ?>
+							</h3>
+							<div class="delicious-recipe-other-list space-y-8 mt-8">
+								<?php
+								while ($the_query_other->have_posts()) : $the_query_other->the_post();
+									get_template_part('modules/news/delicious_recipe_item', '', array('idPost' => get_the_ID()));
+								endwhile;
+								?>
+							</div>
 						</div>
-					</div>
-				<?php
-				endif;
-				wp_reset_postdata();
+					<?php
+					endif;
+					wp_reset_postdata();
+				}
 				?>
 			</div>
 		</div>
