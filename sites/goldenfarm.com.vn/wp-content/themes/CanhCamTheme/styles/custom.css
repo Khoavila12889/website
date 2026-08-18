@@ -1,14 +1,8 @@
-.home-about .home-about-list, .home-about .home-about.grid{
-	grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-		}
+/* =========================================================
+   GOLDENFARM CUSTOM CSS (OPTIMIZED)
+   ========================================================= */
 
-/* Variation form checkbox color */
-.variations_form .variations .thwvsf_fields .thwvsf-rad-li .th-label-radio input:checked ~ .checkmark {
-    --tw-bg-opacity: 1;
-    background-color: rgb(255, 203, 5);
-}
-
-/* Font faces */
+/* FONT FACES */
 @font-face {
     font-family: 'MainFont';
     src: url('/wp-content/themes/yourtheme/fonts/main-font.woff2') format('woff2');
@@ -25,23 +19,37 @@
     font-display: swap;
 }
 
-/* Footer */
+/* GENERAL & FOOTER */
 .footer {
     font-size: 16px;
     line-height: 1.6;
-    color: #ddd; 
+    color: #ddd;
 }
 
-/* Newsletter form */
+.wcosm_soldout,
+.wpcf7-spinner {
+    display: none !important;
+}
+
+.form-turnstile {
+    margin-top: 10px;
+}
+
+/* VARIATION CHECKBOX */
+.variations_form .variations .thwvsf_fields .thwvsf-rad-li .th-label-radio input:checked ~ .checkmark {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255, 203, 5);
+}
+
+/* NEWSLETTER FORM */
 .form-newsletter {
     display: flex;
-    justify-content: center;   
+    justify-content: center;
     align-items: center;
-    gap: 10px;                 
+    gap: 10px;
     margin: 0 auto;
-    
 }
- 
+
 .form-newsletter p {
     margin: 0 auto;
     font-size: 16px;
@@ -49,8 +57,8 @@
 
 .form-newsletter input[type="email"] {
     flex: 1;
-    min-width: 200px; /* ← THÊM min-width */
-    padding: 10px; 
+    min-width: 200px;
+    padding: 10px;
     font-size: 0.95rem !important;
     outline: none;
 }
@@ -59,83 +67,26 @@
     background: #2ecc71;
     color: #fff;
     width: 140px;
-    padding: 10px; /* ← THÊM padding */
+    padding: 10px;
     font-size: 0.95rem;
     cursor: pointer;
     transition: background 0.3s ease;
-    border: none; /* ← THÊM */
+    border: none;
 }
 
 .form-newsletter .btn-newsletter:hover {
     background: #27ae60;
 }
 
-/* Hide spinner */
-.wpcf7-spinner {
-    display: none !important;
-}
-
-/* Turnstile */
-.form-turnstile {
-    margin-top: 10px;
-}
-
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-
-/* Desktop large (>1200px) */
-@media (min-width: 1200px) {
-    .home-brands .brands-list,
-    .home-brands .brands-list.grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 1.5rem !important;
-    }
-   
-    .product-section .product-list {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* ← THÊM !important */
-    }
-  
-    .delicious-recipe-list {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* ← THÊM !important */
-    }
-}
-
-/* Tablet (769px - 1024px) */
-@media (max-width: 1024px) {
-    .home-brands .brands-list,
-    .home-brands .brands-list.grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 1.5rem !important;
-    }
-    
-    .home-brands-item {
-        padding: 2rem 1rem !important;
-    }
-    
-    .home-brands-item .logo {
-        width: 100px !important;
-        height: 100px !important;
-    }
-}
-
-/* Factory section - Desktop */
-@media (min-width: 1024px) {
-    .home-brands .brands-list, .home-brands .brands-list.grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-  
-  
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  }
-}  
-
-/* Nút liên hệ Messenger khi sản phẩm không có giá */
+/* MESSENGER BUTTON (Native SVG Icon - Không phụ thuộc FontAwesome) */
 .product-no-price-contact {
     margin: 1.5rem 0;
 }
 
 .btn-messenger-contact {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 12px 30px;
     background: linear-gradient(135deg, #007b62 0%, #009973 100%);
     color: #ffffff !important;
@@ -143,11 +94,8 @@
     border-radius: 25px;
     font-weight: 600;
     font-size: 16px;
-    text-align: center;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 123, 98, 0.3);
-    position: relative;
-    overflow: hidden;
 }
 
 .btn-messenger-contact:hover {
@@ -161,55 +109,383 @@
     box-shadow: 0 2px 10px rgba(0, 123, 98, 0.3);
 }
 
-.btn-messenger-contact span {
-    position: relative;
-    z-index: 1;
+/* FILTER CONTAINER FIX */
+.col-pro-l .gf-pf-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-.btn-messenger-contact:before {
-    content: "\f39f"; /* Facebook Messenger icon */
-    font-family: "Font Awesome 6 Brands";
-    margin-right: 8px;
-    font-size: 18px;
-}
+/* =========================================================
+   RESPONSIVE GRID SYSTEM
+   ========================================================= */
 
-.wcosm_soldout {
-	display: none !important;
-}
-@media (max-width: 768px) {
-    .btn-messenger-contact {
-        padding: 10px 20px;
-        font-size: 14px;
-        width: 100%;
-        display: block;
-    }
-}
-
-@media (max-width: 1024px) {
-    .home-brands .brands-list, .home-brands .brands-list.grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-        gap: 1.5rem !important;
-    }
-}
-
-.home-about .home-about-list, 
+/* Desktop Default (>= 1025px) */
+.home-about .home-about-list,
 .home-about .home-about.grid {
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
 }
 
-/* Tablet */
+.home-brands .brands-list,
+.home-brands .brands-list.grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+}
+
+@media (min-width: 1200px) {
+    .product-section .product-list,
+    .delicious-recipe-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Tablet (<= 1024px) */
 @media (max-width: 1024px) {
-    .home-about .home-about-list, 
+    .home-brands .brands-list,
+    .home-brands .brands-list.grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+
+    .home-brands-item {
+        padding: 2rem 1rem !important;
+    }
+
+    .home-brands-item .logo {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .home-about .home-about-list,
     .home-about .home-about.grid {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
 
-/* Mobile */
+/* =========================================================
+   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES
+   ========================================================= */
 @media (max-width: 768px) {
-    .home-about .home-about-list, 
-    .home-about .home-about.grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    html body .global-breadcrumb .container {
+        overflow: hidden !important;
+        max-width: 100% !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 8px 0 !important;
+        margin: 0 !important;
+        gap: 8px !important;
+        width: 100% !important;
+        scrollbar-width: none !important; /* Firefox */
+        -ms-overflow-style: none !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail::-webkit-scrollbar {
+        display: none !important; /* Chrome / Safari */
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail > li {
+        display: inline-flex !important;
+        flex: 0 0 auto !important; /* Ngăn co giãn, ép nằm 1 hàng */
+        flex-shrink: 0 !important;
+        width: auto !important;
+        float: none !important;
+        margin: 0 !important;
+    }
+
+    /* Nút danh mục CHƯA CHỌN: Gộp thuộc tính, chữ trắng sáng, nền xám nổi bật */
+    html body .global-breadcrumb .nav-product-detail > li > a {
+        display: inline-block !important;
+        white-space: nowrap !important;
+        padding: 6px 14px !important;
+        font-size: 12px !important;
+        border-radius: 20px !important;
+        line-height: 1.2 !important;
+        color: #ffffff !important;
+        background: #2c2c2c !important;
+        border: 1px solid #444444 !important;
+        font-weight: 500 !important;
+        opacity: 0.9 !important;
+    }
+
+    /* Nút danh mục ĐANG CHỌN (Active): Nổi bật với màu xanh Golden Farm */
+    html body .global-breadcrumb .nav-product-detail > li.active {
+        color: inherit !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail > li.active > a {
+        color: #ffffff !important;
+        background: #007b62 !important; /* Màu xanh thương hiệu Golden Farm */
+        border-color: #009973 !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+        box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
+    }
+}
+
+/* =========================================================
+   FIX MOBILE: BỘ LỌC (TRÁI) & SẮP XẾP (PHẢI) CÙNG 1 HÀNG
+   Nút toggle do plugin render: .col-pro-l > .gf-pf-wrap > .gf-pf-mobile-toggle
+
+   DOM THẬT (đã xác minh từ HTML phục vụ trên site):
+   .product-section .row
+     .col-pro-l                          -> nút Bộ lọc (plugin)
+     .col-pro-r (display: contents)
+       .gf-pf-head-row .flex wrapper     -> h1.site-title + .form-right
+         h1.site-title
+         .form-right
+           form.gf-pf-orderby            -> dropdown Sắp xếp
+       .product-list.mt-5                -> grid sản phẩm (KHÔNG phải ul.products)
+   ========================================================= */
+@media (max-width: 1024px) {
+    /* 1. Ép container chính sang Flexbox */
+    html body .product-section .row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+    }
+
+    /* 2. Phẳng hóa .col-pro-r VÀ wrapper header + .form-right
+          để h1.site-title và form.gf-pf-orderby thành flex item trực tiếp
+          của .row (order chỉ có tác dụng với flex item cấp 1). */
+    html body .product-section .col-pro-r,
+    html body .product-section .gf-pf-head-row,
+    html body .product-section .col-pro-r .form-right {
+        display: contents !important;
+    }
+
+    /* 3. Tiêu đề (h1.site-title): Hàng 1 (Nằm trên cùng) */
+    html body .product-section .col-pro-r .site-title {
+        order: 1 !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* 3b. Result count / Notices: cũng nằm ở Hàng 1, không phá bố cục flex */
+    html body .product-section .woocommerce-notices-wrapper,
+    html body .product-section .woocommerce-result-count {
+        order: 1 !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        margin-bottom: 8px !important;
+        float: none !important;
+        text-align: left !important;
+    }
+
+    /* 4. Nút BỘ LỌC: Hàng 2 - Nằm BÊN TRÁI (48%) */
+    html body .product-section .col-pro-l {
+        order: 2 !important;
+        width: 48% !important;
+        flex: 0 0 48% !important;
+        max-width: 48% !important;
+        display: block !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 4a. LUÔN hiển thị nút Toggle (đè display:none mặc định của plugin)
+          và style bo tròn - KHÔNG phụ thuộc gf-pf.css có được load hay không */
+    html body .product-section .col-pro-l .gf-pf-mobile-toggle,
+    html body .product-section .col-pro-l button.gf-pf-mobile-toggle {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        height: 40px !important;
+        margin: 0 !important;
+        padding: 0 14px !important;
+        background: #1c1c1c !important;
+        color: #00ff88 !important;
+        border: 1px solid #333333 !important;
+        border-radius: 20px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 40px !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    html body .product-section .col-pro-l .gf-pf-mobile-toggle:hover,
+    html body .product-section .col-pro-l .gf-pf-mobile-toggle:active,
+    html body .product-section .col-pro-l .gf-pf-mobile-toggle:focus {
+        background: #242424 !important;
+        border-color: #009973 !important;
+    }
+
+    /* Icon lọc bên trong nút (plugin vẽ bằng CSS thuần) */
+    html body .product-section .col-pro-l .gf-pf-mobile-toggle .gf-pf-search-icon {
+        display: inline-block !important;
+        flex: 0 0 auto !important;
+    }
+
+    /* 4b. Khung nội dung bộ lọc: ẩn mặc định, hiện dạng Drawer khi mở (.is-open) */
+    html body .product-section .col-pro-l .yith-wcan-filters.gf-pf-filters,
+    html body .product-section .col-pro-l .gf-pf-filters {
+        display: none !important;
+    }
+
+    html body .product-section .col-pro-l .yith-wcan-filters.gf-pf-filters.is-open,
+    html body .product-section .col-pro-l .gf-pf-filters.is-open {
+        display: flex !important;
+    }
+
+    /* 5. Dropdown SẮP XẾP: Hàng 2 - Nằm BÊN PHẢI (48%) */
+    html body .product-section .gf-pf-orderby {
+        order: 3 !important;
+        width: 48% !important;
+        flex: 0 0 48% !important;
+        max-width: 48% !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: auto !important;
+        float: none !important;
+    }
+
+    html body .product-section .gf-pf-orderby .product-sort {
+        width: 100% !important;
+    }
+
+    html body .product-section .gf-pf-orderby label {
+        display: none !important;
+    }
+
+    html body .product-section .gf-pf-orderby select {
+        width: 100% !important;
+        height: 40px !important;
+        border-radius: 20px !important;
+        background-color: #1c1c1c !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffffff' d='M6 8 0 0h12z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 14px center !important;
+        color: #ffffff !important;
+        border: 1px solid #333333 !important;
+        padding: 0 34px 0 14px !important;
+        font-size: 13px !important;
+        outline: none !important;
+        box-sizing: border-box !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    /* 6. Grid Sản phẩm (.product-list): Hàng 3 (Nằm phía dưới) - 2 cột mobile */
+    html body .product-section .product-list {
+        order: 4 !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin: 15px 0 0 0 !important;
+        padding: 0 !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+
+    html body .product-section .product-list > * {
+        min-width: 0 !important;
+    }
+
+    /* 7. Phân trang: Hàng CUỐI (sau grid sản phẩm) - không nằm trên đầu */
+    html body .product-section .woocommerce-pagination {
+        order: 5 !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        margin: 20px 0 0 0 !important;
+        float: none !important;
+    }
+}
+/* =========================================================
+   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES
+   ========================================================= */
+@media (max-width: 768px) {
+    html body .global-breadcrumb .container {
+        overflow: hidden !important;
+        max-width: 100% !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 8px 0 !important;
+        margin: 0 !important;
+        gap: 8px !important;
+        width: 100% !important;
+        scrollbar-width: none !important; /* Firefox */
+        -ms-overflow-style: none !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail::-webkit-scrollbar {
+        display: none !important; /* Chrome / Safari */
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail > li {
+        display: inline-flex !important;
+        flex: 0 0 auto !important; /* Ngăn co giãn, ép nằm 1 hàng */
+        flex-shrink: 0 !important;
+        width: auto !important;
+        float: none !important;
+        margin: 0 !important;
+    }
+
+    /* Nút danh mục CHƯA CHỌN: Gộp thuộc tính, chữ trắng sáng, nền xám nổi bật */
+    html body .global-breadcrumb .nav-product-detail > li > a {
+        display: inline-block !important;
+        white-space: nowrap !important;
+        padding: 6px 14px !important;
+        font-size: 12px !important;
+        border-radius: 20px !important;
+        line-height: 1.2 !important;
+        color: #ffffff !important;
+        background: #2c2c2c !important;
+        border: 1px solid #444444 !important;
+        font-weight: 500 !important;
+        opacity: 0.9 !important;
+    }
+
+    /* Nút danh mục ĐANG CHỌN (Active): Nổi bật với màu xanh Golden Farm */
+    html body .global-breadcrumb .nav-product-detail > li.active {
+        color: inherit !important;
+    }
+
+    html body .global-breadcrumb .nav-product-detail > li.active > a {
+        color: #ffffff !important;
+        background: #007b62 !important; /* Màu xanh thương hiệu Golden Farm */
+        border-color: #009973 !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+        box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
     }
 }

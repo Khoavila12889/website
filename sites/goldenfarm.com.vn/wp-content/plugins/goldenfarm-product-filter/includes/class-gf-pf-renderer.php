@@ -34,12 +34,10 @@ class GF_PF_Renderer {
 	public static function get_filters_html( $args = array() ) {
 		$tree = GF_PF_Terms::get_brand_tree();
 
-		if ( empty( $tree ) ) {
-			return '';
+		// Sắp xếp các thương hiệu (Cấp 0) theo thứ tự A-Z.
+		if ( ! empty( $tree ) ) {
+			self::sort_brand_items( $tree );
 		}
-
-		// Sắp xếp các thương hiệu (Cấp 0) theo thứ tự A-Z
-		self::sort_brand_items( $tree );
 
 		$title          = isset( $args['title'] ) ? $args['title'] : __( 'THƯƠNG HIỆU', 'goldenfarm-product-filter' );
 		$multiple       = 'no' !== ( isset( $args['multiple'] ) ? $args['multiple'] : 'yes' );
@@ -51,10 +49,14 @@ class GF_PF_Renderer {
 		ob_start();
 		?>
 		<div class="gf-pf-wrap">
+			<!-- Nút Toggle + Overlay LUÔN xuất ra (kể cả khi cây danh mục rỗng)
+			     để không bao giờ mất nút "Bộ lọc" trên mobile. -->
 			<button type="button" class="gf-pf-mobile-toggle" aria-label="<?php esc_attr_e( 'Mở bộ lọc', 'goldenfarm-product-filter' ); ?>" aria-expanded="false">
-				<i class="gf-pf-search-icon" aria-hidden="true"></i>
+				<span class="gf-pf-search-icon" aria-hidden="true"></span>
 				<span><?php esc_html_e( 'Bộ lọc', 'goldenfarm-product-filter' ); ?></span>
 			</button>
+			<div class="gf-pf-overlay"></div>
+			<?php if ( ! empty( $tree ) ) : ?>
 			<div class="yith-wcan-filters no-title gf-pf-filters" id="gf-pf-filters">
 				<div class="gf-pf-mobile-header">
 					<h3><?php esc_html_e( 'Bộ lọc', 'goldenfarm-product-filter' ); ?></h3>
@@ -70,9 +72,11 @@ class GF_PF_Renderer {
 							<div class="filter-content">
 								<ul class="filter-items level-0">
 									<?php
-									foreach ( $tree as $item ) {
-										// phpcs:ignore
-										echo self::render_brand( $item, $multiple, $brand_taxonomy, $context );
+									if ( ! empty( $tree ) ) {
+										foreach ( $tree as $item ) {
+											// phpcs:ignore
+											echo self::render_brand( $item, $multiple, $brand_taxonomy, $context );
+										}
 									}
 									?>
 								</ul>
@@ -84,6 +88,7 @@ class GF_PF_Renderer {
 					<a href="<?php echo esc_url( $context['reset_url'] ); ?>" class="btn-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
 				</div>
 			</div>
+			<?php endif; ?>
 		</div>
 		<?php
 		return ob_get_clean();

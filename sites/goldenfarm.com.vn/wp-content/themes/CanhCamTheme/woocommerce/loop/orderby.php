@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 }
 
 ?>
-<div class="flex items-center flex-wrap gap-5 justify-between">
+<div class="flex items-center flex-wrap gap-5 justify-between gf-pf-head-row">
 	<h1 class="site-title">
 		<?php woocommerce_page_title(); ?>
 	</h1>
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 				</span>
 			</a>
 		</div> -->
-		<form class="woocommerce-ordering" method="get">
+		<form class="woocommerce-ordering gf-pf-orderby" method="get">
 			<div class="form-group product-sort">
 				<label>
 					<?php echo _e('Lọc theo', 'canhcamtheme'); ?>

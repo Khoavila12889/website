@@ -18,7 +18,6 @@
         * 📦 **[Cấp 3] Nước Cốt** (`nuoc-cot-golden-farm`) ➔ **6 SP**
         * 📦 **[Cấp 3] Sinh Tố** (`sinh-to-golden-farm`) ➔ **22 SP**
         * 📦 **[Cấp 3] Sirô** (`siro-golden-farm`) ➔ **39 SP**
-            * 📦 **[Cấp 4] Sirô** (`siro-chung`) ➔ **2 SP**
         * 📦 **[Cấp 3] Sirô Đậm Đặc** (`siro-dam-dac`) ➔ **20 SP**
         * 📦 **[Cấp 3] Trà Mật Ong** (`tra-mat-ong-golden-farm`) ➔ **1 SP**
         * 📦 **[Cấp 3] Xốt BBQ** (`xot-bbq-golden-farm`) ➔ **1 SP**

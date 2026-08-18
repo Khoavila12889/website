@@ -22,6 +22,7 @@ class GF_PF_Assets {
 			|| is_post_type_archive( 'product' )
 			|| is_tax( 'product_cat' )
 			|| is_tax( 'product_tag' )
+			|| is_tax( GF_PF_Terms::brand_taxonomy() )
 			|| apply_filters( 'gf_pf_enqueue', false );
 	}
 

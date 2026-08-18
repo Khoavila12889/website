@@ -2,7 +2,7 @@
 /**
  * Plugin Name: GoldenFarm Product Filter
  * Description: Renders a lightweight, native 3-level product category tree (Brand -> Category Group -> Products).
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: GoldenFarm Dev
  * Text Domain: goldenfarm-product-filter
  * License: GPLv2 or later
@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'GF_PF_VERSION' ) ) {
-	define( 'GF_PF_VERSION', '1.3.0' );
+	define( 'GF_PF_VERSION', '1.3.1' );
 }
 
 if ( ! defined( 'GF_PF_PLUGIN_FILE' ) ) {
