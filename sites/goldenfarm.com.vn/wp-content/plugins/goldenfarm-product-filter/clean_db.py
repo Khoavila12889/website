@@ -11,9 +11,9 @@ DB_CONFIG = {
 }
 
 # 1. Danh sách các slug danh mục rác/trung gian cần XÓA BỎ khỏi product_cat
+# Đã giữ lại 'chuyen-muc-trang-chu' theo yêu cầu của bạn
 JUNKS_TO_DELETE = [
     'san-pham',
-    'chuyen-muc-trang-chu',
     'san-pham-khac'
 ]
 

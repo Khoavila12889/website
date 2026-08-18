@@ -31,6 +31,7 @@ if ( ! defined( 'GF_PF_PLUGIN_URL' ) ) {
 require_once GF_PF_PLUGIN_DIR . 'includes/class-gf-pf-terms.php';
 require_once GF_PF_PLUGIN_DIR . 'includes/class-gf-pf-renderer.php';
 require_once GF_PF_PLUGIN_DIR . 'includes/class-gf-pf-assets.php';
+require_once GF_PF_PLUGIN_DIR . 'includes/class-gf-pf-admin.php';
 
 /**
  * Main plugin controller.
@@ -50,6 +51,9 @@ final class GF_PF_Plugin {
 		add_action( 'init', array( $this, 'register_shortcode' ) );
 		add_action( 'wp_enqueue_scripts', array( 'GF_PF_Assets', 'maybe_enqueue' ), 20 );
 		add_filter( 'do_shortcode_tag', array( $this, 'replace_yith_shortcode' ), 10, 3 );
+
+		// Admin settings page.
+		GF_PF_Admin::init();
 
 		// Invalidate category cache on term changes
 		add_action( 'created_product_cat', array( $this, 'invalidate_term_cache' ) );

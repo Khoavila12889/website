@@ -31,6 +31,30 @@ class GF_PF_Terms {
 	}
 
 	/**
+	 * Slugs of all brand terms.
+	 *
+	 * Used to prune category terms that duplicate a brand (e.g. a
+	 * product_cat named "Golden Farm").
+	 *
+	 * @return string[]
+	 */
+	public static function get_brand_slugs() {
+		$brands = get_terms(
+			array(
+				'taxonomy'   => self::brand_taxonomy(),
+				'hide_empty' => false,
+				'fields'     => 'slugs',
+			)
+		);
+
+		if ( is_wp_error( $brands ) || empty( $brands ) ) {
+			return array();
+		}
+
+		return array_values( array_filter( (array) $brands ) );
+	}
+
+	/**
 	 * Root terms of a given taxonomy.
 	 *
 	 * @param string $taxonomy Taxonomy slug.
@@ -275,11 +299,23 @@ class GF_PF_Terms {
 			return $nodes;
 		}
 
-		// List of slugs to exclude from the tree structure.
+		// List of slugs to exclude from the tree structure (configurable in
+		// WP Admin > Tùy chọn Filter, default set by GF_PF_Admin).
 		$excluded_slugs = apply_filters(
 			'gf_pf_excluded_category_slugs',
-			array( 'san-pham', 'chuyen-muc-trang-chu', 'thuc-pham', 'nguyen-pha-che-lam-banh' )
+			GF_PF_Admin::get_excluded_slugs()
 		);
+
+		// Also hide category terms whose slug equals a brand slug (e.g. a
+		// product_cat named "Golden Farm"), so the brand is not shown twice.
+		// Computed once per request, even inside the recursion.
+		static $brand_slugs = null;
+
+		if ( null === $brand_slugs ) {
+			$brand_slugs = self::get_brand_slugs();
+		}
+
+		$excluded_slugs = array_merge( $excluded_slugs, $brand_slugs );
 
 		foreach ( $children_map[ $parent_id ] as $child_id ) {
 			$term = $cat_by_id[ $child_id ];

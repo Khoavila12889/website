@@ -3,12 +3,15 @@ from mysql.connector import Error
 
 # --- THÔNG TIN KẾT NỐI DATABASE ---
 DB_CONFIG = {
-    'host': '10.0.0.9', # IP VPS / Docker của bạn
+    'host': '127.0.0.1', # IP VPS / Docker
     'port': 3306,
     'user': 'wordpress',
     'password': 'password',
     'database': 'wordpress'
 }
+
+# Prefix bảng WordPress (thay đổi nếu cần)
+PREFIX = "wp_"
 
 def export_multi_taxonomy_to_md():
     try:
@@ -20,10 +23,10 @@ def export_multi_taxonomy_to_md():
         print("🟢 Đã kết nối MySQL thành công!")
 
         # 1. Lấy tất cả Brands (product_brand)
-        query_brands = """
+        query_brands = f"""
             SELECT t.term_id, t.name, t.slug, tt.count
-            FROM wp_terms t
-            INNER JOIN wp_term_taxonomy tt ON t.term_id = tt.term_id
+            FROM {PREFIX}terms t
+            INNER JOIN {PREFIX}term_taxonomy tt ON t.term_id = tt.term_id
             WHERE tt.taxonomy = 'product_brand'
             ORDER BY t.name ASC
         """
@@ -31,16 +34,17 @@ def export_multi_taxonomy_to_md():
         brands = cursor.fetchall()
 
         # 2. Lấy toàn bộ danh mục product_cat để tạo map phân cấp Cha - Con
-        query_cats = """
+        query_cats = f"""
             SELECT t.term_id, t.name, t.slug, tt.parent
-            FROM wp_terms t
-            INNER JOIN wp_term_taxonomy tt ON t.term_id = tt.term_id
+            FROM {PREFIX}terms t
+            INNER JOIN {PREFIX}term_taxonomy tt ON t.term_id = tt.term_id
             WHERE tt.taxonomy = 'product_cat'
+            ORDER BY t.name ASC
         """
         cursor.execute(query_cats)
         all_cats = cursor.fetchall()
 
-        cat_by_id = {c['term_id']: c for c in all_cats}
+        # Tạo dictionary phân cấp danh mục
         cats_parent_map = {}
         for c in all_cats:
             parent_id = c['parent']
@@ -53,6 +57,19 @@ def export_multi_taxonomy_to_md():
         md_content += "> **Báo cáo phân tích mối quan hệ giữa Thương hiệu và Danh mục sản phẩm thực tế trong Database.**\n\n"
         md_content += "---\n\n"
 
+        # Query tối ưu JOIN: Lấy trực tiếp danh mục & số lượng sản phẩm của 1 Brand
+        query_brand_cats = f"""
+            SELECT tt_cat.term_id, COUNT(DISTINCT tr_brand.object_id) as sp_count
+            FROM {PREFIX}term_relationships tr_brand
+            INNER JOIN {PREFIX}term_taxonomy tt_brand ON tr_brand.term_taxonomy_id = tt_brand.term_taxonomy_id
+            INNER JOIN {PREFIX}term_relationships tr_cat ON tr_brand.object_id = tr_cat.object_id
+            INNER JOIN {PREFIX}term_taxonomy tt_cat ON tr_cat.term_taxonomy_id = tt_cat.term_taxonomy_id
+            WHERE tt_brand.term_id = %s 
+              AND tt_brand.taxonomy = 'product_brand'
+              AND tt_cat.taxonomy = 'product_cat'
+            GROUP BY tt_cat.term_id
+        """
+
         for brand in brands:
             brand_id = brand['term_id']
             brand_name = brand['name']
@@ -61,57 +78,48 @@ def export_multi_taxonomy_to_md():
 
             md_content += f"## 🏷️ THƯƠNG HIỆU: **{brand_name.upper()}** (`{brand_slug}`) — *{brand_count} sản phẩm*\n\n"
 
-            # 3. Lấy tất cả ID sản phẩm thuộc Brand này
-            query_products = """
-                SELECT tr.object_id
-                FROM wp_term_relationships tr
-                INNER JOIN wp_term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-                WHERE tt.term_id = %s AND tt.taxonomy = 'product_brand'
-            """
-            cursor.execute(query_products, (brand_id,))
-            product_ids = [p['object_id'] for p in cursor.fetchall()]
-
-            if not product_ids:
-                md_content += "  * ⚠️ *Không có sản phẩm nào được gán thương hiệu này.*\n\n"
-                continue
-
-            # 4. Lấy tất cả product_cat được gán cho danh sách sản phẩm trên
-            format_strings = ','.join(['%s'] * len(product_ids))
-            query_brand_cats = f"""
-                SELECT DISTINCT tt.term_id, COUNT(DISTINCT tr.object_id) as sp_count
-                FROM wp_term_relationships tr
-                INNER JOIN wp_term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-                WHERE tr.object_id IN ({format_strings}) AND tt.taxonomy = 'product_cat'
-                GROUP BY tt.term_id
-            """
-            cursor.execute(query_brand_cats, tuple(product_ids))
+            # Thực thi query JOIN lấy danh mục có chứa SP của Brand này
+            cursor.execute(query_brand_cats, (brand_id,))
             cat_counts = {row['term_id']: row['sp_count'] for row in cursor.fetchall()}
 
-            # 5. Lọc và xây dựng cây danh mục liên quan tới Brand này
             active_cat_ids = set(cat_counts.keys())
 
-            # Xây dựng cây danh mục thuộc brand
+            if not active_cat_ids:
+                md_content += "  * ⚠️ *Không có sản phẩm nào thuộc thương hiệu này được gán Danh mục (product_cat).*\n\n"
+                md_content += "---\n\n"
+                continue
+
+            # Kiểm tra đệ quy xem một node hoặc bất kỳ node con/cháu nào của nó có nằm trong active_cat_ids hay không
+            def is_node_or_descendant_active(cat_id):
+                if cat_id in active_cat_ids:
+                    return True
+                for child in cats_parent_map.get(cat_id, []):
+                    if is_node_or_descendant_active(child['term_id']):
+                        return True
+                return False
+
+            # Render đệ quy cây danh mục thuộc brand
             def render_cat_tree(parent_id, depth=0):
                 tree_text = ""
                 children = cats_parent_map.get(parent_id, [])
-                
+
                 for cat in children:
                     c_id = cat['term_id']
-                    has_active_child = any(c_id == acid or c_id in cats_parent_map for acid in active_cat_ids)
-                    
-                    if c_id in active_cat_ids or has_active_child:
+
+                    # Chỉ render node này nếu chính nó hoặc các cấp con của nó chứa sản phẩm thuộc Brand
+                    if is_node_or_descendant_active(c_id):
                         sp_count = cat_counts.get(c_id, 0)
                         indent = "    " * depth
                         
-                        if depth == 0:
-                            tree_text += f"{indent}* 📂 **[Group Cấp 1] {cat['name']}** (`{cat['slug']}`)"
-                        else:
-                            tree_text += f"{indent}* 📦 **[Loại Cấp 2] {cat['name']}** (`{cat['slug']}`) ➔ **{sp_count} SP**"
+                        icon = "📂" if depth == 0 else "📦"
+                        level_label = f"Cấp {depth + 1}"
                         
-                        tree_text += "\n"
+                        count_text = f" ➔ **{sp_count} SP**" if sp_count > 0 else ""
+                        tree_text += f"{indent}* {icon} **[{level_label}] {cat['name']}** (`{cat['slug']}`){count_text}\n"
+
                         # Đệ quy xuống cấp con
                         tree_text += render_cat_tree(c_id, depth + 1)
-                        
+
                 return tree_text
 
             rendered_tree = render_cat_tree(0)
