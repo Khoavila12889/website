@@ -408,9 +408,12 @@ class GF_PF_Terms {
 	/**
 	 * Active slugs for a specific taxonomy from query vars.
 	 *
-	 * FIXED: Only reads from query parameters (?product_cat=slug), not from
-	 * the current taxonomy archive page context. This prevents conflicts when
-	 * users are on a category archive but want to filter by a different taxonomy.
+	 * FIXED: Prioritizes slugs from the query string (?product_cat=slug1,slug2)
+	 * so the current taxonomy archive route is never merged into the selection.
+	 * Merging the route slug (e.g. /danh-muc-san-pham/bo-dau-phong/) with a new
+	 * filter slug produced an AND query across two branches -> 0 products.
+	 *
+	 * Fallbacks, in order: query string -> query var -> taxonomy archive term.
 	 *
 	 * @param string $taxonomy Taxonomy slug.
 	 * @return string[]
@@ -424,19 +427,42 @@ class GF_PF_Terms {
 
 		$slugs = array();
 
-		// Read from query var (e.g., ?product_cat=slug1,slug2).
-		$query_var = get_query_var( $taxonomy );
-		if ( ! empty( $query_var ) ) {
-			$slugs = array_merge( $slugs, self::split_slugs( $query_var ) );
+		// 1. Ưu tiên slug chọn trong Query String (?product_cat=...), không
+		//    trộn với slug danh mục của route cũ (tránh truy vấn AND 2 nhánh).
+		if ( isset( $_GET[ $taxonomy ] ) && '' !== (string) $_GET[ $taxonomy ] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$slugs = self::split_slugs( wp_unslash( $_GET[ $taxonomy ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		} elseif ( get_query_var( $taxonomy ) ) {
+			// 2. Fallback: query var của pretty permalink.
+			$slugs = self::split_slugs( get_query_var( $taxonomy ) );
+		} elseif ( is_tax( $taxonomy ) ) {
+			// 3. Fallback cuối: đang đứng trên trang archive của taxonomy này.
+			$term = get_queried_object();
+			if ( $term instanceof WP_Term ) {
+				$slugs[] = $term->slug;
+			}
 		}
 
-		// Read from $_GET as fallback (e.g., when query_var isn't set).
-		if ( isset( $_GET[ $taxonomy ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$slugs = array_merge( $slugs, self::split_slugs( wp_unslash( $_GET[ $taxonomy ] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		}
-
-		// Remove duplicates and reindex.
 		$slugs = array_values( array_unique( $slugs ) );
+
+		// Nếu có nhiều hơn 1 slug, tự động loại bỏ các slug danh mục gốc
+		// (parent = 0 hoặc slug 'san-pham').
+		if ( count( $slugs ) > 1 ) {
+			$filtered = array();
+			foreach ( $slugs as $slug ) {
+				// Loại bỏ trực tiếp slug danh mục tổng.
+				if ( 'san-pham' === $slug ) {
+					continue;
+				}
+
+				$term_obj = get_term_by( 'slug', $slug, $taxonomy );
+				// Chỉ giữ lại danh mục con.
+				if ( $term_obj && 0 !== (int) $term_obj->parent ) {
+					$filtered[] = $slug;
+				}
+			}
+
+			$slugs = ! empty( $filtered ) ? $filtered : $slugs;
+		}
 
 		$cache[ $taxonomy ] = $slugs;
 
@@ -458,26 +484,23 @@ class GF_PF_Terms {
 	 * Base URL for filter links.
 	 *
 	 * FIXED: Always returns the WooCommerce shop page URL instead of the
-	 * current page URL. This prevents conflicts when filtering from a
-	 * category archive page (e.g., /mama-rosa/) to a different brand filter.
+	 * current page URL. This prevents the taxonomy route (e.g.
+	 * /danh-muc-san-pham/bo-dau-phong/) from being kept on the filter links,
+	 * which caused WordPress to AND-query the old route slug with the newly
+	 * selected one and return 0 products.
 	 *
 	 * @return string
 	 */
 	public static function get_base_url() {
-		static $base_url = null;
-
-		if ( null !== $base_url ) {
-			return $base_url;
+		// Luôn đưa URL gốc về trang Cửa Hàng (Shop) của WooCommerce.
+		if ( function_exists( 'wc_get_page_permalink' ) ) {
+			$shop_page_id = wc_get_page_id( 'shop' );
+			if ( $shop_page_id > 0 ) {
+				return apply_filters( 'gf_pf_base_url', get_permalink( $shop_page_id ) );
+			}
 		}
 
-		// Always use the shop page as the base for filter links.
-		$shop_url = function_exists( 'wc_get_page_permalink' )
-			? wc_get_page_permalink( 'shop' )
-			: home_url( '/shop/' );
-
-		$base_url = apply_filters( 'gf_pf_base_url', $shop_url );
-
-		return $base_url;
+		return apply_filters( 'gf_pf_base_url', home_url( '/' ) );
 	}
 
 	/**
