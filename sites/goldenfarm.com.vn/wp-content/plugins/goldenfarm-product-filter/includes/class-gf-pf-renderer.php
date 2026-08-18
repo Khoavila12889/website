@@ -108,7 +108,7 @@ class GF_PF_Renderer {
 		self::sort_cat_nodes( $categories );
 
 		$item_id    = 'gf-pf-brand-' . $brand->term_id;
-		$input_name = $multiple ? 'product_brand[]' : 'product_brand';
+		$input_name = $multiple ? $brand_taxonomy . '[]' : $brand_taxonomy;
 
 		$classes = array( 'filter-item', 'checkbox', 'level-0', 'is-brand-root', 'term-slug-' . $brand->slug );
 		if ( $active ) {
@@ -161,7 +161,7 @@ class GF_PF_Renderer {
 		self::sort_cat_nodes( $children );
 
 		$item_id    = 'gf-pf-cat-' . $term->term_id;
-		$input_name = $multiple ? 'product_cat[]' : 'product_cat';
+		$input_name = $multiple ? $taxonomy . '[]' : $taxonomy;
 
 		$classes = array( 'filter-item', 'checkbox', 'level-' . $level );
 		if ( 1 === $level ) {

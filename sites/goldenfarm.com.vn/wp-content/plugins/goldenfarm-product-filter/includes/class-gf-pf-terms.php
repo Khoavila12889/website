@@ -24,10 +24,26 @@ class GF_PF_Terms {
 	/**
 	 * Taxonomy used for brands.
 	 *
+	 * Auto-detects the site's brand taxonomy ('thuong-hieu', 'product_brand',
+	 * 'brand'...) and always allows an explicit override via the
+	 * 'gf_pf_brand_taxonomy' filter.
+	 *
 	 * @return string
 	 */
 	public static function brand_taxonomy() {
-		return apply_filters( 'gf_pf_brand_taxonomy', 'product_brand' );
+		$filtered = apply_filters( 'gf_pf_brand_taxonomy', '' );
+
+		if ( $filtered && taxonomy_exists( $filtered ) ) {
+			return $filtered;
+		}
+
+		foreach ( array( 'thuong-hieu', 'product_brand', 'brand' ) as $tax ) {
+			if ( taxonomy_exists( $tax ) ) {
+				return $tax;
+			}
+		}
+
+		return 'product_brand';
 	}
 
 	/**
@@ -444,25 +460,32 @@ class GF_PF_Terms {
 
 		$slugs = array_values( array_unique( $slugs ) );
 
-		// Nếu có nhiều hơn 1 slug, tự động loại bỏ các slug danh mục gốc
-		// (parent = 0 hoặc slug 'san-pham').
-		if ( count( $slugs ) > 1 ) {
-			$filtered = array();
-			foreach ( $slugs as $slug ) {
-				// Loại bỏ trực tiếp slug danh mục tổng.
-				if ( 'san-pham' === $slug ) {
-					continue;
-				}
+		// Luôn loại bỏ các slug danh mục wrapper (san-pham, chuyen-muc-trang-chu,
+		// thuc-pham...) khỏi bộ lọc active. Nếu giữ 'san-pham', WooCommerce sẽ
+		// include_children kéo về toàn bộ sản phẩm -> lỗi "hiển thị tất cả".
+		$wrapper_slugs = apply_filters(
+			'gf_pf_excluded_category_slugs',
+			GF_PF_Admin::get_excluded_slugs()
+		);
 
-				$term_obj = get_term_by( 'slug', $slug, $taxonomy );
-				// Chỉ giữ lại danh mục con.
-				if ( $term_obj && 0 !== (int) $term_obj->parent ) {
-					$filtered[] = $slug;
-				}
+		$filtered = array();
+		foreach ( $slugs as $slug ) {
+			if ( in_array( $slug, $wrapper_slugs, true ) ) {
+				continue;
 			}
 
-			$slugs = ! empty( $filtered ) ? $filtered : $slugs;
+			$term_obj = get_term_by( 'slug', $slug, $taxonomy );
+
+			// Với taxonomy danh mục: bỏ luôn term gốc (parent = 0) vì đó là
+			// category tổng, không nên đứng trong bộ lọc active.
+			if ( self::taxonomy() === $taxonomy && $term_obj && 0 === (int) $term_obj->parent ) {
+				continue;
+			}
+
+			$filtered[] = $slug;
 		}
+
+		$slugs = $filtered;
 
 		$cache[ $taxonomy ] = $slugs;
 
