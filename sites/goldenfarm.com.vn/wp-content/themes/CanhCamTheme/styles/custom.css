@@ -491,3 +491,24 @@ html body ul.nav-product-detail > li.active > a {
     opacity: 1 !important;
     box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
 }
+
+/* Trạng thái bình thường của khung video */
+.my-video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    transition: all 0.3s ease;
+}
+
+/* Trạng thái khi đang Play trên Mobile */
+@media (max-width: 1023.98px) {
+    .my-video-wrapper.video-sticky-top {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        z-index: 99999 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        background: #000;
+    }
+}

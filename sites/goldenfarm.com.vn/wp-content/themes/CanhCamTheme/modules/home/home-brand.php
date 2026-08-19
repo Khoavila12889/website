@@ -56,7 +56,7 @@ if ($home_brand_list || $home_video_intro) :
 			<?php endif; ?>
 			<?php if ($home_video_intro) : ?>
 				<div class="brands-video mt-10">
-					<div class="iframe-scale">
+					<div class="iframe-scale my-video-wrapper" id="my-video-wrapper">
 						<div id="play-button">
 							<i class="fa-solid fa-play"></i>
 						</div>
@@ -112,6 +112,17 @@ if ($home_brand_list || $home_video_intro) :
         if (event.data == YT.PlayerState.PLAYING) {
             // Hide the play button if video is playing
             playButton.style.display = "none";
+            // Sticky top on mobile while playing
+            var wrapper = document.getElementById("my-video-wrapper");
+            if (wrapper) {
+                wrapper.classList.add("video-sticky-top");
+            }
+        } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+            // Return to normal position when paused or ended
+            var wrapper = document.getElementById("my-video-wrapper");
+            if (wrapper) {
+                wrapper.classList.remove("video-sticky-top");
+            }
         }
     }
 
