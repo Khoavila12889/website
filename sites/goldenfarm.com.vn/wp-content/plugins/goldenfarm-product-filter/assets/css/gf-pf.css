@@ -448,10 +448,11 @@ body.gf-pf-filter-open {
         transform: translateX(0);
     }
 
+    /* --- CẬP NHẬT HEADER MOBILE --- */
     .gf-pf-mobile-header {
         display: flex !important;
         align-items: center;
-        justify-content: space-between;
+        gap: 10px; /* Thêm khoảng cách giữa tiêu đề và các nút */
         padding: 14px 16px;
         background: #1d1d1d;
         border-bottom: 1px solid #2a2a2a;
@@ -465,6 +466,31 @@ body.gf-pf-filter-open {
         color: var(--gf-pf-title);
         text-transform: uppercase;
         letter-spacing: 0.04em;
+        flex: 1; /* Đẩy nút Xóa và Close sang phải */
+    }
+
+    /* Style cho nút Xóa bộ lọc (nếu dùng class .btn-reset hoặc .gf-pf-reset) */
+    .gf-pf-mobile-header .btn-reset,
+    .gf-pf-mobile-header .gf-pf-reset {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px !important;
+        background: var(--gf-pf-bg-soft);
+        border: 1px solid var(--gf-pf-border);
+        border-radius: 20px !important;
+        color: var(--gf-pf-text);
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+
+    .gf-pf-mobile-header .btn-reset:hover,
+    .gf-pf-mobile-header .gf-pf-reset:hover {
+        border-color: var(--gf-pf-accent);
+        background: var(--gf-pf-accent);
+        color: #ffffff;
     }
 
     .gf-pf-close-btn {
@@ -474,7 +500,7 @@ body.gf-pf-filter-open {
         font-size: 24px;
         line-height: 1;
         cursor: pointer;
-        padding: 2px 6px;
+        padding: 2px 0 2px 6px;
         transition: color 0.2s ease;
     }
 
@@ -498,6 +524,7 @@ body.gf-pf-filter-open {
         display: none !important;
     }
 
+    /* --- CẬP NHẬT FOOTER MOBILE --- */
     .gf-pf-mobile-footer {
         display: flex !important;
         gap: 8px;
@@ -507,21 +534,13 @@ body.gf-pf-filter-open {
         flex-shrink: 0;
     }
 
+    /* Ẩn nút xóa bộ lọc ở dưới footer vì đã đưa lên trên */
     .gf-pf-mobile-footer .btn-reset {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #333333;
-        border-radius: 6px;
-        background: transparent;
-        color: #aaaaaa;
-        font-weight: 600;
-        font-size: 12px;
-        text-align: center;
-        text-decoration: none !important;
+        display: none !important;
     }
 
     .gf-pf-mobile-footer .btn-apply {
-        flex: 2;
+        flex: 1; /* Nút Apply tràn viền */
         padding: 10px;
         border: none;
         border-radius: 6px;
@@ -531,5 +550,6 @@ body.gf-pf-filter-open {
         font-size: 12px;
         text-transform: uppercase;
         cursor: pointer;
+        text-align: center;
     }
 }
