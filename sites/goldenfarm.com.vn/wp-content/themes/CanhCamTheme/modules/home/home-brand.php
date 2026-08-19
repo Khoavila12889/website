@@ -1,13 +1,21 @@
 <?php
 $home_brand_list = get_field('home_brand_list', get_the_ID());
 $home_video_intro = get_field('home_video_intro', get_the_ID());
-if ($home_brand_list) :
+if ($home_brand_list || $home_video_intro) :
 ?>
 	<section class="home-brands section">
 		<div class="container">
+			<?php if ($home_brand_list) : ?>
 			<div class="brands-list grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<?php foreach ($home_brand_list as $key => $item) : ?>
 					<?php
+					// Handle raw term IDs (ACF value may be plain array of IDs when field is not registered)
+					if (is_numeric($item)) {
+						$item = get_term(intval($item));
+					}
+					if (is_wp_error($item) || empty($item->term_id)) {
+						continue;
+					}
 					// get product category thumbnail
 					$category_thumbnail_url = wp_get_attachment_url(get_term_meta($item->term_id, 'thumbnail_id', true));
 					$category_url = get_term_link($item->term_id);
@@ -26,7 +34,9 @@ if ($home_brand_list) :
 					</a>
 				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 
+			<?php if ($home_brand_list) : ?>
 			<div class="dealer-search mt-8">
 				<form method="GET" role="form" aria-label="<?php echo _e('Tìm kiếm', 'canhcamtheme') ?>" novalidate="novalidate" action="<?php bloginfo('url') ?>/">
 					<div class="input-group">
@@ -40,6 +50,7 @@ if ($home_brand_list) :
 					</div>
 				</form>
 			</div>
+			<?php endif; ?>
 			<?php if ($home_video_intro) : ?>
 				<div class="brands-video mt-10">
 					<div class="iframe-scale">
