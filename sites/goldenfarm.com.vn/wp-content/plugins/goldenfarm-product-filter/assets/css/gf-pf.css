@@ -533,3 +533,70 @@ body.gf-pf-filter-open {
         cursor: pointer;
     }
 }
+
+/* =========================================================
+   MOBILE FILTER HEADER FIX: BỘ LỌC (TRÁI) - XÓA BỘ LỌC (PHẢI)
+   ========================================================= */
+@media (max-width: 1024px) {
+    /* 1. Khung chứa chính của popup bộ lọc */
+    html body .product-section .col-pro-l .yith-wcan-filters.gf-pf-filters,
+    html body .product-section .col-pro-l .gf-pf-filters {
+        display: flex !important;
+        flex-direction: column !important;
+        position: relative !important;
+        padding-top: 55px !important; /* Tạo khoảng trống phía trên cho thanh Header */
+    }
+
+    /* 2. Tiêu đề "BỘ LỌC" cố định bên trên góc trái */
+    html body .product-section .col-pro-l .gf-pf-filters .gf-pf-title,
+    html body .product-section .col-pro-l .gf-pf-filters .yith-wcan-filters-header,
+    html body .product-section .col-pro-l .gf-pf-filters > h3,
+    html body .product-section .col-pro-l .gf-pf-filters > .title {
+        position: absolute !important;
+        top: 14px !important;
+        left: 15px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #00ff88 !important;
+        text-transform: uppercase !important;
+    }
+
+    /* 3. Đưa nút "Xóa bộ lọc" lên góc phải trên cùng (cạnh nút X đóng) */
+    html body .product-section .col-pro-l .gf-pf-filters .yith-wcan-reset-navigation,
+    html body .product-section .col-pro-l .gf-pf-filters .wcan-reset-navigation,
+    html body .product-section .col-pro-l .gf-pf-filters button.reset-filter,
+    html body .product-section .col-pro-l .gf-pf-filters .gf-pf-reset {
+        position: absolute !important;
+        top: 10px !important;
+        right: 45px !important; /* Nằm bên trái nút X đóng popup */
+        bottom: auto !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 4px 12px !important;
+        background: transparent !important;
+        border: 1px solid #444444 !important;
+        border-radius: 14px !important;
+        color: #ffffff !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        z-index: 10 !important;
+        cursor: pointer !important;
+    }
+
+    html body .product-section .col-pro-l .gf-pf-filters .yith-wcan-reset-navigation:hover,
+    html body .product-section .col-pro-l .gf-pf-filters button.reset-filter:hover {
+        border-color: #009973 !important;
+        color: #00ff88 !important;
+    }
+
+    /* 4. Cho phép danh sách tiêu chí bên dưới cuộn dọc mượt mà */
+    html body .product-section .col-pro-l .gf-pf-filters .yith-wcan-filter-items,
+    html body .product-section .col-pro-l .gf-pf-filters .gf-pf-content {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        max-height: calc(100vh - 70px) !important;
+    }
+}
