@@ -396,7 +396,9 @@ html body .global-breadcrumb .container {
     box-sizing: border-box !important;
 }
 
-/* Ép cấu hình CSS Grid đúng 2 hàng cố định + Cuộn ngang */
+/* =========================================================
+   NAV-PRODUCT-DETAIL — DÀN 2 HÀNG CỐ ĐỊNH & CUỘN NGANG
+   ========================================================= */
 html body main .global-breadcrumb .container ul.nav-product-detail,
 html body .global-breadcrumb ul.nav-product-detail,
 html body ul.nav-product-detail {
@@ -405,13 +407,13 @@ html body ul.nav-product-detail {
     grid-auto-flow: column !important;             /* Xếp nút từ trên xuống dưới, tràn sang cột bên phải */
     grid-auto-columns: max-content !important;     /* Chiều rộng cột theo độ dài tên nút */
     gap: 8px 10px !important;                      /* Khoảng cách 8px giữa 2 hàng, 10px giữa các cột */
-    
+
     width: 100% !important;
     max-width: 100% !important;
     padding: 8px 0 12px 0 !important;
     margin: 0 !important;
     list-style: none !important;
-    
+
     overflow-x: auto !important;                   /* Bắt buộc cho phép cuộn ngang */
     overflow-y: hidden !important;
     white-space: nowrap !important;
