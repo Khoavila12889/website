@@ -12,7 +12,7 @@
         <link rel="canonical" href="<?php echo esc_url(home_url()); ?>" />
     <?php elseif (is_single() || is_page()): ?>
         <link rel="canonical" href="<?php echo esc_url(get_permalink()); ?>" />
-    <?php elseif (is_category() || is_tag() || is_archive()): ?>
+    <?php elseif (is_category() || is_tag() || (is_archive() && (get_queried_object() instanceof WP_Term))): ?>
         <link rel="canonical" href="<?php $term_link = get_term_link(get_queried_object()); echo esc_url(is_wp_error($term_link) ? home_url() : $term_link); ?>" />
     <?php elseif (is_search()): ?>
         <meta name="robots" content="noindex, nofollow" />

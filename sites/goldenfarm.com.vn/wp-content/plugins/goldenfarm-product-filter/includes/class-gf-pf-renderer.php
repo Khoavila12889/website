@@ -60,6 +60,7 @@ class GF_PF_Renderer {
 			<div class="yith-wcan-filters no-title gf-pf-filters" id="gf-pf-filters">
 				<div class="gf-pf-mobile-header">
 					<h3><?php esc_html_e( 'Bộ lọc', 'goldenfarm-product-filter' ); ?></h3>
+					<a href="<?php echo esc_url( $context['reset_url'] ); ?>" class="gf-pf-reset"><?php esc_html_e( 'Xóa bộ lọc', 'goldenfarm-product-filter' ); ?></a>
 					<button type="button" class="gf-pf-close-btn" aria-label="<?php esc_attr_e( 'Đóng bộ lọc', 'goldenfarm-product-filter' ); ?>">&times;</button>
 				</div>
 				<div class="filters-container">
