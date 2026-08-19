@@ -121,11 +121,11 @@
 
 /* Desktop Default (>= 1025px) */
 .home-delicious-recipe .recipe-nav-list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
 
 .home-about .home-about-list,
 .home-about .home-about.grid {
@@ -149,23 +149,20 @@
 
 /* Tablet (<= 1024px) */
 @media (max-width: 1024px) {
-
-	.home-delicious-recipe .recipe-nav-scroll {
+    .home-delicious-recipe .recipe-nav-scroll {
         width: 100% !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 6px;
     }
 
-    /* Ẩn thanh cuộn xấu của hệ thống */
     .home-delicious-recipe .recipe-nav-scroll::-webkit-scrollbar {
         display: none;
     }
 
-    /* Danh sách các nút: Căn lề trái để cuộn chuẩn từ mục đầu tiên */
     .home-delicious-recipe .recipe-nav-list {
         display: flex !important;
-        justify-content: flex-start !important; /* Thay thế justify-center cũ */
+        justify-content: flex-start !important;
         align-items: center !important;
         white-space: nowrap !important;
         width: max-content !important;
@@ -174,7 +171,6 @@
         padding-right: 15px !important;
     }
 
-    /* Tinh chỉnh khoảng cách giữa các nút bấm */
     .home-delicious-recipe .recipe-nav-list li {
         flex: 0 0 auto !important;
         margin-right: 10px !important;
@@ -203,11 +199,6 @@
 
 /* =========================================================
    MOBILE SHOP LAYOUT FIX (DOM EXACT)
-   - Order 1: Title & Notices
-   - Order 2: Filter Button (Left 48%)
-   - Order 3: Orderby Dropdown (Right 48%)
-   - Order 4: Product Grid (2 columns)
-   - Order 5: Pagination (Bottom)
    ========================================================= */
 @media (max-width: 1024px) {
     html body .product-section .row {
@@ -216,14 +207,12 @@
         align-items: center !important;
     }
 
-    /* Flatten DOM structure */
     html body .product-section .col-pro-r,
     html body .product-section .gf-pf-head-row,
     html body .product-section .col-pro-r .form-right {
         display: contents !important;
     }
 
-    /* 1. Page Title & Notices */
     html body .product-section .col-pro-r .site-title {
         order: 1 !important;
         width: 100% !important;
@@ -242,7 +231,6 @@
         text-align: left !important;
     }
 
-    /* 2. Filter Button (Left 48%) */
     html body .product-section .col-pro-l {
         order: 2 !important;
         width: 48% !important;
@@ -301,7 +289,6 @@
         display: flex !important;
     }
 
-    /* 3. Dropdown Ordering (Right 48%) */
     html body .product-section .gf-pf-orderby {
         order: 3 !important;
         width: 48% !important;
@@ -339,7 +326,6 @@
         appearance: none !important;
     }
 
-    /* 4. Product Grid (2 columns) */
     html body .product-section .product-list {
         order: 4 !important;
         width: 100% !important;
@@ -356,7 +342,6 @@
         min-width: 0 !important;
     }
 
-    /* 5. Pagination (Bottom) */
     html body .product-section .woocommerce-pagination,
     html body .product-section nav.woocommerce-pagination {
         order: 5 !important;
@@ -371,13 +356,12 @@
 }
 
 /* =========================================================
-   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES & BANNER FIX
+   MOBILE BANNER FIX
    ========================================================= */
 @media (max-width: 768px) {
-    /* Khung chứa Banner trên Mobile: Cố định chiều cao 210px */
     .banner-section .banner-img-wrap {
         width: 100% !important;
-        height: 210px !important; /* Khóa chiều cao cố định để banner không bị xẹp */
+        height: 210px !important;
         overflow: hidden !important;
         position: relative !important;
     }
@@ -385,9 +369,9 @@
     .banner-section .banner-img-wrap img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: cover !important; /* Phủ kín khung 210px và xén bớt 20% lề thừa 2 bên */
+        object-fit: cover !important;
         object-position: center center !important;
-        transform: scale(1.08) !important; /* Zoom nhẹ 8% cho chữ chính to rõ */
+        transform: scale(1.08) !important;
         display: block !important;
     }
 
@@ -396,71 +380,114 @@
     }
 }
 
-    /* Thanh danh mục cuộn ngang (Global Breadcrumb / Mobile Category) */
-    html body .global-breadcrumb .container {
-        overflow: hidden !important;
-        max-width: 100% !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
+/* =========================================================
+   NAV-PRODUCT-DETAIL — ĐÚNG 2 HÀNG CỐ ĐỊNH & CUỘN NGANG DESKTOP
+   ========================================================= */
+html body .global-breadcrumb {
+    width: 100% !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 8px 0 !important;
-        margin: 0 !important;
-        gap: 8px !important;
-        width: 100% !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-    }
+html body .global-breadcrumb .container {
+    max-width: 1600px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
+/* Ép cấu hình CSS Grid đúng 2 hàng cố định + Cuộn ngang */
+html body main .global-breadcrumb .container ul.nav-product-detail,
+html body .global-breadcrumb ul.nav-product-detail,
+html body ul.nav-product-detail {
+    display: grid !important;
+    grid-template-rows: repeat(2, 36px) !important; /* Cố định 2 hàng, mỗi hàng cao 36px */
+    grid-auto-flow: column !important;             /* Xếp nút từ trên xuống dưới, tràn sang cột bên phải */
+    grid-auto-columns: max-content !important;     /* Chiều rộng cột theo độ dài tên nút */
+    gap: 8px 10px !important;                      /* Khoảng cách 8px giữa 2 hàng, 10px giữa các cột */
+    
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 8px 0 12px 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+    
+    overflow-x: auto !important;                   /* Bắt buộc cho phép cuộn ngang */
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail > li {
-        display: inline-flex !important;
-        flex: 0 0 auto !important;
-        flex-shrink: 0 !important;
-        width: auto !important;
-        float: none !important;
-        margin: 0 !important;
-    }
+/* Thanh cuộn ngang mảnh (Visual cue cho Desktop) */
+html body ul.nav-product-detail::-webkit-scrollbar {
+    height: 4px !important;
+    display: block !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail > li > a {
-        display: inline-block !important;
-        white-space: nowrap !important;
-        padding: 6px 14px !important;
-        font-size: 12px !important;
-        border-radius: 20px !important;
-        line-height: 1.2 !important;
-        color: #ffffff !important;
-        background: #2c2c2c !important;
-        border: 1px solid #444444 !important;
-        font-weight: 500 !important;
-        opacity: 0.9 !important;
-    }
+html body ul.nav-product-detail::-webkit-scrollbar-track {
+    background: #242424 !important;
+    border-radius: 10px !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail > li.active {
-        color: inherit !important;
-    }
+html body ul.nav-product-detail::-webkit-scrollbar-thumb {
+    background: #007b62 !important;
+    border-radius: 10px !important;
+}
 
-    html body .global-breadcrumb .nav-product-detail > li.active > a {
-        color: #ffffff !important;
-        background: #007b62 !important;
-        border-color: #009973 !important;
-        font-weight: 700 !important;
-        opacity: 1 !important;
-        box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
-    }
+/* Reset thẻ LI để không bị đùn width 100% từ theme */
+html body main .global-breadcrumb .container ul.nav-product-detail > li,
+html body .global-breadcrumb ul.nav-product-detail > li,
+html body ul.nav-product-detail > li {
+    display: flex !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* Kiểu dáng nút bấm danh mục */
+html body main .global-breadcrumb .container ul.nav-product-detail > li > a,
+html body .global-breadcrumb ul.nav-product-detail > li > a,
+html body ul.nav-product-detail > li > a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    height: 100% !important;
+    padding: 0 16px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    border-radius: 18px !important;
+    color: #ffffff !important;
+    background: #2c2c2c !important;
+    border: 1px solid #444444 !important;
+    opacity: 0.9 !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+}
+
+html body main .global-breadcrumb .container ul.nav-product-detail > li > a:hover,
+html body .global-breadcrumb ul.nav-product-detail > li > a:hover,
+html body ul.nav-product-detail > li > a:hover {
+    background: #242424 !important;
+    border-color: #009973 !important;
+    color: #00ff88 !important;
+    opacity: 1 !important;
+}
+
+html body main .global-breadcrumb .container ul.nav-product-detail > li.active > a,
+html body .global-breadcrumb ul.nav-product-detail > li.active > a,
+html body ul.nav-product-detail > li.active > a {
+    color: #ffffff !important;
+    background: #007b62 !important;
+    border-color: #009973 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 8px rgba(0, 153, 115, 0.5) !important;
 }
