@@ -1,5 +1,5 @@
 <?php
-define('GENERATE_VERSION', '1.1.3');
+define('GENERATE_VERSION', '1.1.4');
 
 require get_template_directory() . '/inc/function-root.php';
 require get_template_directory() . '/inc/function-custom.php';

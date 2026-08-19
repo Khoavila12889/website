@@ -5,7 +5,7 @@
 /* FONT FACES */
 @font-face {
     font-family: 'MainFont';
-    src: url('/wp-content/themes/yourtheme/fonts/main-font.woff2') format('woff2');
+    src: url('/wp-content/themes/canhcamthem/fonts/main-font.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -13,7 +13,7 @@
 
 @font-face {
     font-family: 'HeadingFont';
-    src: url('/wp-content/themes/yourtheme/fonts/heading-font.woff2') format('woff2');
+    src: url('/wp-content/themes/canhcamthem/fonts/heading-font.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -120,6 +120,13 @@
    ========================================================= */
 
 /* Desktop Default (>= 1025px) */
+.home-delicious-recipe .recipe-nav-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
 .home-about .home-about-list,
 .home-about .home-about.grid {
     display: grid !important;
@@ -142,6 +149,37 @@
 
 /* Tablet (<= 1024px) */
 @media (max-width: 1024px) {
+
+	.home-delicious-recipe .recipe-nav-scroll {
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 6px;
+    }
+
+    /* Ẩn thanh cuộn xấu của hệ thống */
+    .home-delicious-recipe .recipe-nav-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Danh sách các nút: Căn lề trái để cuộn chuẩn từ mục đầu tiên */
+    .home-delicious-recipe .recipe-nav-list {
+        display: flex !important;
+        justify-content: flex-start !important; /* Thay thế justify-center cũ */
+        align-items: center !important;
+        white-space: nowrap !important;
+        width: max-content !important;
+        min-width: 100%;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    /* Tinh chỉnh khoảng cách giữa các nút bấm */
+    .home-delicious-recipe .recipe-nav-list li {
+        flex: 0 0 auto !important;
+        margin-right: 10px !important;
+    }
+
     .home-brands .brands-list,
     .home-brands .brands-list.grid {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -333,9 +371,32 @@
 }
 
 /* =========================================================
-   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES
+   FORCE HORIZONTAL SCROLL FOR MOBILE PRODUCT CATEGORIES & BANNER FIX
    ========================================================= */
 @media (max-width: 768px) {
+    /* Khung chứa Banner trên Mobile: Cố định chiều cao 210px */
+    .banner-section .banner-img-wrap {
+        width: 100% !important;
+        height: 210px !important; /* Khóa chiều cao cố định để banner không bị xẹp */
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .banner-section .banner-img-wrap img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important; /* Phủ kín khung 210px và xén bớt 20% lề thừa 2 bên */
+        object-position: center center !important;
+        transform: scale(1.08) !important; /* Zoom nhẹ 8% cho chữ chính to rõ */
+        display: block !important;
+    }
+
+    .banner-slider .swiper-slide {
+        height: 210px !important;
+    }
+}
+
+    /* Thanh danh mục cuộn ngang (Global Breadcrumb / Mobile Category) */
     html body .global-breadcrumb .container {
         overflow: hidden !important;
         max-width: 100% !important;
