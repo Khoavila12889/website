@@ -38,7 +38,7 @@ define( 'DB_USER', 'wordpress' );
 define( 'DB_PASSWORD', 'password' );
 
 /** Database hostname */
-define( 'DB_HOST', 'mysql2' );
+define( 'DB_HOST', '127.0.0.1' );
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
@@ -114,8 +114,8 @@ $table_prefix = 'wp_';
 
 /* Add any custom values between this line and the "stop editing" line. */
 // Thêm vào wp-config.php
-define('WP_HOME','https://goldenfarm.com.vn');
-define('WP_SITEURL','https://goldenfarm.com.vn');
+define('WP_HOME','http://goldenfarm.test');
+define('WP_SITEURL','http://goldenfarm.test');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
     $_SERVER['HTTPS'] = 'on';
