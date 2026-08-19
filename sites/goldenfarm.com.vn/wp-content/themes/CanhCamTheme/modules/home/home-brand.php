@@ -1,6 +1,9 @@
 <?php
 $home_brand_list = get_field('home_brand_list', get_the_ID());
 $home_video_intro = get_field('home_video_intro', get_the_ID());
+if (empty($home_video_intro)) {
+	$home_video_intro = 'w_S9w-aYu6c';
+}
 if ($home_brand_list || $home_video_intro) :
 ?>
 	<section class="home-brands section">
