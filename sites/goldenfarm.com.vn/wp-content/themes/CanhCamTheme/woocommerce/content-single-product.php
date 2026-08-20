@@ -185,15 +185,18 @@ $product_detail_choose_delicious_recipe = get_field("product_detail_choose_delic
 							<div class="swiper-wrapper">
 								<?php foreach ($product_detail_related_other as $productRelated) : ?>
 									<?php
-									if ($productRelated->ID == $product_id) continue;
-									$post_object = get_post($productRelated->ID);
+									$related_id = is_object($productRelated) ? $productRelated->ID : $productRelated;
+									if (!$related_id || $related_id == $product_id) continue;
+									$post_object = get_post($related_id);
+									if (!$post_object || $post_object->post_status !== 'publish') continue;
 									setup_postdata($GLOBALS['post'] = &$post_object);
+									$GLOBALS['product'] = wc_get_product($related_id);
 									?>
 									<div class="swiper-slide">
-										<?php wc_get_template_part('content-product', $productRelated->ID); ?>
+										<?php wc_get_template_part('content-product'); ?>
 									</div>
-								<?php wp_reset_postdata();
-								endforeach;  ?>
+								<?php endforeach;
+								wp_reset_postdata(); ?>
 							</div>
 						</div>
 						<div class="mobile-only">
